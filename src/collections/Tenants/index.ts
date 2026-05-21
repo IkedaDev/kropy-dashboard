@@ -2,14 +2,15 @@ import type { CollectionConfig } from 'payload'
 
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { updateAndDeleteAccess } from './access/updateAndDelete'
+import { filterByTenantRead } from './access/byTenant'
 
 export const Tenants: CollectionConfig = {
   slug: 'tenants',
   access: {
     create: isSuperAdminAccess,
-    delete: updateAndDeleteAccess,
-    read: ({ req }) => Boolean(req.user),
-    update: updateAndDeleteAccess,
+    delete: isSuperAdminAccess,
+    update: isSuperAdminAccess,
+    read: filterByTenantRead,
   },
   admin: {
     useAsTitle: 'name',
