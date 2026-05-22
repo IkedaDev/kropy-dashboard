@@ -69,16 +69,16 @@ export const Login = ({ tenantSlug, tenantDomain }: Props) => {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 relative overflow-hidden px-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 dark:bg-neutral-950 relative overflow-hidden px-4">
       {/* Decorative background glow circles matching Kropy theme */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-50 rounded-full blur-[120px] pointer-events-none opacity-60" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-emerald-100 rounded-full blur-[120px] pointer-events-none opacity-50" />
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-emerald-50 dark:bg-emerald-950/20 rounded-full blur-[120px] pointer-events-none opacity-60" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-emerald-100 dark:bg-emerald-900/10 rounded-full blur-[120px] pointer-events-none opacity-50" />
 
-      <div className="relative z-10 w-full max-w-md bg-white border border-slate-100/80 shadow-[0_20px_50px_rgba(0,0,0,0.05)] rounded-3xl p-8 md:p-10 transition-all duration-300">
+      <div className="relative z-10 w-full max-w-md bg-white dark:bg-neutral-900 border border-slate-100/80 dark:border-neutral-800/80 shadow-[0_20px_50px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-3xl p-8 md:p-10 transition-all duration-300">
         
         {/* Branding header */}
         <div className="flex flex-col items-center mb-8">
-          <div className="relative flex items-center justify-center p-3 rounded-2xl bg-slate-50 border border-slate-100 mb-4 shadow-sm hover:scale-105 transition-transform duration-300">
+          <div className="relative flex items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-neutral-800 border border-slate-100 dark:border-neutral-700 mb-4 shadow-sm hover:scale-105 transition-transform duration-300">
             <Image 
               src={logo} 
               alt="Kropy Logo" 
@@ -86,17 +86,17 @@ export const Login = ({ tenantSlug, tenantDomain }: Props) => {
               priority
             />
           </div>
-          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 text-center">
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white text-center">
             ¡Hola de nuevo!
           </h2>
-          <p className="text-sm text-slate-400 mt-1 text-center font-light">
+          <p className="text-sm text-slate-400 dark:text-neutral-400 mt-1 text-center font-light">
             Inicia sesión en {tenantSlug ? <span className="font-semibold text-emerald-600 capitalize">{tenantSlug}</span> : 'tu panel'} para continuar.
           </p>
         </div>
 
         {/* Error Alert Message */}
         {error && (
-          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm flex items-start gap-2.5 animate-fadeIn">
+          <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/30 text-red-600 dark:text-red-400 text-sm flex items-start gap-2.5 animate-fadeIn">
             <svg className="w-5 h-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
@@ -107,7 +107,7 @@ export const Login = ({ tenantSlug, tenantDomain }: Props) => {
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block">
+            <label className="text-[11px] font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest block">
               Nombre de Usuario
             </label>
             <div className="relative">
@@ -116,7 +116,7 @@ export const Login = ({ tenantSlug, tenantDomain }: Props) => {
                 ref={usernameRef}
                 type="text"
                 disabled={loading}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200/80 rounded-xl text-slate-800 text-sm font-light placeholder-slate-300 focus:outline-none focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-neutral-800 border border-slate-200/80 dark:border-neutral-700/80 rounded-xl text-slate-800 dark:text-neutral-100 text-sm font-light placeholder-slate-300 dark:placeholder-neutral-500 focus:outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-neutral-850 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200"
                 placeholder="ej: admin_kropy"
                 required
               />
@@ -124,7 +124,7 @@ export const Login = ({ tenantSlug, tenantDomain }: Props) => {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block">
+            <label className="text-[11px] font-bold text-slate-400 dark:text-neutral-500 uppercase tracking-widest block">
               Contraseña
             </label>
             <div className="relative">
@@ -133,7 +133,7 @@ export const Login = ({ tenantSlug, tenantDomain }: Props) => {
                 ref={passwordRef}
                 type="password"
                 disabled={loading}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200/80 rounded-xl text-slate-800 text-sm font-light placeholder-slate-300 focus:outline-none focus:border-emerald-600 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-neutral-800 border border-slate-200/80 dark:border-neutral-700/80 rounded-xl text-slate-800 dark:text-neutral-100 text-sm font-light placeholder-slate-300 dark:placeholder-neutral-500 focus:outline-none focus:border-emerald-600 focus:bg-white dark:focus:bg-neutral-850 focus:ring-4 focus:ring-emerald-500/10 transition-all duration-200"
                 placeholder="••••••••"
                 required
               />
@@ -160,7 +160,7 @@ export const Login = ({ tenantSlug, tenantDomain }: Props) => {
         </form>
 
         {/* Footer */}
-        <p className="text-center text-[11px] text-slate-300 mt-8 font-light tracking-wide">
+        <p className="text-center text-[11px] text-slate-300 dark:text-neutral-600 mt-8 font-light tracking-wide">
           &copy; {new Date().getFullYear()} Kropy. Todos los derechos reservados.
         </p>
 
