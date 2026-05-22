@@ -44,7 +44,12 @@ export default buildConfig({
       graphics:{
         Icon: '/components/payload/Icon',
         Logo: '/components/payload/Logo',
-      }
+      },
+      views: {
+        dashboard: {
+          Component: '/components/payload/Dashboard',
+        },
+      },
     }
   },
   collections: [Pages, Users, Tenants, Products, Media, Orders, Categories, StoreSettings, Customers, Discounts, Brands, ProductReviews],
