@@ -77,6 +77,8 @@ export interface Config {
     'store-settings': StoreSetting;
     customers: Customer;
     discounts: Discount;
+    brands: Brand;
+    'product-reviews': ProductReview;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -94,6 +96,8 @@ export interface Config {
     'store-settings': StoreSettingsSelect<false> | StoreSettingsSelect<true>;
     customers: CustomersSelect<false> | CustomersSelect<true>;
     discounts: DiscountsSelect<false> | DiscountsSelect<true>;
+    brands: BrandsSelect<false> | BrandsSelect<true>;
+    'product-reviews': ProductReviewsSelect<false> | ProductReviewsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -244,6 +248,7 @@ export interface Product {
       }[]
     | null;
   categories?: (number | Category)[] | null;
+  brand?: (number | null) | Brand;
   /**
    * Habilita variantes (tallas, colores) con stock y precio independiente.
    */
@@ -300,6 +305,33 @@ export interface Category {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands".
+ */
+export interface Brand {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  logo?: (number | null) | Media;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
  */
 export interface Order {
@@ -330,6 +362,24 @@ export interface Order {
   discountCode?: (number | null) | Discount;
   wasStockDiscounted?: boolean | null;
   wasCouponCounted?: boolean | null;
+  shippingCourier?: string | null;
+  trackingNumber?: string | null;
+  /**
+   * Notas de uso interno para la administración del comercio.
+   */
+  internalNotes?: string | null;
+  /**
+   * Registro de auditoría de los cambios de estado de la orden.
+   */
+  statusHistory?:
+    | {
+        status: 'pending' | 'paid' | 'shipped' | 'cancelled';
+        changedAt: string;
+        changedBy?: (number | null) | User;
+        notes?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -425,6 +475,31 @@ export interface StoreSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-reviews".
+ */
+export interface ProductReview {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  product: number | Product;
+  customer?: (number | null) | Customer;
+  /**
+   * Nombre visible de la persona que escribe la reseña.
+   */
+  reviewerName: string;
+  /**
+   * Puntuación del producto de 1 a 5 estrellas.
+   */
+  rating: number;
+  comment: string;
+  /**
+   * Habilita este campo para que la reseña aparezca de forma pública en la web.
+   */
+  approved?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -486,6 +561,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'discounts';
         value: number | Discount;
+      } | null)
+    | ({
+        relationTo: 'brands';
+        value: number | Brand;
+      } | null)
+    | ({
+        relationTo: 'product-reviews';
+        value: number | ProductReview;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -603,6 +686,7 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   categories?: T;
+  brand?: T;
   hasVariants?: T;
   variants?:
     | T
@@ -670,6 +754,18 @@ export interface OrdersSelect<T extends boolean = true> {
   discountCode?: T;
   wasStockDiscounted?: T;
   wasCouponCounted?: T;
+  shippingCourier?: T;
+  trackingNumber?: T;
+  internalNotes?: T;
+  statusHistory?:
+    | T
+    | {
+        status?: T;
+        changedAt?: T;
+        changedBy?: T;
+        notes?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -741,6 +837,33 @@ export interface DiscountsSelect<T extends boolean = true> {
   active?: T;
   applicableProducts?: T;
   applicableCategories?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands_select".
+ */
+export interface BrandsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  logo?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-reviews_select".
+ */
+export interface ProductReviewsSelect<T extends boolean = true> {
+  tenant?: T;
+  product?: T;
+  customer?: T;
+  reviewerName?: T;
+  rating?: T;
+  comment?: T;
+  approved?: T;
   updatedAt?: T;
   createdAt?: T;
 }

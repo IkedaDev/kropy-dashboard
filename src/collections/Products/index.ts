@@ -103,6 +103,26 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      name: 'brand',
+      label: 'Marca',
+      type: 'relationship',
+      relationTo: 'brands',
+      admin: {
+        position: 'sidebar',
+      },
+      filterOptions: ({ req }) => {
+        if (req.user && !req.user.roles?.includes('super-admin')) {
+          const userTenants = getUserTenantIDs(req.user)
+          if (userTenants.length > 0) {
+            return {
+              tenant: { in: userTenants },
+            }
+          }
+        }
+        return true
+      },
+    },
+    {
       name: 'hasVariants',
       label: '¿Este producto tiene variantes?',
       type: 'checkbox',

@@ -227,6 +227,64 @@ export const Orders: CollectionConfig = {
         update: onlySuperAdminCanUpdate,
       },
     },
+    {
+      name: 'shippingCourier',
+      label: 'Courier / Empresa de Envíos',
+      type: 'text',
+    },
+    {
+      name: 'trackingNumber',
+      label: 'Número de Seguimiento (Tracking)',
+      type: 'text',
+    },
+    {
+      name: 'internalNotes',
+      label: 'Notas Internas',
+      type: 'textarea',
+      admin: {
+        description: 'Notas de uso interno para la administración del comercio.',
+      },
+    },
+    {
+      name: 'statusHistory',
+      label: 'Historial de Estados',
+      type: 'array',
+      admin: {
+        readOnly: true,
+        description: 'Registro de auditoría de los cambios de estado de la orden.',
+      },
+      fields: [
+        {
+          name: 'status',
+          label: 'Estado',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Pendiente', value: 'pending' },
+            { label: 'Pagado', value: 'paid' },
+            { label: 'Enviado', value: 'shipped' },
+            { label: 'Cancelado', value: 'cancelled' },
+          ],
+        },
+        {
+          name: 'changedAt',
+          label: 'Fecha de Cambio',
+          type: 'date',
+          required: true,
+        },
+        {
+          name: 'changedBy',
+          label: 'Cambiado Por (Usuario)',
+          type: 'relationship',
+          relationTo: 'users',
+        },
+        {
+          name: 'notes',
+          label: 'Notas / Comentarios',
+          type: 'text',
+        },
+      ],
+    },
   ],
 }
 

@@ -290,6 +290,31 @@ export const handleOrderStatusAndStock: CollectionBeforeChangeHook = async ({
     }
   }
 
+  // --- 3. AUDITORÍA DEL HISTORIAL DE ESTADOS ---
+  const currentStatus = status || originalDoc?.status || 'pending'
+
+  if (operation === 'create') {
+    const initialRow = {
+      status: currentStatus,
+      changedAt: new Date().toISOString(),
+      changedBy: req.user ? req.user.id : undefined,
+      notes: 'Creación de la orden.',
+    }
+    data.statusHistory = [initialRow]
+  }
+
+  if (operation === 'update' && originalDoc) {
+    if (status && status !== originalDoc.status) {
+      const historyRow = {
+        status: status,
+        changedAt: new Date().toISOString(),
+        changedBy: req.user ? req.user.id : undefined,
+        notes: `Estado cambiado de "${originalDoc.status}" a "${status}".`,
+      }
+      data.statusHistory = [...(originalDoc.statusHistory || []), historyRow]
+    }
+  }
+
   return data
 }
 
