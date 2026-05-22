@@ -30,6 +30,16 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: 'users',
+    
+    importMap: {
+      baseDir: path.resolve(dirname),
+    },
+    components:{
+      graphics:{
+        Icon: '/components/payload/Icon',
+        Logo: '/components/payload/Logo',
+      }
+    }
   },
   collections: [Pages, Users, Tenants, Products, Media, Orders, Categories, StoreSettings, Customers, Discounts, Brands, ProductReviews],
   // db: mongooseAdapter({
