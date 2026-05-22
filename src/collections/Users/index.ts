@@ -71,8 +71,8 @@ const Users: CollectionConfig = {
   admin: {
     useAsTitle: 'email',
     group: {
-      es: 'Configuración',
-      en: 'Settings',
+      es: 'Comercio Electrónico',
+      en: 'E-commerce',
     },
   },
   auth: true,

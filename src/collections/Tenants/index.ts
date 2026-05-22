@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { isSuperAdminAccess } from '@/access/isSuperAdmin'
+import { isSuperAdminAccess, isSuperAdmin } from '@/access/isSuperAdmin'
 import { updateAndDeleteAccess } from './access/updateAndDelete'
 import { filterByTenantRead } from './access/byTenant'
 
@@ -28,6 +28,7 @@ export const Tenants: CollectionConfig = {
       es: 'Configuración',
       en: 'Settings',
     },
+    hidden: ({ user }) => !isSuperAdmin(user as any),
   },
   fields: [
     {

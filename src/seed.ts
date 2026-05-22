@@ -198,35 +198,6 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     },
   })
 
-  payload.logger.info('=== CREANDO PAGINAS ===')
-
-  await payload.create({
-    collection: 'pages',
-    data: {
-      slug: 'home',
-      tenant: tenant1.id,
-      title: 'Page for Tenant 1',
-    },
-  })
-
-  await payload.create({
-    collection: 'pages',
-    data: {
-      slug: 'home',
-      tenant: tenant2.id,
-      title: 'Page for Tenant 2',
-    },
-  })
-
-  await payload.create({
-    collection: 'pages',
-    data: {
-      slug: 'home',
-      tenant: tenant3.id,
-      title: 'Page for Tenant 3',
-    },
-  })
-
   payload.logger.info('=== CREANDO RECURSOS DE MEDIA ===')
 
   const mediaGold = await createDummyMedia(payload, 'placeholder-gold.png', tenant1.id)
@@ -237,22 +208,75 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
   const mediaSilverId = mediaSilver ? mediaSilver.id : undefined
   const mediaBronzeId = mediaBronze ? mediaBronze.id : undefined
 
-  payload.logger.info('=== CREANDO CONFIGURACIONES DE TIENDA (STORE SETTINGS) ===')
+  payload.logger.info('=== CREANDO PAGINAS ===')
 
-  // Tenant 1 Settings (CLP)
   await payload.create({
-    collection: 'store-settings',
+    collection: 'pages',
     data: {
-      name: 'Kropy Gold Store',
+      slug: 'home',
+      tenant: tenant1.id,
+      title: 'Page for Tenant 1',
       logo: mediaGoldId,
       favicon: mediaGoldId,
-      currency: 'CLP',
+      contactInfo: {
+        phone: '+56911112222',
+        email: 'contacto@gold.com',
+        address: 'Av. Providencia 1234, Santiago',
+      },
       socialLinks: {
         instagram: 'https://instagram.com/kropy_gold',
         facebook: 'https://facebook.com/kropy_gold',
         whatsapp: '+56911112222',
         twitter: 'https://x.com/kropy_gold',
       },
+    },
+  })
+
+  await payload.create({
+    collection: 'pages',
+    data: {
+      slug: 'home',
+      tenant: tenant2.id,
+      title: 'Page for Tenant 2',
+      logo: mediaSilverId,
+      favicon: mediaSilverId,
+      contactInfo: {
+        phone: '+15550199',
+        email: 'support@silver.com',
+        address: '123 Main Street, New York',
+      },
+      socialLinks: {
+        whatsapp: '+15550199',
+      },
+    },
+  })
+
+  await payload.create({
+    collection: 'pages',
+    data: {
+      slug: 'home',
+      tenant: tenant3.id,
+      title: 'Page for Tenant 3',
+      logo: mediaBronzeId,
+      favicon: mediaBronzeId,
+      contactInfo: {
+        phone: '+56999998888',
+        email: 'ventas@bronze.com',
+        address: 'Calle Esmeralda 432, Valparaíso',
+      },
+      socialLinks: {
+        facebook: 'https://facebook.com/kropy_books',
+      },
+    },
+  })
+
+  payload.logger.info('=== CREANDO CONFIGURACIONES DE TIENDA (STORE SETTINGS) ===')
+
+  // Tenant 1 Settings
+  await payload.create({
+    collection: 'store-settings',
+    data: {
+      name: 'Configuración de Tienda',
       shipping: {
         flatRate: 3500,
         description: createLexicalRichText('Envíos rápidos a todo Chile continental vía Starken o Chilexpress.'),
@@ -261,17 +285,11 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     },
   })
 
-  // Tenant 2 Settings (USD)
+  // Tenant 2 Settings
   await payload.create({
     collection: 'store-settings',
     data: {
-      name: 'Kropy Silver Electronics',
-      logo: mediaSilverId,
-      favicon: mediaSilverId,
-      currency: 'USD',
-      socialLinks: {
-        whatsapp: '+15550199',
-      },
+      name: 'Configuración de Tienda',
       shipping: {
         flatRate: 15,
         description: createLexicalRichText('Worldwide shipping via DHL Express. Customs fees may apply.'),
@@ -280,17 +298,11 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     },
   })
 
-  // Tenant 3 Settings (CLP)
+  // Tenant 3 Settings
   await payload.create({
     collection: 'store-settings',
     data: {
-      name: 'Kropy Bronze Bookshop',
-      logo: mediaBronzeId,
-      favicon: mediaBronzeId,
-      currency: 'CLP',
-      socialLinks: {
-        facebook: 'https://facebook.com/kropy_books',
-      },
+      name: 'Configuración de Tienda',
       shipping: {
         flatRate: 2500,
         description: createLexicalRichText('Envíos a todo Chile. Retiro en tienda disponible gratis.'),

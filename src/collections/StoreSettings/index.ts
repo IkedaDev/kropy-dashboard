@@ -16,14 +16,14 @@ export const StoreSettings: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'currency', 'updatedAt'],
+    defaultColumns: ['name', 'updatedAt'],
     group: {
       es: 'Comercio Electrónico',
       en: 'E-commerce',
     },
     description: {
-      es: 'Configuración general de la tienda del Tenant (identidad visual, redes sociales, despacho). Solo se permite un registro por organización.',
-      en: 'General store settings for the Tenant (visual identity, social networks, shipping). Only one record is allowed per organization.',
+      es: 'Configuración general de la tienda del Tenant (despacho). Solo se permite un registro por organización.',
+      en: 'General store settings for the Tenant (shipping). Only one record is allowed per organization.',
     },
   },
   access: {
@@ -44,95 +44,10 @@ export const StoreSettings: CollectionConfig = {
       },
       type: 'text',
       required: true,
-    },
-    {
-      name: 'logo',
-      label: {
-        es: 'Logotipo de la Tienda',
-        en: 'Store Logo',
+      defaultValue: 'Configuración de Tienda',
+      admin: {
+        hidden: true,
       },
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      name: 'favicon',
-      label: {
-        es: 'Favicon',
-        en: 'Favicon',
-      },
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      name: 'currency',
-      label: {
-        es: 'Moneda Base de Transacciones',
-        en: 'Base Transaction Currency',
-      },
-      type: 'select',
-      required: true,
-      defaultValue: 'CLP',
-      options: [
-        { label: { es: 'CLP (Pesos Chilenos)', en: 'CLP (Chilean Pesos)' }, value: 'CLP' },
-        { label: { es: 'USD (Dólares Americanos)', en: 'USD (US Dollars)' }, value: 'USD' },
-        { label: { es: 'EUR (Euros)', en: 'EUR (Euros)' }, value: 'EUR' },
-        { label: { es: 'ARS (Pesos Argentinos)', en: 'ARS (Argentine Pesos)' }, value: 'ARS' },
-        { label: { es: 'MXN (Pesos Mexicanos)', en: 'MXN (Mexican Pesos)' }, value: 'MXN' },
-      ],
-    },
-    {
-      name: 'socialLinks',
-      label: {
-        es: 'Enlaces a Redes Sociales',
-        en: 'Social Media Links',
-      },
-      type: 'group',
-      fields: [
-        {
-          name: 'instagram',
-          label: {
-            es: 'Instagram',
-            en: 'Instagram',
-          },
-          type: 'text',
-          admin: {
-            placeholder: 'https://instagram.com/tu-usuario',
-          },
-        },
-        {
-          name: 'facebook',
-          label: {
-            es: 'Facebook',
-            en: 'Facebook',
-          },
-          type: 'text',
-          admin: {
-            placeholder: 'https://facebook.com/tu-pagina',
-          },
-        },
-        {
-          name: 'whatsapp',
-          type: 'text',
-          label: {
-            es: 'Número de WhatsApp de Contacto',
-            en: 'Contact WhatsApp Number',
-          },
-          admin: {
-            placeholder: '+56912345678',
-          },
-        },
-        {
-          name: 'twitter',
-          label: {
-            es: 'Twitter / X',
-            en: 'Twitter / X',
-          },
-          type: 'text',
-          admin: {
-            placeholder: 'https://x.com/tu-usuario',
-          },
-        },
-      ],
     },
     {
       name: 'shipping',

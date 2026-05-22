@@ -144,8 +144,21 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   tenant?: (number | null) | Tenant;
-  title?: string | null;
+  title: string;
   slug?: string | null;
+  logo?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  contactInfo?: {
+    phone?: string | null;
+    email?: string | null;
+    address?: string | null;
+  };
+  socialLinks?: {
+    whatsapp?: string | null;
+    instagram?: string | null;
+    facebook?: string | null;
+    twitter?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -170,6 +183,25 @@ export interface Tenant {
   allowPublicRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -271,25 +303,6 @@ export interface Product {
     | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -434,7 +447,7 @@ export interface Discount {
   createdAt: string;
 }
 /**
- * General store settings for the Tenant (visual identity, social networks, shipping). Only one record is allowed per organization.
+ * General store settings for the Tenant (shipping). Only one record is allowed per organization.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "store-settings".
@@ -443,15 +456,6 @@ export interface StoreSetting {
   id: number;
   tenant?: (number | null) | Tenant;
   name: string;
-  logo?: (number | null) | Media;
-  favicon?: (number | null) | Media;
-  currency: 'CLP' | 'USD' | 'EUR' | 'ARS' | 'MXN';
-  socialLinks?: {
-    instagram?: string | null;
-    facebook?: string | null;
-    whatsapp?: string | null;
-    twitter?: string | null;
-  };
   shipping?: {
     flatRate?: number | null;
     description?: {
@@ -620,6 +624,23 @@ export interface PagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
   slug?: T;
+  logo?: T;
+  favicon?: T;
+  contactInfo?:
+    | T
+    | {
+        phone?: T;
+        email?: T;
+        address?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        whatsapp?: T;
+        instagram?: T;
+        facebook?: T;
+        twitter?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -787,17 +808,6 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface StoreSettingsSelect<T extends boolean = true> {
   tenant?: T;
   name?: T;
-  logo?: T;
-  favicon?: T;
-  currency?: T;
-  socialLinks?:
-    | T
-    | {
-        instagram?: T;
-        facebook?: T;
-        whatsapp?: T;
-        twitter?: T;
-      };
   shipping?:
     | T
     | {

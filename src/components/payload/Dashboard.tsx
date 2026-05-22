@@ -35,7 +35,7 @@ export default async function Dashboard({ initPageResult }: AdminViewServerProps
   // Resolve selected tenant
   let selectedTenantId = cookieStore.get('payload-tenant')?.value || ''
   if (!isSuper) {
-    if (!selectedTenantId || !tenantIds.includes(selectedTenantId)) {
+    if (!selectedTenantId || !tenantIds.map(String).includes(selectedTenantId)) {
       selectedTenantId = tenantIds[0] ? String(tenantIds[0]) : ''
     }
   }

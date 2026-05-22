@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
 
 interface Tenant {
   id: string
@@ -121,33 +122,41 @@ export default function DashboardClient({
 
   // Format Status Badges
   const renderStatusBadge = (status: string) => {
-    let styles = ''
+    const baseStyles = 'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border transition-colors duration-150'
+    let badgeColor = ''
+    let dotColor = ''
     let label = ''
 
     switch (status) {
       case 'paid':
-        styles = 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-900/50'
+        badgeColor = 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+        dotColor = 'bg-emerald-500'
         label = 'Pagado'
         break
       case 'shipped':
-        styles = 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-900/50'
+        badgeColor = 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20'
+        dotColor = 'bg-sky-500'
         label = 'Enviado'
         break
       case 'pending':
-        styles = 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-900/50'
+        badgeColor = 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
+        dotColor = 'bg-amber-500'
         label = 'Pendiente'
         break
       case 'cancelled':
-        styles = 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-900/50'
+        badgeColor = 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20'
+        dotColor = 'bg-rose-500'
         label = 'Cancelado'
         break
       default:
-        styles = 'bg-slate-50 text-slate-700 border-slate-200 dark:bg-slate-900/30 dark:text-slate-400 dark:border-slate-800'
+        badgeColor = 'bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20'
+        dotColor = 'bg-slate-500'
         label = status
     }
 
     return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${styles}`}>
+      <span className={`${baseStyles} ${badgeColor}`}>
+        <span className={`w-1.5 h-1.5 rounded-full ${dotColor} mr-1.5 flex-shrink-0`} />
         {label}
       </span>
     )
@@ -310,8 +319,46 @@ export default function DashboardClient({
             )}
           </div>
 
-          {/* SVG Pure Chart */}
+          {/* SVG Pure Chart with crisp HTML axis text */}
           <div className="relative w-full h-[220px]">
+            {/* Y Axis Labels (HTML) */}
+            {[0, 0.25, 0.5, 0.75, 1].map((r, i) => {
+              const top = padTop + r * plotHeight
+              const gridVal = yMax * (1 - r)
+              return (
+                <div
+                  key={i}
+                  className="absolute left-0 text-[10px] font-bold text-[var(--theme-elevation-400)] select-none pointer-events-none antialiased"
+                  style={{
+                    top: `${top}px`,
+                    transform: 'translateY(-50%)',
+                    width: `${padLeft - 10}px`,
+                    textAlign: 'right',
+                  }}
+                >
+                  {formatCurrency(gridVal)}
+                </div>
+              )
+            })}
+
+            {/* X Axis Labels (HTML) */}
+            {points.map((p, i) => {
+              const leftPercent = (p.x / svgWidth) * 100
+              return (
+                <div
+                  key={i}
+                  className="absolute text-[10px] font-bold text-[var(--theme-elevation-400)] select-none pointer-events-none antialiased text-center"
+                  style={{
+                    left: `${leftPercent}%`,
+                    bottom: '8px',
+                    transform: 'translateX(-50%)',
+                  }}
+                >
+                  {p.data.date}
+                </div>
+              )
+            })}
+
             <svg
               className="w-full h-full"
               viewBox={`0 0 ${svgWidth} ${svgHeight}`}
@@ -327,29 +374,17 @@ export default function DashboardClient({
               {/* Grid Lines */}
               {[0, 0.25, 0.5, 0.75, 1].map((r, i) => {
                 const y = padTop + r * plotHeight
-                const gridVal = yMax * (1 - r)
                 return (
-                  <g key={i}>
-                    <line
-                      x1={padLeft}
-                      y1={y}
-                      x2={svgWidth - padRight}
-                      y2={y}
-                      stroke="var(--theme-elevation-200)"
-                      strokeWidth="1"
-                      strokeDasharray="4 4"
-                    />
-                    <text
-                      x={padLeft - 8}
-                      y={y + 4}
-                      textAnchor="end"
-                      fontSize="9"
-                      fontWeight="bold"
-                      fill="var(--theme-elevation-400)"
-                    >
-                      {formatCurrency(gridVal)}
-                    </text>
-                  </g>
+                  <line
+                    key={i}
+                    x1={padLeft}
+                    y1={y}
+                    x2={svgWidth - padRight}
+                    y2={y}
+                    stroke="var(--theme-elevation-200)"
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
+                  />
                 )
               })}
 
@@ -420,21 +455,6 @@ export default function DashboardClient({
                   />
                 )
               })}
-
-              {/* X Axis Labels */}
-              {points.map((p, i) => (
-                <text
-                  key={i}
-                  x={p.x}
-                  y={svgHeight - 12}
-                  textAnchor="middle"
-                  fontSize="10"
-                  fontWeight="bold"
-                  fill="var(--theme-elevation-400)"
-                >
-                  {p.data.date}
-                </text>
-              ))}
             </svg>
           </div>
         </div>
@@ -466,12 +486,12 @@ export default function DashboardClient({
                   className="p-3 bg-amber-500/5 dark:bg-amber-500/10 border border-amber-500/20 dark:border-amber-500/30 rounded-xl flex items-center justify-between"
                 >
                   <div className="min-w-0 flex-1 pr-2">
-                    <a
+                    <Link
                       href={`/admin/collections/products/${item.productId}`}
                       className="text-xs font-bold text-[var(--theme-elevation-800)] hover:text-[var(--theme-accent)] transition-colors block truncate"
                     >
                       {item.productTitle}
-                    </a>
+                    </Link>
                     {item.variantName ? (
                       <span className="text-[10px] text-amber-700 dark:text-amber-400 font-medium block">
                         Variante: {item.variantName}
@@ -504,7 +524,7 @@ export default function DashboardClient({
               Visualiza y gestiona las últimas 5 transacciones registradas
             </p>
           </div>
-          <a
+          <Link
             href="/admin/collections/orders"
             className="self-start text-xs font-bold text-[var(--theme-accent)] hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors flex items-center gap-1"
           >
@@ -512,7 +532,7 @@ export default function DashboardClient({
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
             </svg>
-          </a>
+          </Link>
         </div>
 
         {recentOrders.length === 0 ? (
@@ -574,7 +594,7 @@ export default function DashboardClient({
                       {formatCurrency(order.total)}
                     </td>
                     <td className="px-4 py-3.5 whitespace-nowrap text-sm text-center">
-                      <a
+                      <Link
                         href={`/admin/collections/orders/${order.id}`}
                         className="inline-flex items-center gap-1 text-xs font-bold text-[var(--theme-accent)] hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors"
                       >
@@ -583,7 +603,7 @@ export default function DashboardClient({
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
-                      </a>
+                      </Link>
                     </td>
                   </tr>
                 ))}
