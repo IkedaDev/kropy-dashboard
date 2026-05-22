@@ -75,6 +75,8 @@ export interface Config {
     orders: Order;
     categories: Category;
     'store-settings': StoreSetting;
+    customers: Customer;
+    discounts: Discount;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -90,6 +92,8 @@ export interface Config {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     'store-settings': StoreSettingsSelect<false> | StoreSettingsSelect<true>;
+    customers: CustomersSelect<false> | CustomersSelect<true>;
+    discounts: DiscountsSelect<false> | DiscountsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -276,6 +280,7 @@ export interface Order {
   tenant?: (number | null) | Tenant;
   orderCode: string;
   externalId: string;
+  customerRef?: (number | null) | Customer;
   customer: {
     name: string;
     email: string;
@@ -291,7 +296,51 @@ export interface Order {
   }[];
   total: number;
   status: 'pending' | 'paid' | 'shipped' | 'cancelled';
+  discountCode?: (number | null) | Discount;
   wasStockDiscounted?: boolean | null;
+  wasCouponCounted?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers".
+ */
+export interface Customer {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  email: string;
+  phone?: string | null;
+  address?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discounts".
+ */
+export interface Discount {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  code: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  /**
+   * Monto mínimo total del carro de compras requerido para aplicar este cupón.
+   */
+  minPurchaseAmount?: number | null;
+  /**
+   * Número máximo de veces que este cupón puede ser usado en total.
+   */
+  usageLimit?: number | null;
+  /**
+   * Número de veces que se ha completado una compra con este cupón.
+   */
+  usageCount?: number | null;
+  validFrom?: string | null;
+  validUntil?: string | null;
+  active?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -390,6 +439,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'store-settings';
         value: number | StoreSetting;
+      } | null)
+    | ({
+        relationTo: 'customers';
+        value: number | Customer;
+      } | null)
+    | ({
+        relationTo: 'discounts';
+        value: number | Discount;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -535,6 +592,7 @@ export interface OrdersSelect<T extends boolean = true> {
   tenant?: T;
   orderCode?: T;
   externalId?: T;
+  customerRef?: T;
   customer?:
     | T
     | {
@@ -554,7 +612,9 @@ export interface OrdersSelect<T extends boolean = true> {
       };
   total?: T;
   status?: T;
+  discountCode?: T;
   wasStockDiscounted?: T;
+  wasCouponCounted?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -593,6 +653,37 @@ export interface StoreSettingsSelect<T extends boolean = true> {
         flatRate?: T;
         description?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "customers_select".
+ */
+export interface CustomersSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  email?: T;
+  phone?: T;
+  address?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discounts_select".
+ */
+export interface DiscountsSelect<T extends boolean = true> {
+  tenant?: T;
+  code?: T;
+  type?: T;
+  value?: T;
+  minPurchaseAmount?: T;
+  usageLimit?: T;
+  usageCount?: T;
+  validFrom?: T;
+  validUntil?: T;
+  active?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -83,7 +83,65 @@ export const syncWebhook: PayloadHandler = async (req) => {
       )
     }
 
-    // 5. Buscar si ya existe la orden por su ID Externo (externalId)
+    // 5. Buscar o Crear el Cliente dinámicamente
+    let customerId: string | undefined = undefined
+    try {
+      const cleanEmail = customer.email.toLowerCase().trim()
+      const existingCustomers = await req.payload.find({
+        collection: 'customers',
+        where: {
+          and: [
+            { email: { equals: cleanEmail } },
+            { tenant: { equals: tenant } },
+          ],
+        },
+        limit: 1,
+      })
+
+      if (existingCustomers.docs.length > 0) {
+        customerId = existingCustomers.docs[0].id
+      } else {
+        const newCustomer = await req.payload.create({
+          collection: 'customers',
+          data: {
+            name: customer.name,
+            email: cleanEmail,
+            phone: customer.phone || '',
+            address: customer.shippingAddress || '',
+            tenant: tenant,
+          },
+        })
+        customerId = newCustomer.id
+      }
+    } catch (error: any) {
+      req.payload.logger.error(`Error resolving customer in webhook: ${error?.message || error}`)
+    }
+
+    // 6. Buscar y asociar el Cupón de Descuento si viene en el payload
+    let discountId: string | undefined = undefined
+    if (body.discountCode) {
+      try {
+        const cleanCode = body.discountCode.toUpperCase().trim().replace(/\s+/g, '')
+        const existingDiscounts = await req.payload.find({
+          collection: 'discounts',
+          where: {
+            and: [
+              { code: { equals: cleanCode } },
+              { tenant: { equals: tenant } },
+            ],
+          },
+          limit: 1,
+        })
+
+        if (existingDiscounts.docs.length > 0) {
+          discountId = existingDiscounts.docs[0].id
+        }
+      } catch (error: any) {
+        req.payload.logger.error(`Error resolving discount code in webhook: ${error?.message || error}`)
+      }
+    }
+
+    // 7. Buscar si ya existe la orden por su ID Externo (externalId)
     const existingOrders = await req.payload.find({
       collection: 'orders',
       where: {
@@ -95,13 +153,15 @@ export const syncWebhook: PayloadHandler = async (req) => {
     })
 
     if (existingOrders.docs.length > 0) {
-      // 6. Si existe, actualizamos los datos de la orden
+      // 8. Si existe, actualizamos los datos de la orden
       const updatedOrder = await req.payload.update({
         collection: 'orders',
         id: existingOrders.docs[0].id,
         data: {
           orderCode,
           customer,
+          customerRef: customerId || undefined,
+          discountCode: discountId || undefined,
           items,
           total,
           status: status || existingOrders.docs[0].status,
@@ -114,13 +174,15 @@ export const syncWebhook: PayloadHandler = async (req) => {
         { status: 200 },
       )
     } else {
-      // 7. Si no existe, creamos la orden
+      // 9. Si no existe, creamos la orden
       const createdOrder = await req.payload.create({
         collection: 'orders',
         data: {
           orderCode,
           externalId,
           customer,
+          customerRef: customerId || undefined,
+          discountCode: discountId || undefined,
           items,
           total,
           status: status || 'pending',
@@ -141,3 +203,4 @@ export const syncWebhook: PayloadHandler = async (req) => {
     )
   }
 }
+

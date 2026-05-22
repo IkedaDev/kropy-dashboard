@@ -54,6 +54,18 @@ export const Orders: CollectionConfig = {
       },
     },
     {
+      name: 'customerRef',
+      label: 'Ficha del Cliente',
+      type: 'relationship',
+      relationTo: 'customers',
+      admin: {
+        position: 'sidebar',
+      },
+      access: {
+        update: onlySuperAdminCanUpdate,
+      },
+    },
+    {
       name: 'customer',
       type: 'group',
       access: {
@@ -148,7 +160,31 @@ export const Orders: CollectionConfig = {
       ],
     },
     {
+      name: 'discountCode',
+      label: 'Cupón Utilizado',
+      type: 'relationship',
+      relationTo: 'discounts',
+      admin: {
+        position: 'sidebar',
+      },
+      access: {
+        update: onlySuperAdminCanUpdate,
+      },
+    },
+    {
       name: 'wasStockDiscounted',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+      access: {
+        update: onlySuperAdminCanUpdate,
+      },
+    },
+    {
+      name: 'wasCouponCounted',
       type: 'checkbox',
       defaultValue: false,
       admin: {
@@ -161,3 +197,4 @@ export const Orders: CollectionConfig = {
     },
   ],
 }
+

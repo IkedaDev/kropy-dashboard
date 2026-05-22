@@ -14,7 +14,6 @@ async function discountStock(req: PayloadRequest, items: any[]) {
         collection: 'products',
         id: productId,
       })
-      console.log({product})
       if (product) {
         const currentStock = product.stock || 0
         const quantityToSubtract = item.quantity || 0
@@ -23,7 +22,7 @@ async function discountStock(req: PayloadRequest, items: any[]) {
         if (currentStock < quantityToSubtract) {
           req.payload.logger.warn(
             `Stock insuficiente para el producto "${product.title}" (ID: ${product.id}). ` +
-            `Requerido: ${quantityToSubtract}, Disponible: ${currentStock}. Se estableció el stock en 0.`,
+              `Requerido: ${quantityToSubtract}, Disponible: ${currentStock}. Se estableció el stock en 0.`,
           )
         }
 
@@ -79,8 +78,70 @@ async function restoreStock(req: PayloadRequest, items: any[]) {
 }
 
 /**
+ * Función auxiliar para incrementar el contador de uso de un cupón
+ */
+async function incrementCouponUsage(req: PayloadRequest, discountId: string | null) {
+  if (!discountId) return
+  try {
+    const discount = await req.payload.findByID({
+      collection: 'discounts',
+      id: discountId,
+    })
+    if (discount) {
+      const usageCount = discount.usageCount || 0
+      const usageLimit = discount.usageLimit
+
+      if (usageLimit && usageCount >= usageLimit) {
+        req.payload.logger.warn(
+          `El cupón "${discount.code}" (ID: ${discount.id}) ha superado su límite de usos de ${usageLimit}.`,
+        )
+      }
+
+      await req.payload.update({
+        collection: 'discounts',
+        id: discountId,
+        data: {
+          usageCount: usageCount + 1,
+        },
+      })
+    }
+  } catch (err: any) {
+    req.payload.logger.error(
+      `Error al intentar incrementar el uso del cupón "${discountId}": ${err?.message || err}`,
+    )
+  }
+}
+
+/**
+ * Función auxiliar para decrementar el contador de uso de un cupón
+ */
+async function decrementCouponUsage(req: PayloadRequest, discountId: string | null) {
+  if (!discountId) return
+  try {
+    const discount = await req.payload.findByID({
+      collection: 'discounts',
+      id: discountId,
+    })
+    if (discount) {
+      const usageCount = discount.usageCount || 0
+      await req.payload.update({
+        collection: 'discounts',
+        id: discountId,
+        data: {
+          usageCount: Math.max(0, usageCount - 1),
+        },
+      })
+    }
+  } catch (err: any) {
+    req.payload.logger.error(
+      `Error al intentar decrementar el uso del cupón "${discountId}": ${err?.message || err}`,
+    )
+  }
+}
+
+/**
  * Hook beforeChange para la colección de Órdenes
- * Gestiona el stock basándose en las transiciones de estado de la orden
+ * Gestiona el stock y el uso de cupones basándose en las transiciones de estado de la orden
  */
 export const handleOrderStatusAndStock: CollectionBeforeChangeHook = async ({
   data,
@@ -95,9 +156,10 @@ export const handleOrderStatusAndStock: CollectionBeforeChangeHook = async ({
   const { status } = data
   const isPaidOrShipped = status === 'paid' || status === 'shipped'
   const isCancelled = status === 'cancelled'
+
+  // --- 1. GESTIÓN DE STOCK ---
   if (operation === 'create') {
     if (isPaidOrShipped) {
-      // 1. Si se crea ya pagada o enviada, descontar stock de inmediato
       await discountStock(req, data.items || [])
       data.wasStockDiscounted = true
     } else {
@@ -108,22 +170,51 @@ export const handleOrderStatusAndStock: CollectionBeforeChangeHook = async ({
   if (operation === 'update' && originalDoc) {
     const wasDiscounted = originalDoc.wasStockDiscounted === true
 
-    // 2. Transición: Se paga/envía y no se había descontado stock antes
     if (isPaidOrShipped && !wasDiscounted) {
       await discountStock(req, data.items || originalDoc.items || [])
       data.wasStockDiscounted = true
-    }
-    // 3. Transición: Se cancela y sí se había descontado stock antes (devolución)
-    else if (isCancelled && wasDiscounted) {
+    } else if (isCancelled && wasDiscounted) {
       await restoreStock(req, originalDoc.items || [])
       data.wasStockDiscounted = false
-    }
-    // 4. Transición: Vuelve a pendiente y sí se había descontado stock (devolución)
-    else if (status === 'pending' && wasDiscounted) {
+    } else if (status === 'pending' && wasDiscounted) {
       await restoreStock(req, originalDoc.items || [])
       data.wasStockDiscounted = false
     }
   }
 
+  // --- 2. GESTIÓN DE CONTADORES DE CUPONES ---
+  const discountId = data.discountCode
+    ? extractID(data.discountCode)
+    : originalDoc?.discountCode
+      ? extractID(originalDoc.discountCode)
+      : null
+
+  if (operation === 'create') {
+    if (isPaidOrShipped && discountId) {
+      await incrementCouponUsage(req, discountId)
+      data.wasCouponCounted = true
+    } else {
+      data.wasCouponCounted = false
+    }
+  }
+
+  if (operation === 'update' && originalDoc) {
+    const wasCouponCounted = originalDoc.wasCouponCounted === true
+    const originalDiscountId = originalDoc.discountCode ? extractID(originalDoc.discountCode) : null
+
+    if (isPaidOrShipped && !wasCouponCounted && discountId) {
+      await incrementCouponUsage(req, discountId)
+      data.wasCouponCounted = true
+    } else if (
+      (isCancelled || status === 'pending') &&
+      wasCouponCounted &&
+      originalDiscountId
+    ) {
+      await decrementCouponUsage(req, originalDiscountId)
+      data.wasCouponCounted = false
+    }
+  }
+
   return data
 }
+

@@ -18,6 +18,8 @@ import { Media } from './collections/Media'
 import { Orders } from './collections/Orders'
 import { Categories } from './collections/Categories'
 import { StoreSettings } from './collections/StoreSettings'
+import { Customers } from './collections/Customers'
+import { Discounts } from './collections/Discounts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +29,7 @@ export default buildConfig({
   admin: {
     user: 'users',
   },
-  collections: [Pages, Users, Tenants, Products, Media, Orders, Categories, StoreSettings],
+  collections: [Pages, Users, Tenants, Products, Media, Orders, Categories, StoreSettings, Customers, Discounts],
   // db: mongooseAdapter({
   //   url: process.env.DATABASE_URL as string,
   // }),
@@ -58,6 +60,8 @@ export default buildConfig({
         orders: {},
         categories: {},
         'store-settings': {},
+        customers: {},
+        discounts: {},
       },
       tenantField: {
         access: {
@@ -82,4 +86,5 @@ export default buildConfig({
     fallback: true,      // Si no hay traducción en inglés, muestra el texto en español por defecto
   },
 })
+
 
