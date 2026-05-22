@@ -108,6 +108,11 @@ export const Orders: CollectionConfig = {
           required: false,
         },
         {
+          name: 'variantId',
+          label: 'ID de la Variante',
+          type: 'text',
+        },
+        {
           name: 'title',
           type: 'text',
           required: true,
@@ -125,6 +130,33 @@ export const Orders: CollectionConfig = {
           min: 1,
         },
       ],
+    },
+    {
+      name: 'subtotal',
+      type: 'number',
+      required: true,
+      min: 0,
+      access: {
+        update: onlySuperAdminCanUpdate,
+      },
+    },
+    {
+      name: 'shippingCost',
+      type: 'number',
+      defaultValue: 0,
+      min: 0,
+      access: {
+        update: onlySuperAdminCanUpdate,
+      },
+    },
+    {
+      name: 'discountAmount',
+      type: 'number',
+      defaultValue: 0,
+      min: 0,
+      access: {
+        update: onlySuperAdminCanUpdate,
+      },
     },
     {
       name: 'total',

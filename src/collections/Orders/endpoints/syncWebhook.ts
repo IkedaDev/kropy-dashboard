@@ -29,13 +29,13 @@ export const syncWebhook: PayloadHandler = async (req) => {
       )
     }
 
-    const { orderCode, externalId, customer, items, total, status, tenant } = body
+    const { orderCode, externalId, customer, items, total, subtotal, shippingCost, discountAmount, status, tenant } = body
 
     // 3. Validar los campos obligatorios
-    if (!orderCode || !externalId || !customer || !items || total === undefined || !tenant) {
+    if (!orderCode || !externalId || !customer || !items || total === undefined || subtotal === undefined || !tenant) {
       return Response.json(
         {
-          error: 'Missing required fields. Required: orderCode, externalId, customer, items, total, tenant.',
+          error: 'Missing required fields. Required: orderCode, externalId, customer, items, total, subtotal, tenant.',
         },
         { status: 400 },
       )
@@ -64,6 +64,14 @@ export const syncWebhook: PayloadHandler = async (req) => {
       }
     }
 
+    const sanitizedItems = items.map((item: any) => ({
+      product: item.product || undefined,
+      variantId: item.variantId || undefined,
+      title: item.title,
+      price: item.price,
+      quantity: item.quantity,
+    }))
+
     // 4. Verificar si el Tenant existe en la base de datos
     try {
       const tenantDoc = await req.payload.findByID({
@@ -84,7 +92,7 @@ export const syncWebhook: PayloadHandler = async (req) => {
     }
 
     // 5. Buscar o Crear el Cliente dinámicamente
-    let customerId: string | undefined = undefined
+    let customerId: string | number | undefined = undefined
     try {
       const cleanEmail = customer.email.toLowerCase().trim()
       const existingCustomers = await req.payload.find({
@@ -118,7 +126,7 @@ export const syncWebhook: PayloadHandler = async (req) => {
     }
 
     // 6. Buscar y asociar el Cupón de Descuento si viene en el payload
-    let discountId: string | undefined = undefined
+    let discountId: string | number | undefined = undefined
     if (body.discountCode) {
       try {
         const cleanCode = body.discountCode.toUpperCase().trim().replace(/\s+/g, '')
@@ -162,7 +170,10 @@ export const syncWebhook: PayloadHandler = async (req) => {
           customer,
           customerRef: customerId || undefined,
           discountCode: discountId || undefined,
-          items,
+          items: sanitizedItems,
+          subtotal,
+          shippingCost: shippingCost !== undefined ? shippingCost : undefined,
+          discountAmount: discountAmount !== undefined ? discountAmount : undefined,
           total,
           status: status || existingOrders.docs[0].status,
           tenant,
@@ -183,7 +194,10 @@ export const syncWebhook: PayloadHandler = async (req) => {
           customer,
           customerRef: customerId || undefined,
           discountCode: discountId || undefined,
-          items,
+          items: sanitizedItems,
+          subtotal,
+          shippingCost: shippingCost !== undefined ? shippingCost : 0,
+          discountAmount: discountAmount !== undefined ? discountAmount : 0,
           total,
           status: status || 'pending',
           tenant,
@@ -203,4 +217,5 @@ export const syncWebhook: PayloadHandler = async (req) => {
     )
   }
 }
+
 

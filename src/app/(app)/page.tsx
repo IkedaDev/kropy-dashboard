@@ -1,4 +1,4 @@
-export default async ({ params: paramsPromise }: { params: Promise<{ slug: string[] }> }) => {
+const Page = async () => {
   return (
     <div>
       <h1>Multi-Tenant Example</h1>
@@ -13,7 +13,7 @@ export default async ({ params: paramsPromise }: { params: Promise<{ slug: strin
         <a href="http://gold.localhost:3000/tenant-domains/login">
           http://gold.localhost:3000/tenant-domains/login
         </a>{' '}
-        will show the tenant with the domain "gold.localhost".
+        will show the tenant with the domain &quot;gold.localhost&quot;.
       </p>
 
       <h2>Slugs</h2>
@@ -23,8 +23,10 @@ export default async ({ params: paramsPromise }: { params: Promise<{ slug: strin
         <a href="http://localhost:3000/tenant-slugs/silver/login">
           http://localhost:3000/tenant-slugs/silver/login
         </a>{' '}
-        will show the tenant with the slug "silver".
+        will show the tenant with the slug &quot;silver&quot;.
       </p>
     </div>
   )
 }
+
+export default Page

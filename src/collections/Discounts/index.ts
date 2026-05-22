@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 import { extractID } from '@/utilities/extractID'
+import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 
 export const Discounts: CollectionConfig = {
   slug: 'discounts',
@@ -163,6 +164,48 @@ export const Discounts: CollectionConfig = {
       defaultValue: true,
       admin: {
         position: 'sidebar',
+      },
+    },
+    {
+      name: 'applicableProducts',
+      label: 'Productos Aplicables',
+      type: 'relationship',
+      relationTo: 'products',
+      hasMany: true,
+      filterOptions: ({ req }) => {
+        if (req.user && !req.user.roles?.includes('super-admin')) {
+          const userTenants = getUserTenantIDs(req.user)
+          if (userTenants.length > 0) {
+            return {
+              tenant: { in: userTenants },
+            }
+          }
+        }
+        return true
+      },
+      admin: {
+        description: 'Limita este cupón a productos específicos. Dejar vacío para aplicar a todos los productos.',
+      },
+    },
+    {
+      name: 'applicableCategories',
+      label: 'Categorías Aplicables',
+      type: 'relationship',
+      relationTo: 'categories',
+      hasMany: true,
+      filterOptions: ({ req }) => {
+        if (req.user && !req.user.roles?.includes('super-admin')) {
+          const userTenants = getUserTenantIDs(req.user)
+          if (userTenants.length > 0) {
+            return {
+              tenant: { in: userTenants },
+            }
+          }
+        }
+        return true
+      },
+      admin: {
+        description: 'Limita este cupón a categorías específicas. Dejar vacío para aplicar a todas las categorías.',
       },
     },
   ],

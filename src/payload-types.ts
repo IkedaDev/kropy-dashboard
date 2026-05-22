@@ -211,9 +211,16 @@ export interface Product {
   title: string;
   slug: string;
   /**
-   * Precio en CLP (Pesos Chilenos)
+   * Precio base en CLP (Pesos Chilenos)
    */
   price: number;
+  /**
+   * Precio original del producto antes de la oferta (se mostrará tachado). Dejar vacío si no está en oferta.
+   */
+  compareAtPrice?: number | null;
+  /**
+   * Stock global si el producto no tiene variantes habilitadas.
+   */
   stock: number;
   description?: {
     root: {
@@ -237,6 +244,26 @@ export interface Product {
       }[]
     | null;
   categories?: (number | Category)[] | null;
+  /**
+   * Habilita variantes (tallas, colores) con stock y precio independiente.
+   */
+  hasVariants?: boolean | null;
+  variants?:
+    | {
+        variantName: string;
+        sku?: string | null;
+        /**
+         * Dejar vacío para usar el precio base del producto.
+         */
+        price?: number | null;
+        /**
+         * Precio original de la variante antes de la oferta (se mostrará tachado). Dejar vacío si no está en oferta.
+         */
+        compareAtPrice?: number | null;
+        stock: number;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -289,11 +316,15 @@ export interface Order {
   };
   items: {
     product?: (number | null) | Product;
+    variantId?: string | null;
     title: string;
     price: number;
     quantity: number;
     id?: string | null;
   }[];
+  subtotal: number;
+  shippingCost?: number | null;
+  discountAmount?: number | null;
   total: number;
   status: 'pending' | 'paid' | 'shipped' | 'cancelled';
   discountCode?: (number | null) | Discount;
@@ -341,6 +372,14 @@ export interface Discount {
   validFrom?: string | null;
   validUntil?: string | null;
   active?: boolean | null;
+  /**
+   * Limita este cupón a productos específicos. Dejar vacío para aplicar a todos los productos.
+   */
+  applicableProducts?: (number | Product)[] | null;
+  /**
+   * Limita este cupón a categorías específicas. Dejar vacío para aplicar a todas las categorías.
+   */
+  applicableCategories?: (number | Category)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -554,6 +593,7 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   price?: T;
+  compareAtPrice?: T;
   stock?: T;
   description?: T;
   images?:
@@ -563,6 +603,17 @@ export interface ProductsSelect<T extends boolean = true> {
         id?: T;
       };
   categories?: T;
+  hasVariants?: T;
+  variants?:
+    | T
+    | {
+        variantName?: T;
+        sku?: T;
+        price?: T;
+        compareAtPrice?: T;
+        stock?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -605,11 +656,15 @@ export interface OrdersSelect<T extends boolean = true> {
     | T
     | {
         product?: T;
+        variantId?: T;
         title?: T;
         price?: T;
         quantity?: T;
         id?: T;
       };
+  subtotal?: T;
+  shippingCost?: T;
+  discountAmount?: T;
   total?: T;
   status?: T;
   discountCode?: T;
@@ -684,6 +739,8 @@ export interface DiscountsSelect<T extends boolean = true> {
   validFrom?: T;
   validUntil?: T;
   active?: T;
+  applicableProducts?: T;
+  applicableCategories?: T;
   updatedAt?: T;
   createdAt?: T;
 }

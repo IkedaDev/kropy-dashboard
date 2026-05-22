@@ -40,7 +40,16 @@ export const Products: CollectionConfig = {
       required: true,
       min: 0,
       admin: {
-        description: 'Precio en CLP (Pesos Chilenos)',
+        description: 'Precio base en CLP (Pesos Chilenos)',
+      },
+    },
+    {
+      name: 'compareAtPrice',
+      label: 'Precio de Comparación / Antes (Opcional)',
+      type: 'number',
+      min: 0,
+      admin: {
+        description: 'Precio original del producto antes de la oferta (se mostrará tachado). Dejar vacío si no está en oferta.',
       },
     },
     {
@@ -49,6 +58,9 @@ export const Products: CollectionConfig = {
       required: true,
       min: 0,
       defaultValue: 0,
+      admin: {
+        description: 'Stock global si el producto no tiene variantes habilitadas.',
+      },
     },
     {
       name: 'description',
@@ -79,7 +91,6 @@ export const Products: CollectionConfig = {
         position: 'sidebar',
       },
       filterOptions: ({ req }) => {
-        // Filtrar categorías en el panel para que coincidan con los tenants del usuario admin actual
         if (req.user && !req.user.roles?.includes('super-admin')) {
           const userTenants = getUserTenantIDs(req.user)
           if (userTenants.length > 0) {
@@ -91,5 +102,72 @@ export const Products: CollectionConfig = {
         return true
       },
     },
+    {
+      name: 'hasVariants',
+      label: '¿Este producto tiene variantes?',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Habilita variantes (tallas, colores) con stock y precio independiente.',
+      },
+    },
+    {
+      name: 'variants',
+      label: 'Variantes del Producto',
+      type: 'array',
+      minRows: 1,
+      admin: {
+        condition: (data) => {
+          if (data && data.hasVariants) {
+            return true
+          }
+          return false
+        },
+      },
+      fields: [
+        {
+          name: 'variantName',
+          label: 'Nombre de la Variante',
+          type: 'text',
+          required: true,
+          admin: {
+            placeholder: 'ej. Talla M / Color Azul',
+          },
+        },
+        {
+          name: 'sku',
+          label: 'SKU de la Variante',
+          type: 'text',
+        },
+        {
+          name: 'price',
+          label: 'Precio de la Variante (Opcional)',
+          type: 'number',
+          min: 0,
+          admin: {
+            description: 'Dejar vacío para usar el precio base del producto.',
+          },
+        },
+        {
+          name: 'compareAtPrice',
+          label: 'Precio de Comparación / Antes (Opcional)',
+          type: 'number',
+          min: 0,
+          admin: {
+            description: 'Precio original de la variante antes de la oferta (se mostrará tachado). Dejar vacío si no está en oferta.',
+          },
+        },
+        {
+          name: 'stock',
+          label: 'Stock de la Variante',
+          type: 'number',
+          required: true,
+          min: 0,
+          defaultValue: 0,
+        },
+      ],
+    },
   ],
 }
+

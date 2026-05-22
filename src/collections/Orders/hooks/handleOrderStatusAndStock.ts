@@ -15,8 +15,49 @@ async function discountStock(req: PayloadRequest, items: any[]) {
         id: productId,
       })
       if (product) {
-        const currentStock = product.stock || 0
         const quantityToSubtract = item.quantity || 0
+        const variantId = item.variantId
+
+        if (product.hasVariants && variantId) {
+          const variants = product.variants || []
+          const variantIndex = variants.findIndex((v: any) => v.id === variantId)
+
+          if (variantIndex !== -1) {
+            const variant = variants[variantIndex]
+            const currentVarStock = variant.stock || 0
+            const newVarStock = Math.max(0, currentVarStock - quantityToSubtract)
+
+            if (currentVarStock < quantityToSubtract) {
+              req.payload.logger.warn(
+                `Stock insuficiente para la variante "${variant.variantName}" (ID: ${variantId}) del producto "${product.title}" (ID: ${product.id}). ` +
+                  `Requerido: ${quantityToSubtract}, Disponible: ${currentVarStock}. Se estableció el stock en 0.`,
+              )
+            }
+
+            // Actualizar la lista de variantes
+            const updatedVariants = [...variants]
+            updatedVariants[variantIndex] = {
+              ...variant,
+              stock: newVarStock,
+            }
+
+            await req.payload.update({
+              collection: 'products',
+              id: productId,
+              data: {
+                variants: updatedVariants,
+              },
+            })
+            continue // Ya procesamos esta variante, pasar al siguiente item
+          } else {
+            req.payload.logger.warn(
+              `Variante con ID "${variantId}" no encontrada en el producto "${product.title}" (ID: ${product.id}). Se aplicará el descuento al stock global.`,
+            )
+          }
+        }
+
+        // Comportamiento base (stock global)
+        const currentStock = product.stock || 0
         const newStock = Math.max(0, currentStock - quantityToSubtract)
 
         if (currentStock < quantityToSubtract) {
@@ -57,8 +98,42 @@ async function restoreStock(req: PayloadRequest, items: any[]) {
       })
 
       if (product) {
-        const currentStock = product.stock || 0
         const quantityToAdd = item.quantity || 0
+        const variantId = item.variantId
+
+        if (product.hasVariants && variantId) {
+          const variants = product.variants || []
+          const variantIndex = variants.findIndex((v: any) => v.id === variantId)
+
+          if (variantIndex !== -1) {
+            const variant = variants[variantIndex]
+            const currentVarStock = variant.stock || 0
+            const newVarStock = currentVarStock + quantityToAdd
+
+            // Actualizar la lista de variantes
+            const updatedVariants = [...variants]
+            updatedVariants[variantIndex] = {
+              ...variant,
+              stock: newVarStock,
+            }
+
+            await req.payload.update({
+              collection: 'products',
+              id: productId,
+              data: {
+                variants: updatedVariants,
+              },
+            })
+            continue // Ya procesamos esta variante, pasar al siguiente item
+          } else {
+            req.payload.logger.warn(
+              `Variante con ID "${variantId}" no encontrada al intentar restaurar stock en el producto "${product.title}" (ID: ${product.id}). Se aplicará al stock global.`,
+            )
+          }
+        }
+
+        // Comportamiento base (stock global)
+        const currentStock = product.stock || 0
         const newStock = currentStock + quantityToAdd
 
         await req.payload.update({
