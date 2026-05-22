@@ -8,6 +8,8 @@ import { ensureUniqueUsername } from './hooks/ensureUniqueUsername'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { setCookieBasedOnDomain } from './hooks/setCookieBasedOnDomain'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
+import { validateUserChanges } from './hooks/validateUserChanges'
+import { validateUserDelete } from './hooks/validateUserDelete'
 
 const defaultTenantArrayField = tenantsArrayField({
   tenantsArrayFieldName: 'tenants',
@@ -113,6 +115,8 @@ const Users: CollectionConfig = {
 
   hooks: {
     afterLogin: [setCookieBasedOnDomain],
+    beforeChange: [validateUserChanges],
+    beforeDelete: [validateUserDelete],
   },
 }
 

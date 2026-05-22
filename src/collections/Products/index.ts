@@ -6,7 +6,7 @@ export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'price', 'stock', 'updatedAt'],
+    defaultColumns: ['title','slug', 'price', 'stock', 'updatedAt'],
     group: 'Ecommerce',
   },
   access: {

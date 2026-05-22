@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { ensureUniqueSlug } from './hooks/ensureUniqueSlug'
-import { superAdminOrTenantAdminAccess } from '@/collections/Pages/access/superAdminOrTenantAdmin'
+import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',

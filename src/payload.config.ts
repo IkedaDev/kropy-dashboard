@@ -15,6 +15,7 @@ import { getUserTenantIDs } from './utilities/getUserTenantIDs'
 import { seed } from './seed'
 import { Products } from './collections/Products'
 import { Media } from './collections/Media'
+import { Orders } from './collections/Orders'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -24,7 +25,7 @@ export default buildConfig({
   admin: {
     user: 'users',
   },
-  collections: [Pages, Users, Tenants, Products, Media],
+  collections: [Pages, Users, Tenants, Products, Media, Orders],
   // db: mongooseAdapter({
   //   url: process.env.DATABASE_URL as string,
   // }),
@@ -52,6 +53,7 @@ export default buildConfig({
         pages: {},
         products: {},
         media: {},
+        orders: {},
       },
       tenantField: {
         access: {
