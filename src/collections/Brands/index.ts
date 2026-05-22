@@ -3,10 +3,23 @@ import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdm
 
 export const Brands: CollectionConfig = {
   slug: 'brands',
+  labels: {
+    singular: {
+      es: 'Marca',
+      en: 'Brand',
+    },
+    plural: {
+      es: 'Marcas',
+      en: 'Brands',
+    },
+  },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'updatedAt'],
-    group: 'Ecommerce',
+    group: {
+      es: 'Comercio Electrónico',
+      en: 'E-commerce',
+    },
   },
   access: {
     create: superAdminOrTenantAdminAccess,
@@ -17,21 +30,31 @@ export const Brands: CollectionConfig = {
   fields: [
     {
       name: 'name',
-      label: 'Nombre de la Marca',
+      label: {
+        es: 'Nombre de la Marca',
+        en: 'Brand Name',
+      },
       type: 'text',
       required: true,
     },
     {
       name: 'logo',
-      label: 'Logotipo de la Marca',
+      label: {
+        es: 'Logotipo de la Marca',
+        en: 'Brand Logo',
+      },
       type: 'upload',
       relationTo: 'media',
     },
     {
       name: 'description',
-      label: 'Descripción de la Marca',
+      label: {
+        es: 'Descripción de la Marca',
+        en: 'Brand Description',
+      },
       type: 'richText',
       localized: true,
     },
   ],
 }
+

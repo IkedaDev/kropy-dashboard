@@ -4,10 +4,23 @@ import { extractID } from '@/utilities/extractID'
 
 export const Customers: CollectionConfig = {
   slug: 'customers',
+  labels: {
+    singular: {
+      es: 'Cliente',
+      en: 'Customer',
+    },
+    plural: {
+      es: 'Clientes',
+      en: 'Customers',
+    },
+  },
   admin: {
     useAsTitle: 'email',
     defaultColumns: ['name', 'email', 'phone', 'updatedAt'],
-    group: 'Ecommerce',
+    group: {
+      es: 'Comercio Electrónico',
+      en: 'E-commerce',
+    },
   },
   access: {
     create: superAdminOrTenantAdminAccess,
@@ -87,25 +100,37 @@ export const Customers: CollectionConfig = {
   fields: [
     {
       name: 'name',
-      label: 'Nombre Completo',
+      label: {
+        es: 'Nombre Completo',
+        en: 'Full Name',
+      },
       type: 'text',
       required: true,
     },
     {
       name: 'email',
-      label: 'Correo Electrónico',
+      label: {
+        es: 'Correo Electrónico',
+        en: 'Email Address',
+      },
       type: 'email',
       required: true,
       index: true,
     },
     {
       name: 'phone',
-      label: 'Teléfono',
+      label: {
+        es: 'Teléfono',
+        en: 'Phone Number',
+      },
       type: 'text',
     },
     {
       name: 'address',
-      label: 'Dirección de Despacho por Defecto',
+      label: {
+        es: 'Dirección de Despacho por Defecto',
+        en: 'Default Shipping Address',
+      },
       type: 'text',
     },
   ],

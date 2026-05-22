@@ -215,15 +215,15 @@ export interface Product {
   title: string;
   slug: string;
   /**
-   * Precio base en CLP (Pesos Chilenos)
+   * Base price in CLP (Chilean Pesos)
    */
   price: number;
   /**
-   * Precio original del producto antes de la oferta (se mostrará tachado). Dejar vacío si no está en oferta.
+   * Original price of the product before the sale (will show crossed out). Leave empty if not on sale.
    */
   compareAtPrice?: number | null;
   /**
-   * Stock global si el producto no tiene variantes habilitadas.
+   * Global stock if the product does not have variants enabled.
    */
   stock: number;
   description?: {
@@ -250,7 +250,7 @@ export interface Product {
   categories?: (number | Category)[] | null;
   brand?: (number | null) | Brand;
   /**
-   * Habilita variantes (tallas, colores) con stock y precio independiente.
+   * Enable variants (sizes, colors) with independent stock and price.
    */
   hasVariants?: boolean | null;
   variants?:
@@ -258,11 +258,11 @@ export interface Product {
         variantName: string;
         sku?: string | null;
         /**
-         * Dejar vacío para usar el precio base del producto.
+         * Leave empty to use the product's base price.
          */
         price?: number | null;
         /**
-         * Precio original de la variante antes de la oferta (se mostrará tachado). Dejar vacío si no está en oferta.
+         * Original price of the variant before the sale (will show crossed out). Leave empty if not on sale.
          */
         compareAtPrice?: number | null;
         stock: number;
@@ -365,11 +365,11 @@ export interface Order {
   shippingCourier?: string | null;
   trackingNumber?: string | null;
   /**
-   * Notas de uso interno para la administración del comercio.
+   * Internal notes for store administration.
    */
   internalNotes?: string | null;
   /**
-   * Registro de auditoría de los cambios de estado de la orden.
+   * Audit log of order status changes.
    */
   statusHistory?:
     | {
@@ -408,33 +408,33 @@ export interface Discount {
   type: 'percentage' | 'fixed';
   value: number;
   /**
-   * Monto mínimo total del carro de compras requerido para aplicar este cupón.
+   * Minimum total shopping cart amount required to apply this coupon.
    */
   minPurchaseAmount?: number | null;
   /**
-   * Número máximo de veces que este cupón puede ser usado en total.
+   * Maximum number of times this coupon can be used in total.
    */
   usageLimit?: number | null;
   /**
-   * Número de veces que se ha completado una compra con este cupón.
+   * Number of times a purchase has been completed using this coupon.
    */
   usageCount?: number | null;
   validFrom?: string | null;
   validUntil?: string | null;
   active?: boolean | null;
   /**
-   * Limita este cupón a productos específicos. Dejar vacío para aplicar a todos los productos.
+   * Limit this coupon to specific products. Leave empty to apply to all products.
    */
   applicableProducts?: (number | Product)[] | null;
   /**
-   * Limita este cupón a categorías específicas. Dejar vacío para aplicar a todas las categorías.
+   * Limit this coupon to specific categories. Leave empty to apply to all categories.
    */
   applicableCategories?: (number | Category)[] | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
- * Configuración general de la tienda del Tenant (identidad visual, redes sociales, despacho). Solo se permite un registro por organización.
+ * General store settings for the Tenant (visual identity, social networks, shipping). Only one record is allowed per organization.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "store-settings".
@@ -483,16 +483,16 @@ export interface ProductReview {
   product: number | Product;
   customer?: (number | null) | Customer;
   /**
-   * Nombre visible de la persona que escribe la reseña.
+   * Visible name of the person writing the review.
    */
   reviewerName: string;
   /**
-   * Puntuación del producto de 1 a 5 estrellas.
+   * Product rating from 1 to 5 stars.
    */
   rating: number;
   comment: string;
   /**
-   * Habilita este campo para que la reseña aparezca de forma pública en la web.
+   * Enable this field for the review to appear publicly on the web.
    */
   approved?: boolean | null;
   updatedAt: string;

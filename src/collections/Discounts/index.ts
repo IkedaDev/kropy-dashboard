@@ -5,10 +5,23 @@ import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 
 export const Discounts: CollectionConfig = {
   slug: 'discounts',
+  labels: {
+    singular: {
+      es: 'Cupón de Descuento',
+      en: 'Discount Coupon',
+    },
+    plural: {
+      es: 'Cupones de Descuento',
+      en: 'Discount Coupons',
+    },
+  },
   admin: {
     useAsTitle: 'code',
     defaultColumns: ['code', 'type', 'value', 'usageCount', 'active', 'updatedAt'],
-    group: 'Ecommerce',
+    group: {
+      es: 'Comercio Electrónico',
+      en: 'E-commerce',
+    },
   },
   access: {
     create: superAdminOrTenantAdminAccess,
@@ -90,60 +103,90 @@ export const Discounts: CollectionConfig = {
   fields: [
     {
       name: 'code',
-      label: 'Código de Cupón',
+      label: {
+        es: 'Código de Cupón',
+        en: 'Coupon Code',
+      },
       type: 'text',
       required: true,
       index: true,
     },
     {
       name: 'type',
-      label: 'Tipo de Descuento',
+      label: {
+        es: 'Tipo de Descuento',
+        en: 'Discount Type',
+      },
       type: 'select',
       required: true,
       defaultValue: 'percentage',
       options: [
-        { label: 'Porcentaje (%)', value: 'percentage' },
-        { label: 'Monto Fijo ($)', value: 'fixed' },
+        { label: { es: 'Porcentaje (%)', en: 'Percentage (%)' }, value: 'percentage' },
+        { label: { es: 'Monto Fijo ($)', en: 'Fixed Amount ($)' }, value: 'fixed' },
       ],
     },
     {
       name: 'value',
-      label: 'Valor del Descuento',
+      label: {
+        es: 'Valor del Descuento',
+        en: 'Discount Value',
+      },
       type: 'number',
       required: true,
       min: 0,
     },
     {
       name: 'minPurchaseAmount',
-      label: 'Monto Mínimo de Compra',
+      label: {
+        es: 'Monto Mínimo de Compra',
+        en: 'Minimum Purchase Amount',
+      },
       type: 'number',
       min: 0,
       admin: {
-        description: 'Monto mínimo total del carro de compras requerido para aplicar este cupón.',
+        description: {
+          es: 'Monto mínimo total del carro de compras requerido para aplicar este cupón.',
+          en: 'Minimum total shopping cart amount required to apply this coupon.',
+        },
       },
     },
     {
       name: 'usageLimit',
-      label: 'Límite de Usos Totales',
+      label: {
+        es: 'Límite de Usos Totales',
+        en: 'Total Usage Limit',
+      },
       type: 'number',
       min: 1,
       admin: {
-        description: 'Número máximo de veces que este cupón puede ser usado en total.',
+        description: {
+          es: 'Número máximo de veces que este cupón puede ser usado en total.',
+          en: 'Maximum number of times this coupon can be used in total.',
+        },
       },
     },
     {
       name: 'usageCount',
-      label: 'Cantidad de Usos',
+      label: {
+        es: 'Cantidad de Usos',
+        en: 'Usage Count',
+      },
       type: 'number',
       defaultValue: 0,
       admin: {
         readOnly: true,
-        description: 'Número de veces que se ha completado una compra con este cupón.',
+        description: {
+          es: 'Número de veces que se ha completado una compra con este cupón.',
+          en: 'Number of times a purchase has been completed using this coupon.',
+        },
       },
     },
     {
       name: 'validFrom',
-      label: 'Válido Desde',
+      label: {
+        es: 'Válido Desde',
+        en: 'Valid From',
+      },
       type: 'date',
       admin: {
         position: 'sidebar',
@@ -151,7 +194,10 @@ export const Discounts: CollectionConfig = {
     },
     {
       name: 'validUntil',
-      label: 'Válido Hasta',
+      label: {
+        es: 'Válido Hasta',
+        en: 'Valid Until',
+      },
       type: 'date',
       admin: {
         position: 'sidebar',
@@ -159,7 +205,10 @@ export const Discounts: CollectionConfig = {
     },
     {
       name: 'active',
-      label: 'Cupón Activo',
+      label: {
+        es: 'Cupón Activo',
+        en: 'Coupon Active',
+      },
       type: 'checkbox',
       defaultValue: true,
       admin: {
@@ -168,7 +217,10 @@ export const Discounts: CollectionConfig = {
     },
     {
       name: 'applicableProducts',
-      label: 'Productos Aplicables',
+      label: {
+        es: 'Productos Aplicables',
+        en: 'Applicable Products',
+      },
       type: 'relationship',
       relationTo: 'products',
       hasMany: true,
@@ -184,12 +236,18 @@ export const Discounts: CollectionConfig = {
         return true
       },
       admin: {
-        description: 'Limita este cupón a productos específicos. Dejar vacío para aplicar a todos los productos.',
+        description: {
+          es: 'Limita este cupón a productos específicos. Dejar vacío para aplicar a todos los productos.',
+          en: 'Limit this coupon to specific products. Leave empty to apply to all products.',
+        },
       },
     },
     {
       name: 'applicableCategories',
-      label: 'Categorías Aplicables',
+      label: {
+        es: 'Categorías Aplicables',
+        en: 'Applicable Categories',
+      },
       type: 'relationship',
       relationTo: 'categories',
       hasMany: true,
@@ -205,7 +263,10 @@ export const Discounts: CollectionConfig = {
         return true
       },
       admin: {
-        description: 'Limita este cupón a categorías específicas. Dejar vacío para aplicar a todas las categorías.',
+        description: {
+          es: 'Limita este cupón a categorías específicas. Dejar vacío para aplicar a todas las categorías.',
+          en: 'Limit this coupon to specific categories. Leave empty to apply to all categories.',
+        },
       },
     },
   ],

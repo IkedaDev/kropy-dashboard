@@ -4,10 +4,23 @@ import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdm
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
+  labels: {
+    singular: {
+      es: 'Categoría',
+      en: 'Category',
+    },
+    plural: {
+      es: 'Categorías',
+      en: 'Categories',
+    },
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'updatedAt'],
-    group: 'Ecommerce',
+    group: {
+      es: 'Comercio Electrónico',
+      en: 'E-commerce',
+    },
   },
   access: {
     create: superAdminOrTenantAdminAccess,
@@ -21,12 +34,20 @@ export const Categories: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: {
+        es: 'Título',
+        en: 'Title',
+      },
       type: 'text',
       required: true,
       localized: true,
     },
     {
       name: 'slug',
+      label: {
+        es: 'Ruta (Slug)',
+        en: 'Slug',
+      },
       type: 'text',
       required: true,
       admin: {
@@ -35,3 +56,4 @@ export const Categories: CollectionConfig = {
     },
   ],
 }
+

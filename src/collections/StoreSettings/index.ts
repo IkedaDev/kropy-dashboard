@@ -4,11 +4,27 @@ import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdm
 
 export const StoreSettings: CollectionConfig = {
   slug: 'store-settings',
+  labels: {
+    singular: {
+      es: 'Configuración de Tienda',
+      en: 'Store Settings',
+    },
+    plural: {
+      es: 'Configuraciones de Tienda',
+      en: 'Store Settings',
+    },
+  },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'currency', 'updatedAt'],
-    group: 'Ecommerce',
-    description: 'Configuración general de la tienda del Tenant (identidad visual, redes sociales, despacho). Solo se permite un registro por organización.',
+    group: {
+      es: 'Comercio Electrónico',
+      en: 'E-commerce',
+    },
+    description: {
+      es: 'Configuración general de la tienda del Tenant (identidad visual, redes sociales, despacho). Solo se permite un registro por organización.',
+      en: 'General store settings for the Tenant (visual identity, social networks, shipping). Only one record is allowed per organization.',
+    },
   },
   access: {
     create: superAdminOrTenantAdminAccess,
@@ -22,43 +38,62 @@ export const StoreSettings: CollectionConfig = {
   fields: [
     {
       name: 'name',
-      label: 'Nombre de la Tienda',
+      label: {
+        es: 'Nombre de la Tienda',
+        en: 'Store Name',
+      },
       type: 'text',
       required: true,
     },
     {
       name: 'logo',
-      label: 'Logotipo de la Tienda',
+      label: {
+        es: 'Logotipo de la Tienda',
+        en: 'Store Logo',
+      },
       type: 'upload',
       relationTo: 'media',
     },
     {
       name: 'favicon',
-      label: 'Favicon',
+      label: {
+        es: 'Favicon',
+        en: 'Favicon',
+      },
       type: 'upload',
       relationTo: 'media',
     },
     {
       name: 'currency',
-      label: 'Moneda Base de Transacciones',
+      label: {
+        es: 'Moneda Base de Transacciones',
+        en: 'Base Transaction Currency',
+      },
       type: 'select',
       required: true,
       defaultValue: 'CLP',
       options: [
-        { label: 'CLP (Pesos Chilenos)', value: 'CLP' },
-        { label: 'USD (Dólares Americanos)', value: 'USD' },
-        { label: 'EUR (Euros)', value: 'EUR' },
-        { label: 'ARS (Pesos Argentinos)', value: 'ARS' },
-        { label: 'MXN (Pesos Mexicanos)', value: 'MXN' },
+        { label: { es: 'CLP (Pesos Chilenos)', en: 'CLP (Chilean Pesos)' }, value: 'CLP' },
+        { label: { es: 'USD (Dólares Americanos)', en: 'USD (US Dollars)' }, value: 'USD' },
+        { label: { es: 'EUR (Euros)', en: 'EUR (Euros)' }, value: 'EUR' },
+        { label: { es: 'ARS (Pesos Argentinos)', en: 'ARS (Argentine Pesos)' }, value: 'ARS' },
+        { label: { es: 'MXN (Pesos Mexicanos)', en: 'MXN (Mexican Pesos)' }, value: 'MXN' },
       ],
     },
     {
       name: 'socialLinks',
-      label: 'Enlaces a Redes Sociales',
+      label: {
+        es: 'Enlaces a Redes Sociales',
+        en: 'Social Media Links',
+      },
       type: 'group',
       fields: [
         {
           name: 'instagram',
+          label: {
+            es: 'Instagram',
+            en: 'Instagram',
+          },
           type: 'text',
           admin: {
             placeholder: 'https://instagram.com/tu-usuario',
@@ -66,6 +101,10 @@ export const StoreSettings: CollectionConfig = {
         },
         {
           name: 'facebook',
+          label: {
+            es: 'Facebook',
+            en: 'Facebook',
+          },
           type: 'text',
           admin: {
             placeholder: 'https://facebook.com/tu-pagina',
@@ -74,14 +113,20 @@ export const StoreSettings: CollectionConfig = {
         {
           name: 'whatsapp',
           type: 'text',
-          label: 'Número de WhatsApp de contacto',
+          label: {
+            es: 'Número de WhatsApp de Contacto',
+            en: 'Contact WhatsApp Number',
+          },
           admin: {
             placeholder: '+56912345678',
           },
         },
         {
           name: 'twitter',
-          label: 'Twitter / X',
+          label: {
+            es: 'Twitter / X',
+            en: 'Twitter / X',
+          },
           type: 'text',
           admin: {
             placeholder: 'https://x.com/tu-usuario',
@@ -91,18 +136,27 @@ export const StoreSettings: CollectionConfig = {
     },
     {
       name: 'shipping',
-      label: 'Configuración de Envíos y Despacho',
+      label: {
+        es: 'Configuración de Envíos y Despacho',
+        en: 'Shipping Configuration',
+      },
       type: 'group',
       fields: [
         {
           name: 'flatRate',
-          label: 'Costo fijo de despacho',
+          label: {
+            es: 'Costo Fijo de Despacho',
+            en: 'Flat Rate Shipping Cost',
+          },
           type: 'number',
           min: 0,
         },
         {
           name: 'description',
-          label: 'Políticas o información de despacho',
+          label: {
+            es: 'Políticas o Información de Despacho',
+            en: 'Shipping Policies or Information',
+          },
           type: 'richText',
           localized: true,
         },

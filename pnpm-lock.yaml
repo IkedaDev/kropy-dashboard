@@ -23,6 +23,9 @@ importers:
       '@payloadcms/richtext-lexical':
         specifier: latest
         version: 3.84.1(@faceless-ui/modal@3.0.0(react-dom@19.2.2(react@19.2.2))(react@19.2.2))(@faceless-ui/scroll-info@2.0.0(react-dom@19.2.2(react@19.2.2))(react@19.2.2))(@payloadcms/next@3.84.1(@types/react@19.2.14)(graphql@16.10.0)(monaco-editor@0.52.2)(next@15.5.8(react-dom@19.2.2(react@19.2.2))(react@19.2.2)(sass@1.77.4))(payload@3.84.1(graphql@16.10.0)(typescript@5.5.2))(react-dom@19.2.2(react@19.2.2))(react@19.2.2)(typescript@5.5.2))(@types/react@19.2.14)(monaco-editor@0.52.2)(next@15.5.8(react-dom@19.2.2(react@19.2.2))(react@19.2.2)(sass@1.77.4))(payload@3.84.1(graphql@16.10.0)(typescript@5.5.2))(react-dom@19.2.2(react@19.2.2))(react@19.2.2)(typescript@5.5.2)(yjs@13.6.24)
+      '@payloadcms/translations':
+        specifier: ^3.84.1
+        version: 3.84.1
       '@payloadcms/ui':
         specifier: latest
         version: 3.84.1(@types/react@19.2.14)(monaco-editor@0.52.2)(next@15.5.8(react-dom@19.2.2(react@19.2.2))(react@19.2.2)(sass@1.77.4))(payload@3.84.1(graphql@16.10.0)(typescript@5.5.2))(react-dom@19.2.2(react@19.2.2))(react@19.2.2)(typescript@5.5.2)

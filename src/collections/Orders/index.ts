@@ -12,10 +12,23 @@ const onlySuperAdminCanUpdate: FieldAccess = ({ req }) => {
 
 export const Orders: CollectionConfig = {
   slug: 'orders',
+  labels: {
+    singular: {
+      es: 'Orden de Compra',
+      en: 'Purchase Order',
+    },
+    plural: {
+      es: 'Órdenes de Compra',
+      en: 'Purchase Orders',
+    },
+  },
   admin: {
     useAsTitle: 'orderCode',
     defaultColumns: ['orderCode', 'customer.email', 'total', 'status', 'updatedAt'],
-    group: 'Ecommerce',
+    group: {
+      es: 'Comercio Electrónico',
+      en: 'E-commerce',
+    },
   },
   access: {
     create: superAdminOrTenantAdminAccess,
@@ -36,6 +49,10 @@ export const Orders: CollectionConfig = {
   fields: [
     {
       name: 'orderCode',
+      label: {
+        es: 'Código de Orden',
+        en: 'Order Code',
+      },
       type: 'text',
       required: true,
       index: true,
@@ -45,6 +62,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'externalId',
+      label: {
+        es: 'ID Externo',
+        en: 'External ID',
+      },
       type: 'text',
       required: true,
       index: true,
@@ -55,7 +76,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'customerRef',
-      label: 'Ficha del Cliente',
+      label: {
+        es: 'Ficha del Cliente',
+        en: 'Customer File',
+      },
       type: 'relationship',
       relationTo: 'customers',
       admin: {
@@ -67,6 +91,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'customer',
+      label: {
+        es: 'Cliente',
+        en: 'Customer',
+      },
       type: 'group',
       access: {
         update: onlySuperAdminCanUpdate,
@@ -74,26 +102,46 @@ export const Orders: CollectionConfig = {
       fields: [
         {
           name: 'name',
+          label: {
+            es: 'Nombre',
+            en: 'Name',
+          },
           type: 'text',
           required: true,
         },
         {
           name: 'email',
+          label: {
+            es: 'Correo Electrónico',
+            en: 'Email Address',
+          },
           type: 'text',
           required: true,
         },
         {
           name: 'phone',
+          label: {
+            es: 'Teléfono',
+            en: 'Phone',
+          },
           type: 'text',
         },
         {
           name: 'shippingAddress',
+          label: {
+            es: 'Dirección de Despacho',
+            en: 'Shipping Address',
+          },
           type: 'text',
         },
       ],
     },
     {
       name: 'items',
+      label: {
+        es: 'Artículos',
+        en: 'Items',
+      },
       type: 'array',
       required: true,
       minRows: 1,
@@ -103,28 +151,47 @@ export const Orders: CollectionConfig = {
       fields: [
         {
           name: 'product',
+          label: {
+            es: 'Producto',
+            en: 'Product',
+          },
           type: 'relationship',
           relationTo: 'products',
           required: false,
         },
         {
           name: 'variantId',
-          label: 'ID de la Variante',
+          label: {
+            es: 'ID de la Variante',
+            en: 'Variant ID',
+          },
           type: 'text',
         },
         {
           name: 'title',
+          label: {
+            es: 'Título',
+            en: 'Title',
+          },
           type: 'text',
           required: true,
         },
         {
           name: 'price',
+          label: {
+            es: 'Precio',
+            en: 'Price',
+          },
           type: 'number',
           required: true,
           min: 0,
         },
         {
           name: 'quantity',
+          label: {
+            es: 'Cantidad',
+            en: 'Quantity',
+          },
           type: 'number',
           required: true,
           min: 1,
@@ -133,6 +200,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'subtotal',
+      label: {
+        es: 'Subtotal',
+        en: 'Subtotal',
+      },
       type: 'number',
       required: true,
       min: 0,
@@ -142,6 +213,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'shippingCost',
+      label: {
+        es: 'Costo de Despacho',
+        en: 'Shipping Cost',
+      },
       type: 'number',
       defaultValue: 0,
       min: 0,
@@ -151,6 +226,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'discountAmount',
+      label: {
+        es: 'Monto de Descuento',
+        en: 'Discount Amount',
+      },
       type: 'number',
       defaultValue: 0,
       min: 0,
@@ -160,6 +239,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'total',
+      label: {
+        es: 'Total',
+        en: 'Total',
+      },
       type: 'number',
       required: true,
       min: 0,
@@ -169,31 +252,50 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'status',
+      label: {
+        es: 'Estado',
+        en: 'Status',
+      },
       type: 'select',
       defaultValue: 'pending',
       required: true,
       options: [
         {
-          label: 'Pendiente',
+          label: {
+            es: 'Pendiente',
+            en: 'Pending',
+          },
           value: 'pending',
         },
         {
-          label: 'Pagado',
+          label: {
+            es: 'Pagado',
+            en: 'Paid',
+          },
           value: 'paid',
         },
         {
-          label: 'Enviado',
+          label: {
+            es: 'Enviado',
+            en: 'Shipped',
+          },
           value: 'shipped',
         },
         {
-          label: 'Cancelado',
+          label: {
+            es: 'Cancelado',
+            en: 'Cancelled',
+          },
           value: 'cancelled',
         },
       ],
     },
     {
       name: 'discountCode',
-      label: 'Cupón Utilizado',
+      label: {
+        es: 'Cupón Utilizado',
+        en: 'Coupon Used',
+      },
       type: 'relationship',
       relationTo: 'discounts',
       admin: {
@@ -205,6 +307,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'wasStockDiscounted',
+      label: {
+        es: 'Stock Descontado',
+        en: 'Stock Discounted',
+      },
       type: 'checkbox',
       defaultValue: false,
       admin: {
@@ -217,6 +323,10 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'wasCouponCounted',
+      label: {
+        es: 'Cupón Contabilizado',
+        en: 'Coupon Counted',
+      },
       type: 'checkbox',
       defaultValue: false,
       admin: {
@@ -229,58 +339,88 @@ export const Orders: CollectionConfig = {
     },
     {
       name: 'shippingCourier',
-      label: 'Courier / Empresa de Envíos',
+      label: {
+        es: 'Courier / Empresa de Envíos',
+        en: 'Courier / Shipping Company',
+      },
       type: 'text',
     },
     {
       name: 'trackingNumber',
-      label: 'Número de Seguimiento (Tracking)',
+      label: {
+        es: 'Número de Seguimiento (Tracking)',
+        en: 'Tracking Number',
+      },
       type: 'text',
     },
     {
       name: 'internalNotes',
-      label: 'Notas Internas',
+      label: {
+        es: 'Notas Internas',
+        en: 'Internal Notes',
+      },
       type: 'textarea',
       admin: {
-        description: 'Notas de uso interno para la administración del comercio.',
+        description: {
+          es: 'Notas de uso interno para la administración del comercio.',
+          en: 'Internal notes for store administration.',
+        },
       },
     },
     {
       name: 'statusHistory',
-      label: 'Historial de Estados',
+      label: {
+        es: 'Historial de Estados',
+        en: 'Status History',
+      },
       type: 'array',
       admin: {
         readOnly: true,
-        description: 'Registro de auditoría de los cambios de estado de la orden.',
+        description: {
+          es: 'Registro de auditoría de los cambios de estado de la orden.',
+          en: 'Audit log of order status changes.',
+        },
       },
       fields: [
         {
           name: 'status',
-          label: 'Estado',
+          label: {
+            es: 'Estado',
+            en: 'Status',
+          },
           type: 'select',
           required: true,
           options: [
-            { label: 'Pendiente', value: 'pending' },
-            { label: 'Pagado', value: 'paid' },
-            { label: 'Enviado', value: 'shipped' },
-            { label: 'Cancelado', value: 'cancelled' },
+            { label: { es: 'Pendiente', en: 'Pending' }, value: 'pending' },
+            { label: { es: 'Pagado', en: 'Paid' }, value: 'paid' },
+            { label: { es: 'Enviado', en: 'Shipped' }, value: 'shipped' },
+            { label: { es: 'Cancelado', en: 'Cancelled' }, value: 'cancelled' },
           ],
         },
         {
           name: 'changedAt',
-          label: 'Fecha de Cambio',
+          label: {
+            es: 'Fecha de Cambio',
+            en: 'Change Date',
+          },
           type: 'date',
           required: true,
         },
         {
           name: 'changedBy',
-          label: 'Cambiado Por (Usuario)',
+          label: {
+            es: 'Cambiado Por (Usuario)',
+            en: 'Changed By (User)',
+          },
           type: 'relationship',
           relationTo: 'users',
         },
         {
           name: 'notes',
-          label: 'Notas / Comentarios',
+          label: {
+            es: 'Notas / Comentarios',
+            en: 'Notes / Comments',
+          },
           type: 'text',
         },
       ],

@@ -3,10 +3,23 @@ import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdm
 
 export const ProductReviews: CollectionConfig = {
   slug: 'product-reviews',
+  labels: {
+    singular: {
+      es: 'Reseña de Producto',
+      en: 'Product Review',
+    },
+    plural: {
+      es: 'Reseñas de Productos',
+      en: 'Product Reviews',
+    },
+  },
   admin: {
     useAsTitle: 'reviewerName',
     defaultColumns: ['product', 'reviewerName', 'rating', 'approved', 'updatedAt'],
-    group: 'Ecommerce',
+    group: {
+      es: 'Comercio Electrónico',
+      en: 'E-commerce',
+    },
   },
   access: {
     create: () => true, // Permite que clientes de Astro dejen opiniones
@@ -28,7 +41,10 @@ export const ProductReviews: CollectionConfig = {
   fields: [
     {
       name: 'product',
-      label: 'Producto',
+      label: {
+        es: 'Producto',
+        en: 'Product',
+      },
       type: 'relationship',
       relationTo: 'products',
       required: true,
@@ -36,44 +52,68 @@ export const ProductReviews: CollectionConfig = {
     },
     {
       name: 'customer',
-      label: 'Ficha del Cliente (Opcional)',
+      label: {
+        es: 'Ficha del Cliente (Opcional)',
+        en: 'Customer File (Optional)',
+      },
       type: 'relationship',
       relationTo: 'customers',
     },
     {
       name: 'reviewerName',
-      label: 'Nombre del Autor',
+      label: {
+        es: 'Nombre del Autor',
+        en: 'Author Name',
+      },
       type: 'text',
       required: true,
       admin: {
-        description: 'Nombre visible de la persona que escribe la reseña.',
+        description: {
+          es: 'Nombre visible de la persona que escribe la reseña.',
+          en: 'Visible name of the person writing the review.',
+        },
       },
     },
     {
       name: 'rating',
-      label: 'Valoración / Estrellas',
+      label: {
+        es: 'Valoración / Estrellas',
+        en: 'Rating / Stars',
+      },
       type: 'number',
       required: true,
       min: 1,
       max: 5,
       admin: {
-        description: 'Puntuación del producto de 1 a 5 estrellas.',
+        description: {
+          es: 'Puntuación del producto de 1 a 5 estrellas.',
+          en: 'Product rating from 1 to 5 stars.',
+        },
       },
     },
     {
       name: 'comment',
-      label: 'Comentario',
+      label: {
+        es: 'Comentario',
+        en: 'Comment',
+      },
       type: 'textarea',
       required: true,
     },
     {
       name: 'approved',
-      label: 'Aprobado para publicación',
+      label: {
+        es: 'Aprobado para publicación',
+        en: 'Approved for Publication',
+      },
       type: 'checkbox',
       defaultValue: false,
       admin: {
         position: 'sidebar',
-        description: 'Habilita este campo para que la reseña aparezca de forma pública en la web.',
+        description: {
+          es: 'Habilita este campo para que la reseña aparezca de forma pública en la web.',
+          en: 'Enable this field for the review to appear publicly on the web.',
+        },
       },
     },
   ],

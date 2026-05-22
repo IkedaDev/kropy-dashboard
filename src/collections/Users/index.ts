@@ -20,10 +20,17 @@ const defaultTenantArrayField = tenantsArrayField({
   rowFields: [
     {
       name: 'roles',
+      label: {
+        es: 'Roles en la Organización',
+        en: 'Roles in Organization',
+      },
       type: 'select',
       defaultValue: ['tenant-viewer'],
       hasMany: true,
-      options: ['tenant-admin', 'tenant-viewer'],
+      options: [
+        { label: { es: 'Administrador de Organización', en: 'Organization Admin' }, value: 'tenant-admin' },
+        { label: { es: 'Lector de Organización', en: 'Organization Viewer' }, value: 'tenant-viewer' },
+      ],
       required: true,
       access: {
         update: ({ req }) => {
@@ -45,6 +52,16 @@ const defaultTenantArrayField = tenantsArrayField({
 
 const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    singular: {
+      es: 'Usuario',
+      en: 'User',
+    },
+    plural: {
+      es: 'Usuarios',
+      en: 'Users',
+    },
+  },
   access: {
     create: createAccess,
     delete: updateAndDeleteAccess,
@@ -53,6 +70,10 @@ const Users: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'email',
+    group: {
+      es: 'Configuración',
+      en: 'Settings',
+    },
   },
   auth: true,
   endpoints: [externalUsersLogin],
@@ -60,6 +81,10 @@ const Users: CollectionConfig = {
     {
       type: 'text',
       name: 'password',
+      label: {
+        es: 'Contraseña',
+        en: 'Password',
+      },
       hidden: true,
       access: {
         read: () => false, // Hide password field from read access
@@ -83,10 +108,17 @@ const Users: CollectionConfig = {
         position: 'sidebar',
       },
       name: 'roles',
+      label: {
+        es: 'Roles Globales',
+        en: 'Global Roles',
+      },
       type: 'select',
       defaultValue: ['user'],
       hasMany: true,
-      options: ['super-admin', 'user'],
+      options: [
+        { label: { es: 'Super Administrador', en: 'Super Admin' }, value: 'super-admin' },
+        { label: { es: 'Usuario', en: 'User' }, value: 'user' },
+      ],
       access: {
         update: ({ req }) => {
           return isSuperAdmin(req.user)
@@ -95,6 +127,10 @@ const Users: CollectionConfig = {
     },
     {
       name: 'username',
+      label: {
+        es: 'Nombre de Usuario',
+        en: 'Username',
+      },
       type: 'text',
       hooks: {
         beforeValidate: [ensureUniqueUsername],
@@ -103,6 +139,10 @@ const Users: CollectionConfig = {
     },
     {
       ...defaultTenantArrayField,
+      label: {
+        es: 'Organizaciones Asociadas',
+        en: 'Associated Organizations',
+      },
       admin: {
         ...(defaultTenantArrayField?.admin || {}),
         position: 'sidebar',

@@ -4,6 +4,9 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+import { es } from '@payloadcms/translations/languages/es'
+import { en } from '@payloadcms/translations/languages/en'
+
 
 import { Pages } from './collections/Pages'
 import { Tenants } from './collections/Tenants'
@@ -101,6 +104,10 @@ export default buildConfig({
     locales: ['es', 'en'],
     defaultLocale: 'es', // Idioma base para tus clientes en Chile
     fallback: true,      // Si no hay traducción en inglés, muestra el texto en español por defecto
+  },
+  i18n: {
+    supportedLanguages: { es, en },
+    fallbackLanguage: 'es',
   },
 })
 

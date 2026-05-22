@@ -5,6 +5,16 @@ import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdm
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  labels: {
+    singular: {
+      es: 'Página',
+      en: 'Page',
+    },
+    plural: {
+      es: 'Páginas',
+      en: 'Pages',
+    },
+  },
   access: {
     create: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
@@ -13,14 +23,26 @@ export const Pages: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    group: {
+      es: 'Contenido',
+      en: 'Content',
+    },
   },
   fields: [
     {
       name: 'title',
+      label: {
+        es: 'Título',
+        en: 'Title',
+      },
       type: 'text',
     },
     {
       name: 'slug',
+      label: {
+        es: 'Identificador (Slug)',
+        en: 'Slug',
+      },
       type: 'text',
       defaultValue: 'home',
       hooks: {
