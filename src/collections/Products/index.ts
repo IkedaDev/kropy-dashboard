@@ -1,36 +1,34 @@
 import type { CollectionConfig } from 'payload'
-import { autoSlug } from './hooks/autoSlug'
+import { createAutoSlug } from '@/utilities/autoSlugGeneric'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
+import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title','slug', 'price', 'stock', 'updatedAt'],
+    defaultColumns: ['title', 'slug', 'price', 'stock', 'updatedAt'],
     group: 'Ecommerce',
   },
   access: {
-    // Reutilizamos la lógica del template: Super admins ven todo, 
-    // Tenant admins ven y editan solo lo asignado a su organización.
-    create: superAdminOrTenantAdminAccess, // No funcionan como se espera los hooks de pages
-    read:  () => true,
+    create: superAdminOrTenantAdminAccess,
+    read: () => true,
     update: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
   },
   hooks: {
-    // 👇 Enganchamos la automatización antes de que Payload valide los datos
-    beforeValidate: [autoSlug],
+    beforeValidate: [createAutoSlug('products', 'title')],
   },
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
-      localized: true, // 🌐 Activa el Multi-idioma nativo para el nombre del producto
+      localized: true,
     },
     {
       name: 'slug',
-      type: 'text', // Genera automáticamente una URL amigable basada en el título
+      type: 'text',
       required: true,
       admin: {
         position: 'sidebar',
@@ -54,22 +52,44 @@ export const Products: CollectionConfig = {
     },
     {
       name: 'description',
-      type: 'richText', // Inyecta el editor Lexical avanzado para descripciones dinámicas
-      localized: true,   // Traducible campo por campo
+      type: 'richText',
+      localized: true,
     },
     {
       name: 'images',
-      type: 'array', // 📸 Soporte para Galería de múltiples imágenes por producto
+      type: 'array',
       label: 'Galería de Imágenes',
       minRows: 1,
       fields: [
         {
           name: 'image',
           type: 'upload',
-          relationTo: 'media', // ✅ Ahora funcionará porque registraremos esta colección abajo
+          relationTo: 'media',
           required: true,
         },
       ],
+    },
+    {
+      name: 'categories',
+      label: 'Categorías',
+      type: 'relationship',
+      relationTo: 'categories',
+      hasMany: true,
+      admin: {
+        position: 'sidebar',
+      },
+      filterOptions: ({ req }) => {
+        // Filtrar categorías en el panel para que coincidan con los tenants del usuario admin actual
+        if (req.user && !req.user.roles?.includes('super-admin')) {
+          const userTenants = getUserTenantIDs(req.user)
+          if (userTenants.length > 0) {
+            return {
+              tenant: { in: userTenants },
+            }
+          }
+        }
+        return true
+      },
     },
   ],
 }

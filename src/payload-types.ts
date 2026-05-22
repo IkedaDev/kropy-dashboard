@@ -73,6 +73,8 @@ export interface Config {
     products: Product;
     media: Media;
     orders: Order;
+    categories: Category;
+    'store-settings': StoreSetting;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +88,8 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    'store-settings': StoreSettingsSelect<false> | StoreSettingsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -228,6 +232,7 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
+  categories?: (number | Category)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -249,6 +254,18 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -275,6 +292,46 @@ export interface Order {
   total: number;
   status: 'pending' | 'paid' | 'shipped' | 'cancelled';
   wasStockDiscounted?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Configuración general de la tienda del Tenant (identidad visual, redes sociales, despacho). Solo se permite un registro por organización.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "store-settings".
+ */
+export interface StoreSetting {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  logo?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  currency: 'CLP' | 'USD' | 'EUR' | 'ARS' | 'MXN';
+  socialLinks?: {
+    instagram?: string | null;
+    facebook?: string | null;
+    whatsapp?: string | null;
+    twitter?: string | null;
+  };
+  shipping?: {
+    flatRate?: number | null;
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -325,6 +382,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'orders';
         value: number | Order;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'store-settings';
+        value: number | StoreSetting;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -440,6 +505,7 @@ export interface ProductsSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  categories?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -489,6 +555,44 @@ export interface OrdersSelect<T extends boolean = true> {
   total?: T;
   status?: T;
   wasStockDiscounted?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "store-settings_select".
+ */
+export interface StoreSettingsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  logo?: T;
+  favicon?: T;
+  currency?: T;
+  socialLinks?:
+    | T
+    | {
+        instagram?: T;
+        facebook?: T;
+        whatsapp?: T;
+        twitter?: T;
+      };
+  shipping?:
+    | T
+    | {
+        flatRate?: T;
+        description?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
