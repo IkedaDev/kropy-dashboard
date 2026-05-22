@@ -35,6 +35,9 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components:{
+      providers: [
+        '/app/components/ForceThemeProvider'
+      ],
       graphics:{
         Icon: '/components/payload/Icon',
         Logo: '/components/payload/Logo',

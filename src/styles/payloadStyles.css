@@ -1,328 +1,355 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
 @layer theme, base, components, utilities;
 
 @import 'tailwindcss/theme.css' layer(theme);
-/* @import 'tailwindcss/preflight.css' layer(base); */
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 
-  :root {
-    /* Variables */
-    --theme-bg: var(--color-white);
-    --theme-input-bg: var(--theme-elevation-0);
-    --theme-text: var(--theme-elevation-800);
-    --theme-overlay: rgba(5, 5, 5, 0.5);
-    --font-body: 'Plus Jakarta Sans', sans-serif;
-    --font-mono: monospace;
-    --font-serif: 'Merriweather', serif;
-    --style-radius-s: 4px;
-    --style-radius-m: 8px;
-    --style-radius-l: 16px;
-    --nav-width: 275px;
+/* ==========================================
+   1. Clean Core Variables (Light Mode / Default)
+   ========================================== */
+:root {
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
+  /* Accent & Primary (Kropy Emerald Green) */
+  --theme-accent: oklch(59.6% 0.145 163.225) !important;
+  --theme-accent-hover: #047857 !important;
+  --theme-accent-active: #065f46 !important;
   
-    /* Color Shades */
-    --color-base-0: #ffffff;
-  --color-base-50: #edf8f4;
-  --color-base-100: #dcf1ea;
-  --color-base-150: #caeadf;
-  --color-base-200: #b9e3d5;
-  --color-base-250: #a7dcca;
-  --color-base-300: #95d5c0;
-  --color-base-350: #84ceb5;
-  --color-base-400: #72c7ab;
-  --color-base-450: #61c0a0;
-  --color-base-500: #009462;
-  --color-base-550: #00895b;
-  --color-base-600: #007f54;
-  --color-base-650: #00744d;
-  --color-base-700: #006a46;
-  --color-base-750: #005f3f;
-  --color-base-800: #005438;
-  --color-base-850: #004a31;
-  --color-base-900: #003f2a;
-  --color-base-950: #003523;
---color-success-0: #ffffff;
-  --color-success-50: #f1faf6;
-  --color-success-100: #e2f6ee;
-  --color-success-150: #d4f1e5;
-  --color-success-200: #c6eddc;
-  --color-success-250: #b8e8d4;
-  --color-success-300: #a9e4cb;
-  --color-success-350: #9bdfc2;
-  --color-success-400: #8ddbb9;
-  --color-success-450: #7fd6b1;
-  --color-success-500: #2eb67d;
-  --color-success-550: #2ba974;
-  --color-success-600: #289c6b;
-  --color-success-650: #248f62;
-  --color-success-700: #218259;
-  --color-success-750: #1e7550;
-  --color-success-800: #1a6847;
-  --color-success-850: #175b3e;
-  --color-success-900: #144e35;
-  --color-success-950: #11412c;
---color-warning-0: #ffffff;
-  --color-warning-50: #fff9ed;
-  --color-warning-100: #fff3dc;
-  --color-warning-150: #ffeeca;
-  --color-warning-200: #ffe8b9;
-  --color-warning-250: #ffe2a7;
-  --color-warning-300: #ffdc95;
-  --color-warning-350: #ffd684;
-  --color-warning-400: #ffd172;
-  --color-warning-450: #ffcb61;
-  --color-warning-500: #f6a500;
-  --color-warning-550: #e59900;
-  --color-warning-600: #d38e00;
-  --color-warning-650: #c18200;
-  --color-warning-700: #b07600;
-  --color-warning-750: #9e6a00;
-  --color-warning-800: #8d5e00;
-  --color-warning-850: #7b5300;
-  --color-warning-900: #6a4700;
-  --color-warning-950: #583b00;
---color-error-0: #ffffff;
-  --color-error-50: #fff3f1;
-  --color-error-100: #ffe8e2;
-  --color-error-150: #ffdcd4;
-  --color-error-200: #ffd0c6;
-  --color-error-250: #ffc5b8;
-  --color-error-300: #ffb9a9;
-  --color-error-350: #ffad9b;
-  --color-error-400: #ffa28d;
-  --color-error-450: #ff967f;
-  --color-error-500: #f6532e;
-  --color-error-550: #e54d2b;
-  --color-error-600: #d34728;
-  --color-error-650: #c14124;
-  --color-error-700: #b03b21;
-  --color-error-750: #9e351e;
-  --color-error-800: #8d2f1a;
-  --color-error-850: #7b2a17;
-  --color-error-900: #6a2414;
-  --color-error-950: #581e11;
---color-accent-0: #ffffff;
-  --color-accent-50: #fbedef;
-  --color-accent-100: #f8dcdf;
-  --color-accent-150: #f4cacf;
-  --color-accent-200: #f1b9be;
-  --color-accent-250: #eda7ae;
-  --color-accent-300: #ea959e;
-  --color-accent-350: #e6848e;
-  --color-accent-400: #e3727e;
-  --color-accent-450: #df616e;
-  --color-accent-500: #c50014;
-  --color-accent-550: #b70013;
-  --color-accent-600: #a90011;
-  --color-accent-650: #9b0010;
-  --color-accent-700: #8d000e;
-  --color-accent-750: #7f000d;
-  --color-accent-800: #71000c;
-  --color-accent-850: #62000a;
-  --color-accent-900: #540009;
-  --color-accent-950: #460007;
+  --theme-primary: oklch(59.6% 0.145 163.225) !important;
+  --theme-primary-hover: #047857 !important;
+  --theme-primary-active: #065f46 !important;
+
+  /* Theme Base Colors (Light Mode) */
+  --theme-bg: #ffffff !important;
+  --theme-elevation-0: #f8fafc !important;   /* App background (slate-50) */
+  --theme-elevation-50: #f8fafc !important;  /* Sidebar / neutral grey bg */
+  --theme-elevation-100: #ffffff !important; /* Card backgrounds / White */
+  --theme-elevation-150: #f1f5f9 !important; /* Slate-100 (hover background) */
+  --theme-elevation-200: #e2e8f0 !important; /* Borders / Slate-200 */
+  --theme-elevation-300: #cbd5e1 !important; /* Slate-300 */
+  --theme-elevation-400: #94a3b8 !important; /* Muted text / Slate-400 */
+  --theme-elevation-500: #64748b !important; /* Slate-500 */
+  --theme-elevation-600: #475569 !important; /* Slate-600 */
+  --theme-elevation-700: #334155 !important; /* Slate-700 */
+  --theme-elevation-800: #0f172a !important; /* Slate-900 (Main text) */
+  --theme-elevation-900: #020617 !important; /* Slate-950 (Headers / Titles) */
+  --theme-elevation-1000: #000000 !important;
   
-    /* Theme Accent Colors */
-    --theme-accent-0: var(--color-accent-0);
-    --theme-accent-50: var(--color-accent-50);
-    --theme-accent-100: var(--color-accent-100);
-    --theme-accent-150: var(--color-accent-150);
-    --theme-accent-200: var(--color-accent-200);
-    --theme-accent-250: var(--color-accent-250);
-    --theme-accent-300: var(--color-accent-300);
-    --theme-accent-350: var(--color-accent-350);
-    --theme-accent-400: var(--color-accent-400);
-    --theme-accent-450: var(--color-accent-450);
-    --theme-accent-500: var(--color-accent-500);
-    --theme-accent-550: var(--color-accent-550);
-    --theme-accent-600: var(--color-accent-600);
-    --theme-accent-650: var(--color-accent-650);
-    --theme-accent-700: var(--color-accent-700);
-    --theme-accent-750: var(--color-accent-750);
-    --theme-accent-800: var(--color-accent-800);
-    --theme-accent-850: var(--color-accent-850);
-    --theme-accent-900: var(--color-accent-900);
-    --theme-accent-950: var(--color-accent-950);
-    --theme-accent-1000: var(--color-accent-1000);
-  }
-  
-  /* Nav Button */
-  .hamburger__wrapper {
-    background-color: var(--theme-elevation-100);
-    border: 1px solid var(--theme-elevation-200);
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 9px;
-    padding-bottom: 9px;
-    border-radius: 195px;
-  }
-  .hamburger:before {
-    background-color: var(--theme-elevation-100);
-    border: 1px solid var(--theme-elevation-200);
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 9px;
-    padding-bottom: 9px;
-    border-radius: 195px;
-  }
-  .hamburger:after {
-    background-color: var(--theme-elevation-100);
-    border: 1px solid var(--theme-elevation-200);
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 9px;
-    padding-bottom: 9px;
-    border-radius: 195px;
-  }
+  --theme-text: var(--theme-elevation-800) !important;
+  --theme-input-bg: var(--theme-elevation-100) !important;
+  --theme-border-color: var(--theme-elevation-200) !important;
 
-/* Nav Group Toggle */
-  .nav-group__toggle {
-    font-size: var(--text-3xl);
-    border: 1px none #000000;
-  }
+  /* Kropy border radius tokens */
+  --style-radius-s: 0.375rem !important; /* 6px */
+  --style-radius-m: 0.75rem !important;  /* 12px */
+  --style-radius-l: 1rem !important;     /* 16px */
+}
 
-/* Nav Group Icon */
-  .nav-group__indicator svg .stroke {
-    stroke: var(--color-emerald-600);
-  }
-/* Nav Group Label */
-  .nav-group__label {
-    color: var(--color-emerald-600);
-  }
+/* ==========================================
+   2. Clean Core Variables (Dark Mode Override)
+   ========================================== */
+html[data-theme='dark'] {
+  --theme-bg: #090d16 !important;
+  --theme-elevation-0: #090d16 !important;   /* App background */
+  --theme-elevation-50: #0b0f19 !important;  /* Sidebar / dark navy */
+  --theme-elevation-100: #0d1527 !important; /* Card background / Navy */
+  --theme-elevation-150: #131e36 !important; /* Inputs bg */
+  --theme-elevation-200: #1e293b !important; /* Borders */
+  --theme-elevation-300: #334155 !important; /* Darker borders */
+  --theme-elevation-400: #64748b !important; /* Muted text */
+  --theme-elevation-500: #94a3b8 !important;
+  --theme-elevation-600: #cbd5e1 !important;
+  --theme-elevation-700: #e2e8f0 !important;
+  --theme-elevation-800: #f1f5f9 !important; /* Slate-100 (Main text) */
+  --theme-elevation-900: #ffffff !important; /* Pure white (Headers / Titles) */
+  --theme-elevation-1000: #ffffff !important;
 
-/* Nav */
-  .nav {
-    @apply bg-white text-xl px-0.5 py-0.5 border text-gray-950;
+  --theme-text: var(--theme-elevation-800) !important;
+  --theme-input-bg: var(--theme-elevation-150) !important;
+  --theme-border-color: var(--theme-elevation-200) !important;
+}
 
-    .nav-group__content{
-        @apply my-4 pl-4 flex flex-col gap-2;
-        .nav__link{
-            @apply  py-2 px-2 rounded-xl ;
-            &:hover{
-                @apply text-emerald-600 ;
-                text-decoration: none;
-            }
-            .nav__link-indicator{
-                @apply bg-emerald-600 hidden;
-            }
-            &:has(.nav__link-indicator){
-                @apply text-white bg-emerald-600;
-            }
-        }
-    }
-  }
+/* ==========================================
+   3. Global Typography & Font Rules
+   ========================================== */
+html, body, input, button, select, textarea, 
+.react-select__control, .react-select__menu, 
+.nav, .card, .dashboard, .btn {
+  font-family: var(--font-body) !important;
+  -webkit-font-smoothing: antialiased;
+}
 
-/* Dashboard Card Labels */
-  .dashboard__label {
-    fontFamily: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  }
+/* ==========================================
+   4. Input Fields & Form Styling (Kropy style)
+   ========================================== */
+.input-element,
+.field-type input[type="text"], 
+.field-type input[type="email"], 
+.field-type input[type="password"], 
+.field-type input[type="number"], 
+.field-type input[type="date"],
+.field-type input[type="datetime-local"],
+.field-type textarea,
+.field-type select,
+.react-select__control {
+  border-radius: 0.75rem !important; /* 12px rounded-xl */
+  border: 1px solid var(--theme-elevation-200) !important;
+  background-color: var(--theme-input-bg) !important;
+  color: var(--theme-text) !important;
+  font-size: 0.875rem !important; /* text-sm */
+  font-weight: 300 !important; /* font-light */
+  padding: 0.75rem 1rem !important; /* px-4 py-3 */
+  min-height: 2.875rem !important;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s !important;
+  box-shadow: none !important;
+}
 
-/* Dashboard Card */
-  .card {
-    background-color: var(--theme-elevation-100);
-    border: 1px solid var(--theme-elevation-200);
-    border-radius: var(--radius-3xl);
-  }
+/* Specific Focus Rings */
+.input-element:focus,
+.field-type input[type="text"]:focus, 
+.field-type input[type="email"]:focus, 
+.field-type input[type="password"]:focus, 
+.field-type input[type="number"]:focus, 
+.field-type input[type="date"]:focus,
+.field-type input[type="datetime-local"]:focus,
+.field-type textarea:focus,
+.field-type select:focus,
+.react-select__control--is-focused {
+  background-color: var(--theme-input-bg) !important;
+  border-color: var(--theme-accent) !important;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1) !important;
+  outline: none !important;
+}
 
-/* Dashboard Card Title */
-  .card__title {
-    fontFamily: Impact;
-  }
+/* Textarea height customization */
+textarea {
+  min-height: 6rem !important;
+  resize: vertical !important;
+}
 
-/* Dashboard Card Action Button (empty) */
-  .card__actions {}
+/* Form field label adjustments */
+.field-label, label, .field-type .label {
+  font-size: 0.6875rem !important; /* text-[11px] */
+  font-weight: 700 !important; /* font-bold */
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important; /* tracking-widest */
+  color: var(--theme-elevation-400) !important; /* slate-400 */
+  margin-bottom: 0.5rem !important;
+  display: block !important;
+}
 
-/* Background (empty) */
-  .template-default__wrap {}
+/* React Select styling dropdown fix */
+.react-select__control {
+  padding: 0 0.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+}
 
-/* Primary Button */
-  .btn--style-primary {
-    background-color: var(--theme-elevation-900);
-  }
+.react-select__menu {
+  background-color: var(--theme-elevation-100) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  border-radius: 0.75rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05) !important;
+}
 
-/* Pill (empty) */
-  .pill {}
+.react-select__option {
+  background-color: transparent !important;
+  color: var(--theme-text) !important;
+  font-size: 0.875rem !important;
+  padding: 0.625rem 1rem !important;
+  cursor: pointer !important;
+}
 
-/* Input Field */
-  .field-type.text:not(.has-many) input {
-    border: 1px solid var(--theme-elevation-200);
-  }
+.react-select__option--is-focused {
+  background-color: var(--theme-elevation-150) !important;
+  color: var(--theme-accent) !important;
+}
 
-/* Document Header (empty) */
-  .doc-header__title {}
+.react-select__option--is-selected {
+  background-color: rgba(5, 150, 105, 0.1) !important;
+  color: var(--theme-accent) !important;
+  font-weight: 600 !important;
+}
 
-/* Success Toast Close Button (empty) */
-  .Toastify .Toastify__close-button--success {}
+.react-select__single-value {
+  color: var(--theme-text) !important;
+}
 
-/* Success Toast Progress Bar (empty) */
-  .Toastify .Toastify__toast--success .Toastify__progress-bar {}
+/* ==========================================
+   5. Buttons (Kropy premium design)
+   ========================================== */
+.btn {
+  border-radius: 0.75rem !important; /* rounded-xl (12px) */
+  font-weight: 700 !important;
+  letter-spacing: 0.025em !important;
+  transition: all 0.2s ease-in-out !important;
+  text-transform: none !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
+}
 
-/* Success Toast (empty) */
-  .Toastify .Toastify__toast--success {}
+.btn--style-primary {
+  background-color: var(--theme-primary) !important;
+  border-color: var(--theme-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15) !important;
 
-/* Success Toast Close Button (empty) */
-  .Toastify .Toastify__close-button--error {}
-
-/* Success Toast Progress Bar (empty) */
-  .Toastify .Toastify__toast--error .Toastify__progress-bar {}
-
-/* Success Toast (empty) */
-  .Toastify .Toastify__toast--error {}
-
-/* Collapsible */
-  .collapsible {
-    border-radius: 4px;
-  }
-
-/* Collapsible Content */
-  .collapsible__content {
-    background-color: var(--theme-elevation-0);
-  }
-
-/* Collapsible Toggle */
-  .collapsible--style-default > .collapsible__toggle-wrap .collapsible__toggle {
-    background-color: var(--theme-elevation-50);
-  }
-
-/* Collapsible Style Default */
-  .collapsible--style-default {
-    border: 1px solid var(--theme-elevation-200);
-  }
-
-/* Table Row Odd */
-  .table tbody tr:nth-child(odd) {
-    background-color: var(--theme-elevation-50);
-  }
-
-/* Search Filter Wrapper (empty) */
-  .list-controls__wrap {}
-
-/* Search  Input (empty) */
-  .search-filter__input {}
-  
-  html[data-theme='dark'] {
-    /* Dark Theme Colors */
-    --theme-accent-0: var(--color-accent-900);
-    --theme-accent-50: var(--color-accent-850);
-    --theme-accent-100: var(--color-accent-800);
-    --theme-accent-150: var(--color-accent-750);
-    --theme-accent-200: var(--color-accent-700);
-    --theme-accent-250: var(--color-accent-650);
-    --theme-accent-300: var(--color-accent-600);
-    --theme-accent-350: var(--color-accent-550);
-    --theme-accent-400: var(--color-accent-450);
-    --theme-accent-450: var(--color-accent-400);
-    --theme-accent-550: var(--color-accent-350);
-    --theme-accent-600: var(--color-accent-300);
-    --theme-accent-650: var(--color-accent-250);
-    --theme-accent-700: var(--color-accent-200);
-    --theme-accent-750: var(--color-accent-150);
-    --theme-accent-800: var(--color-accent-100);
-    --theme-accent-850: var(--color-accent-50);
-    --theme-accent-900: var(--color-accent-0);
-    --theme-accent-950: var(--color-accent-0);
-    --theme-accent-1000: var(--color-accent-0);
+  &:hover {
+    background-color: var(--theme-primary-hover) !important;
+    border-color: var(--theme-primary-hover) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(5, 150, 105, 0.25) !important;
   }
   
+  &:active {
+    transform: scale(0.99) !important;
+  }
+}
+
+.btn--style-secondary, .btn--style-transparent {
+  background-color: transparent !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  color: var(--theme-text) !important;
+  box-shadow: none !important;
+
+  &:hover {
+    background-color: var(--theme-elevation-150) !important;
+    color: var(--theme-accent) !important;
+    border-color: var(--theme-elevation-300) !important;
+  }
+  
+  &:active {
+    transform: scale(0.99) !important;
+  }
+}
+
+/* ==========================================
+   6. Sidebar Navigation (Glassmorphic touches)
+   ========================================== */
+.nav {
+  @apply px-4;
+  background-color: var(--theme-elevation-50) !important;
+  border-right: 1px solid var(--theme-elevation-200) !important;
+}
+
+.nav-group__toggle {
+  /* font-size: 0.6875rem !important; */
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  color: var(--theme-elevation-400) !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+  border: none !important;
+}
+
+.nav-group__indicator svg .stroke {
+  stroke: var(--theme-accent) !important;
+}
+
+.nav-group__label {
+  color: var(--theme-accent) !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.05em !important;
+}
+
+.nav__link {
+  border-radius: 0.625rem !important; /* rounded-xl (10px) */
+  margin: 0.25rem 0.75rem !important;
+  padding: 0.625rem 1rem !important;
+  font-weight: 500 !important;
+  color: var(--theme-elevation-600) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background-color: var(--theme-elevation-150) !important;
+    color: var(--theme-accent) !important;
+    text-decoration: none !important;
+  }
+  .nav__link-indicator{
+     display: none;
+  }
+  &:has(.nav__link-indicator){
+    background-color: rgba(5, 150, 105, 0.08) !important;
+    color: var(--theme-accent) !important;
+    font-weight: 700 !important;
+    border-left: 3px solid var(--theme-accent) !important;
+  }
+
+}
+
+/* Hamburger controls navigation button style */
+.hamburger__wrapper, .hamburger:before, .hamburger:after {
+  border-radius: 9999px !important;
+}
+
+/* ==========================================
+   7. Aside Panel
+   ========================================== */
+
+.template-default__wrap{
+    @apply px-6;
+}
+
+
+/* ==========================================
+   7. Cards & Form Layouts
+   ========================================== */
+.card, .block-card {
+  border-radius: 1rem !important; /* 16px rounded-2xl */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.01), 0 8px 24px -10px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  background-color: var(--theme-elevation-100) !important;
+  padding: 1.5rem !important;
+}
+
+.card__title {
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+  color: var(--theme-elevation-900) !important;
+}
+
+/* ==========================================
+   8. Table UI styling
+   ========================================== */
+.table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+}
+
+.table th {
+  background-color: var(--theme-elevation-50) !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--theme-elevation-400) !important;
+  border-bottom: 1px solid var(--theme-elevation-200) !important;
+  padding: 0.875rem 1rem !important;
+}
+
+.table td {
+  padding: 0.875rem 1rem !important;
+  border-bottom: 1px solid var(--theme-elevation-200) !important;
+  color: var(--theme-text) !important;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: var(--theme-elevation-50) !important;
+}
+
+
