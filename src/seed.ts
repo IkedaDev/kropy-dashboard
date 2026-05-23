@@ -955,57 +955,5 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     }
   })
 
-  // Post 3 (Tenant 1, E-Commerce & Blog): Running con Showcase de Producto
-  await payload.create({
-    collection: 'posts',
-    data: {
-      title: 'Nuevas tendencias de running para el 2026',
-      slug: 'nuevas-tendencias-de-running-para-el-2026',
-      excerpt: 'Descubre los avances tecnológicos en calzado y cómo elegir las zapatillas idóneas para prevenir lesiones.',
-      coverImage: mediaGoldId,
-      author: authGold.id,
-      categories: [blogCatGold.id],
-      publishedAt: new Date().toISOString(),
-      content: {
-        root: {
-          type: 'root',
-          format: '',
-          indent: 0,
-          version: 1,
-          direction: null,
-          children: [
-            {
-              type: 'paragraph',
-              format: '',
-              indent: 0,
-              version: 1,
-              direction: null,
-              children: [
-                {
-                  detail: 0,
-                  format: 0,
-                  mode: 'normal',
-                  style: '',
-                  text: 'Las zapatillas con placas de fibra de carbono continúan dominando el mercado de atletismo. Aquí te recomendamos nuestro producto destacado de la temporada, disponible en nuestra tienda:',
-                  type: 'text',
-                  version: 1
-                }
-              ]
-            },
-            {
-              type: 'block',
-              version: 1,
-              fields: {
-                blockType: 'productShowcase',
-                product: prodRunning.id
-              }
-            }
-          ]
-        }
-      },
-      tenant: tenant1.id,
-    }
-  })
-
   payload.logger.info('=== BASE DE DATOS SEMBRADA CON ÉXITO ===')
 }
