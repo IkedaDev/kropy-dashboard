@@ -50,6 +50,7 @@ export const BlogCategories: CollectionConfig = {
       },
       type: 'text',
       required: true,
+      index: true,
       admin: {
         position: 'sidebar',
       },

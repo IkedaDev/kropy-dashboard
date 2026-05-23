@@ -51,6 +51,7 @@ export const Products: CollectionConfig = {
       },
       type: 'text',
       required: true,
+      index: true,
       admin: {
         position: 'sidebar',
       },

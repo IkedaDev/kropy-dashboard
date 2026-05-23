@@ -56,6 +56,7 @@ export const Posts: CollectionConfig = {
       },
       type: 'text',
       required: true,
+      index: true,
       admin: {
         position: 'sidebar',
       },
