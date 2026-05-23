@@ -5,6 +5,7 @@ import configPromise from '@payload-config'
 import { cookies } from 'next/headers'
 import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
+import { DefaultTemplate } from '@payloadcms/next/templates'
 import DashboardClient from './DashboardClient'
 
 const getLocalizedValue = (val: any): string => {
@@ -16,7 +17,7 @@ const getLocalizedValue = (val: any): string => {
   return String(val)
 }
 
-export default async function Dashboard({ initPageResult }: AdminViewServerProps) {
+export default async function Dashboard({ initPageResult, params, searchParams }: AdminViewServerProps) {
   const user = initPageResult.req.user
   if (!user) {
     return (
@@ -233,21 +234,32 @@ export default async function Dashboard({ initPageResult }: AdminViewServerProps
   }))
 
   return (
-    <DashboardClient
-      userEmail={user.email}
-      tenants={mappedTenants}
-      selectedTenantId={selectedTenantId}
-      isSuper={isSuper}
-      isGlobal={isGlobal}
-      stats={{
-        totalSales,
-        totalOrders: totalOrdersCount,
-        averageTicket,
-        totalCustomers,
-      }}
-      chartData={chartData}
-      recentOrders={recentOrders}
-      lowStockItems={lowStockItems}
-    />
+    <DefaultTemplate
+      i18n={initPageResult.req.i18n}
+      locale={initPageResult.locale}
+      params={params}
+      payload={initPageResult.req.payload}
+      permissions={initPageResult.permissions}
+      searchParams={searchParams}
+      user={initPageResult.req.user || undefined}
+      visibleEntities={initPageResult.visibleEntities}
+    >
+      <DashboardClient
+        userEmail={user.email}
+        tenants={mappedTenants}
+        selectedTenantId={selectedTenantId}
+        isSuper={isSuper}
+        isGlobal={isGlobal}
+        stats={{
+          totalSales,
+          totalOrders: totalOrdersCount,
+          averageTicket,
+          totalCustomers,
+        }}
+        chartData={chartData}
+        recentOrders={recentOrders}
+        lowStockItems={lowStockItems}
+      />
+    </DefaultTemplate>
   )
 }
