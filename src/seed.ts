@@ -98,6 +98,7 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
       name: 'Tenant 1',
       slug: 'gold',
       domain: 'gold.localhost',
+      enabledModules: ['ecommerce'],
     },
   })
 
@@ -107,6 +108,7 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
       name: 'Tenant 2',
       slug: 'silver',
       domain: 'silver.localhost',
+      enabledModules: ['ecommerce'],
     },
   })
 
@@ -116,8 +118,10 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
       name: 'Tenant 3',
       slug: 'bronze',
       domain: 'bronze.localhost',
+      enabledModules: ['blog'],
     },
   })
+
 
   payload.logger.info('=== CREANDO USUARIOS ===')
 

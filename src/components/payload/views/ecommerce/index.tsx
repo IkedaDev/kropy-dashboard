@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 import type { AdminViewServerProps } from 'payload'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -28,6 +29,18 @@ export default async function Dashboard({ initPageResult, params, searchParams }
     )
   }
 
+  const localeObj = initPageResult.locale
+  const localeCode = localeObj && typeof localeObj === 'object' ? (localeObj as any).code : localeObj
+  const isEn = localeCode === 'en'
+
+  const sanitizedLocale = localeObj && typeof localeObj === 'object'
+    ? {
+        code: (localeObj as any).code,
+        label: (localeObj as any).label,
+        rtl: (localeObj as any).rtl,
+      }
+    : localeObj
+
   const payload = await getPayload({ config: configPromise })
   const cookieStore = await cookies()
   const isSuper = isSuperAdmin(user)
@@ -42,6 +55,92 @@ export default async function Dashboard({ initPageResult, params, searchParams }
   }
 
   const isGlobal = isSuper && (!selectedTenantId || selectedTenantId === 'global')
+
+  // Check if E-commerce module is enabled for the selected tenant
+  let isEcommerceEnabled = true
+  let currentTenantObj: any = null
+
+  if (!isGlobal && selectedTenantId) {
+    try {
+      currentTenantObj = await payload.findByID({
+        collection: 'tenants',
+        id: selectedTenantId,
+        depth: 0,
+      })
+      if (currentTenantObj && currentTenantObj.enabledModules) {
+        isEcommerceEnabled = (currentTenantObj.enabledModules as string[]).includes('ecommerce')
+      }
+    } catch (err) {
+      console.error('Error fetching tenant in ecommerce index:', err)
+    }
+  }
+
+  if (!isEcommerceEnabled) {
+    return (
+      <DefaultTemplate
+        i18n={initPageResult.req.i18n}
+        locale={sanitizedLocale as any}
+        params={params}
+        payload={initPageResult.req.payload}
+        permissions={initPageResult.permissions}
+        searchParams={searchParams}
+        user={initPageResult.req.user || undefined}
+        visibleEntities={initPageResult.visibleEntities}
+      >
+        <div style={{ padding: '2rem 1.5rem', maxWidth: '800px', margin: '3rem auto', textAlign: 'center', fontFamily: 'sans-serif' }}>
+          <div 
+            style={{
+              background: 'var(--theme-elevation-100)',
+              border: '1px solid var(--theme-border-color)',
+              borderRadius: '1.5rem',
+              padding: '3rem 2rem',
+              boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.02)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '1.5rem'
+            }}
+          >
+            <div style={{ padding: '1rem', borderRadius: '50%', backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--theme-warning)', display: 'inline-flex' }}>
+              <svg className="w-16 h-16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" style={{ width: '64px', height: '64px' }}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--theme-elevation-900)', margin: 0 }}>
+              {isEn ? 'Module Not Contracted' : 'Módulo No Contratado'}
+            </h1>
+            <p style={{ fontSize: '1rem', color: 'var(--theme-elevation-500)', lineHeight: '1.6', margin: 0, maxWidth: '500px' }}>
+              {isEn 
+                ? `The E-commerce module is not enabled for the organization "${currentTenantObj?.name || 'this organization'}".`
+                : `El módulo de Comercio Electrónico no está habilitado para la organización "${currentTenantObj?.name || 'esta organización'}".`}
+            </p>
+            <p style={{ fontSize: '0.875rem', color: 'var(--theme-elevation-400)', margin: 0 }}>
+              {isEn
+                ? 'Please contact system administration to activate this service.'
+                : 'Por favor, contacta a la administración del sistema para activar este servicio.'}
+            </p>
+            <Link 
+              href="/admin"
+              style={{
+                marginTop: '1rem',
+                backgroundColor: 'var(--theme-accent)',
+                color: '#fff',
+                textDecoration: 'none',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+                padding: '0.75rem 1.5rem',
+                borderRadius: '0.75rem',
+                transition: 'all 0.25s ease',
+                boxShadow: '0 4px 12px rgba(5, 150, 105, 0.2)'
+              }}
+            >
+              {isEn ? 'Back to Home' : 'Volver al Inicio'}
+            </Link>
+          </div>
+        </div>
+      </DefaultTemplate>
+    )
+  }
 
   // Fetch available tenants details for selector
   let tenants: any[] = []
@@ -236,7 +335,7 @@ export default async function Dashboard({ initPageResult, params, searchParams }
   return (
     <DefaultTemplate
       i18n={initPageResult.req.i18n}
-      locale={initPageResult.locale}
+      locale={sanitizedLocale as any}
       params={params}
       payload={initPageResult.req.payload}
       permissions={initPageResult.permissions}

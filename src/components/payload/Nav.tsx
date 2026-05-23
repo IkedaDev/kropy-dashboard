@@ -46,8 +46,8 @@ export default function Nav() {
     }
     setSelectedTenant(getTenantCookie())
 
-    // Fetch tenants only if user is super-admin
-    if (isSuper) {
+    // Fetch tenants for all authenticated users (filtered by tenant read access on server)
+    if (user) {
       setLoadingTenants(true)
       fetch('/api/tenants?limit=100')
         .then((res) => res.json())
@@ -64,7 +64,23 @@ export default function Nav() {
     } else {
       setLoadingTenants(false)
     }
-  }, [isSuper])
+  }, [user])
+
+  const isModuleEnabled = (moduleKey: string) => {
+    if (selectedTenant === 'global' || !selectedTenant) {
+      return true
+    }
+    const activeTenantObj = tenants.find((t) => String(t.id) === String(selectedTenant))
+    if (!activeTenantObj) {
+      // If loading or tenant not found yet, default to true to prevent screen flicker
+      return true
+    }
+    // If enabledModules is not set or empty, default to 'ecommerce' for safety
+    if (!activeTenantObj.enabledModules) {
+      return moduleKey === 'ecommerce'
+    }
+    return activeTenantObj.enabledModules.includes(moduleKey)
+  }
 
   const handleTenantChange = (val: string) => {
     document.cookie = `payload-tenant=${val}; path=/; max-age=7200`
@@ -89,6 +105,7 @@ export default function Nav() {
   interface NavGroup {
     label: { es: string; en: string }
     links: NavLink[]
+    module?: string
   }
 
   const groups: NavGroup[] = [
@@ -107,6 +124,7 @@ export default function Nav() {
     },
     {
       label: { es: 'Comercio Electrónico', en: 'E-Commerce' },
+      module: 'ecommerce',
       links: [
         { label: { es: 'Dashboard', en: 'Dashboard' }, href: `${adminRoute}/ecommerce-dashboard`, icon: DashboardIcon },
         { label: { es: 'Órdenes', en: 'Orders' }, href: `${adminRoute}/collections/orders`, icon: OrdersIcon },
@@ -214,6 +232,11 @@ export default function Nav() {
         <div className="nav__scroll">
           <div style={{ flex: 1 }}>
             {groups.map((group, gIdx) => {
+              // Filter out the group if its associated module is not enabled for the selected tenant
+              if (group.module && !isModuleEnabled(group.module)) {
+                return null
+              }
+
               const visibleLinks = group.links.filter(link => !link.superAdminOnly || isSuper)
               if (visibleLinks.length === 0) return null
 

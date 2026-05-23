@@ -181,6 +181,10 @@ export interface Tenant {
    * If checked, logging in is not required to read. Useful for building public pages.
    */
   allowPublicRead?: boolean | null;
+  /**
+   * Select the business modules this organization has contracted access to.
+   */
+  enabledModules?: ('ecommerce' | 'blog' | 'restaurant' | 'gallery')[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -685,6 +689,7 @@ export interface TenantsSelect<T extends boolean = true> {
   domain?: T;
   slug?: T;
   allowPublicRead?: T;
+  enabledModules?: T;
   updatedAt?: T;
   createdAt?: T;
 }

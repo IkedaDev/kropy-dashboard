@@ -8,14 +8,16 @@ import { translations } from './translations'
 interface WelcomeClientProps {
   userEmail: string
   userRoles: string[]
+  enabledModules?: string[]
 }
 
-export default function WelcomeClient({ userEmail, userRoles }: WelcomeClientProps) {
+export default function WelcomeClient({ userEmail, userRoles, enabledModules = ['ecommerce'] }: WelcomeClientProps) {
   const { i18n } = useTranslation()
 
   const isEn = i18n?.language === 'en'
   const t = isEn ? translations.en : translations.es
   const isSuper = userRoles?.includes('super-admin')
+  const isEcommerceEnabled = enabledModules.includes('ecommerce')
 
   const adminRoute = '/admin'
 
@@ -33,15 +35,20 @@ export default function WelcomeClient({ userEmail, userRoles }: WelcomeClientPro
       desc: t.ecommerceDesc,
       href: `${adminRoute}/ecommerce-dashboard`,
       icon: (
-        <svg className="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <svg className={`w-8 h-8 ${isEcommerceEnabled ? 'text-emerald-500' : 'text-slate-400'}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
           <circle cx="9" cy="21" r="1" />
           <circle cx="20" cy="21" r="1" />
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
         </svg>
       ),
-      badge: isEn ? 'Active' : 'Activo',
-      badgeColor: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-      gradient: 'from-emerald-500/5 to-teal-500/5 hover:border-emerald-500/50'
+      badge: isEcommerceEnabled ? (isEn ? 'Active' : 'Activo') : (isEn ? 'Not contracted' : 'No contratado'),
+      badgeColor: isEcommerceEnabled 
+        ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' 
+        : 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+      gradient: isEcommerceEnabled 
+        ? 'from-emerald-500/5 to-teal-500/5 hover:border-emerald-500/50' 
+        : 'opacity-50 grayscale cursor-not-allowed hover:border-transparent',
+      disabled: !isEcommerceEnabled
     },
     {
       title: t.contentTitle,
@@ -154,12 +161,8 @@ export default function WelcomeClient({ userEmail, userRoles }: WelcomeClientPro
         </h2>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
-          {activeCards.map((card, idx) => (
-            <Link 
-              key={idx} 
-              href={card.href} 
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >
+          {activeCards.map((card, idx) => {
+            const innerContent = (
               <div
                 style={{
                   background: 'var(--theme-elevation-100)',
@@ -171,15 +174,17 @@ export default function WelcomeClient({ userEmail, userRoles }: WelcomeClientPro
                   flexDirection: 'column',
                   gap: '1rem',
                   transition: 'all 0.25s ease',
-                  cursor: 'pointer',
+                  cursor: card.disabled ? 'not-allowed' : 'pointer',
                   boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.01)',
                 }}
                 className={`hover-card bg-gradient-to-br ${card.gradient}`}
                 onMouseEnter={(e) => {
+                  if (card.disabled) return
                   e.currentTarget.style.transform = 'translateY(-3px)'
                   e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(0,0,0,0.05)'
                 }}
                 onMouseLeave={(e) => {
+                  if (card.disabled) return
                   e.currentTarget.style.transform = 'translateY(0)'
                   e.currentTarget.style.boxShadow = '0 1px 3px 0 rgba(0,0,0,0.01)'
                 }}
@@ -212,8 +217,29 @@ export default function WelcomeClient({ userEmail, userRoles }: WelcomeClientPro
                   </p>
                 </div>
               </div>
-            </Link>
-          ))}
+            )
+
+            if (card.disabled) {
+              return (
+                <div
+                  key={idx}
+                  style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                >
+                  {innerContent}
+                </div>
+              )
+            }
+
+            return (
+              <Link
+                key={idx}
+                href={card.href}
+                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+              >
+                {innerContent}
+              </Link>
+            )
+          })}
         </div>
       </div>
 

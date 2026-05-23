@@ -87,5 +87,27 @@ export const Tenants: CollectionConfig = {
       defaultValue: false,
       index: true,
     },
+    {
+      name: 'enabledModules',
+      label: {
+        es: 'Módulos Habilitados',
+        en: 'Enabled Modules',
+      },
+      type: 'select',
+      hasMany: true,
+      defaultValue: ['ecommerce'],
+      options: [
+        { label: { es: 'Comercio Electrónico', en: 'E-commerce' }, value: 'ecommerce' },
+        { label: { es: 'Blog', en: 'Blog' }, value: 'blog' },
+        { label: { es: 'Cartas de Restaurante', en: 'Restaurant Menus' }, value: 'restaurant' },
+        { label: { es: 'Galería', en: 'Gallery' }, value: 'gallery' },
+      ],
+      admin: {
+        description: {
+          es: 'Selecciona los módulos de negocio a los que esta organización tiene acceso contratado.',
+          en: 'Select the business modules this organization has contracted access to.',
+        },
+      },
+    },
   ],
 }
