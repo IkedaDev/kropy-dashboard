@@ -20,7 +20,7 @@ async function discountStock(req: PayloadRequest, items: any[]) {
 
         if (product.hasVariants && variantId) {
           const variants = product.variants || []
-          const variantIndex = variants.findIndex((v: any) => v.id === variantId)
+          const variantIndex = variants.findIndex((v: any) => String(v.id) === String(variantId))
 
           if (variantIndex !== -1) {
             const variant = variants[variantIndex]
@@ -103,7 +103,7 @@ async function restoreStock(req: PayloadRequest, items: any[]) {
 
         if (product.hasVariants && variantId) {
           const variants = product.variants || []
-          const variantIndex = variants.findIndex((v: any) => v.id === variantId)
+          const variantIndex = variants.findIndex((v: any) => String(v.id) === String(variantId))
 
           if (variantIndex !== -1) {
             const variant = variants[variantIndex]

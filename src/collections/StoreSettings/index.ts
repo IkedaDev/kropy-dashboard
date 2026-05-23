@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { enforceStoreSettingsSingleton } from './hooks/enforceStoreSettingsSingleton'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
+import { validateCLPAmount } from '@/utilities/validateCLP'
 
 export const StoreSettings: CollectionConfig = {
   slug: 'store-settings',
@@ -64,6 +65,7 @@ export const StoreSettings: CollectionConfig = {
             en: 'Flat Rate Shipping Cost',
           },
           type: 'number',
+          validate: validateCLPAmount(false),
           min: 0,
         },
         {

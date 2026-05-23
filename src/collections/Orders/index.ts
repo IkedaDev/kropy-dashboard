@@ -2,6 +2,7 @@ import type { CollectionConfig, FieldAccess } from 'payload'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 import { syncWebhook } from './endpoints/syncWebhook'
 import { handleOrderStatusAndStock } from './hooks/handleOrderStatusAndStock'
+import { validateCLPAmount } from '@/utilities/validateCLP'
 
 const onlySuperAdminCanUpdate: FieldAccess = ({ req }) => {
   if (req.user && req.user.roles?.includes('super-admin')) {
@@ -184,6 +185,7 @@ export const Orders: CollectionConfig = {
           },
           type: 'number',
           required: true,
+          validate: validateCLPAmount(true),
           min: 0,
         },
         {
@@ -206,6 +208,7 @@ export const Orders: CollectionConfig = {
       },
       type: 'number',
       required: true,
+      validate: validateCLPAmount(true),
       min: 0,
       access: {
         update: onlySuperAdminCanUpdate,
@@ -219,6 +222,7 @@ export const Orders: CollectionConfig = {
       },
       type: 'number',
       defaultValue: 0,
+      validate: validateCLPAmount(false),
       min: 0,
       access: {
         update: onlySuperAdminCanUpdate,
@@ -232,6 +236,7 @@ export const Orders: CollectionConfig = {
       },
       type: 'number',
       defaultValue: 0,
+      validate: validateCLPAmount(false),
       min: 0,
       access: {
         update: onlySuperAdminCanUpdate,
@@ -245,6 +250,7 @@ export const Orders: CollectionConfig = {
       },
       type: 'number',
       required: true,
+      validate: validateCLPAmount(true),
       min: 0,
       access: {
         update: onlySuperAdminCanUpdate,

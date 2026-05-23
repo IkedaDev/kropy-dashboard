@@ -3,6 +3,7 @@ import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdm
 import { extractID } from '@/utilities/extractID'
 import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 import { preventDeleteIfOrdered } from './hooks/preventDeleteIfOrdered'
+import { validateCLPAmount, validateDiscountValue } from '@/utilities/validateCLP'
 
 export const Discounts: CollectionConfig = {
   slug: 'discounts',
@@ -135,6 +136,7 @@ export const Discounts: CollectionConfig = {
       },
       type: 'number',
       required: true,
+      validate: validateDiscountValue,
       min: 0,
     },
     {
@@ -144,6 +146,7 @@ export const Discounts: CollectionConfig = {
         en: 'Minimum Purchase Amount',
       },
       type: 'number',
+      validate: validateCLPAmount(false),
       min: 0,
       admin: {
         description: {

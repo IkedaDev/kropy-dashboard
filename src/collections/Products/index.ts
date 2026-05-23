@@ -3,6 +3,7 @@ import { createAutoSlug } from '@/utilities/autoSlugGeneric'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 import { preventDeleteIfOrdered } from './hooks/preventDeleteIfOrdered'
+import { validateCLPAmount } from '@/utilities/validateCLP'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -66,6 +67,7 @@ export const Products: CollectionConfig = {
       },
       type: 'number',
       required: true,
+      validate: validateCLPAmount(true),
       min: 0,
       admin: {
         description: {
@@ -81,6 +83,7 @@ export const Products: CollectionConfig = {
         en: 'Compare-at Price / Before (Optional)',
       },
       type: 'number',
+      validate: validateCLPAmount(false),
       min: 0,
       admin: {
         description: {
@@ -246,6 +249,7 @@ export const Products: CollectionConfig = {
             en: 'Variant Price (Optional)',
           },
           type: 'number',
+          validate: validateCLPAmount(false),
           min: 0,
           admin: {
             description: {
@@ -261,6 +265,7 @@ export const Products: CollectionConfig = {
             en: 'Compare-at Price / Before (Optional)',
           },
           type: 'number',
+          validate: validateCLPAmount(false),
           min: 0,
           admin: {
             description: {
