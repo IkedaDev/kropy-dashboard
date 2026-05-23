@@ -312,6 +312,15 @@ textarea {
     border-left: 3px solid var(--theme-accent) !important;
   }
 
+  &.logout {
+    color: #ef4444 !important;
+
+    &:hover {
+      background-color: rgba(239, 68, 68, 0.08) !important;
+      color: #dc2626 !important;
+    }
+  }
+
 }
 
 /* Hamburger controls navigation button style */
@@ -326,6 +335,8 @@ textarea {
 .template-default__wrap{
     padding-left: 1.5rem !important;
     padding-right: 1.5rem !important;
+    max-height: 100vh;
+    overflow-y: auto;
 }
 
 
@@ -379,6 +390,7 @@ textarea {
   padding: 1rem 1rem !important;
   border-bottom: 1px solid var(--theme-elevation-200) !important;
   color: var(--theme-text) !important;
+  vertical-align: middle;
   a{
     text-decoration: none;
     &:hover{
@@ -423,4 +435,199 @@ textarea {
             transform: scale(0.99) !important;
         }
     }
+}
+
+/* ==========================================
+   8. Custom Nav Styles (Native Overrides)
+   ========================================== */
+.aside-nav {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  width: 280px !important;
+  background-color: var(--theme-elevation-50) !important;
+  border-right: 1px solid var(--theme-elevation-200) !important;
+  padding: 1.5rem 1.25rem !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  position: relative !important;
+  transition: width 0.3s ease, padding 0.3s ease !important;
+
+  /* Sincronización del estado contraído / cerrado */
+  &.nav--closed {
+    width: 78px !important;
+    padding: 1.5rem 0.5rem !important;
+
+    .nav__logo {
+      display: none !important;
+    }
+    
+    .nav__icon {
+      display: block !important;
+      margin: 0 auto !important;
+      
+      img {
+        width: 36px !important;
+        height: 36px !important;
+        object-fit: contain !important;
+      }
+    }
+
+    .nav__tenant-select-container {
+      display: none !important;
+    }
+
+    .nav-group__toggle {
+      display: none !important;
+    }
+
+    .nav__link {
+      justify-content: center !important;
+      padding: 0.625rem 0 !important;
+      margin: 0.25rem 0 !important;
+      
+      span:not(.nav__link-indicator) {
+        display: none !important;
+      }
+      
+      svg {
+        margin-right: 0 !important;
+      }
+    }
+
+    .nav__user-email {
+      display: none !important;
+    }
+  }
+
+  .nav__wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+
+  }
+
+  .nav__header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 2rem !important;
+    position: relative !important;
+    width: 100% !important;
+    min-height: 4rem !important;
+    gap: 0.5rem !important;
+    
+    .nav__header-toggle {
+      flex-shrink: 0 !important;
+    }
+  }
+
+  .nav__logo {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-grow: 1 !important;
+  }
+
+  .nav__icon {
+    display: none !important;
+  }
+
+  .nav__tenant-select-container {
+    padding: 0 0.5rem !important;
+    margin-bottom: 1.5rem !important;
+    min-height: 62px !important; /* Respetar espacio para que no salte la vista */
+  }
+
+  .nav__tenant-label {
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    color: var(--theme-elevation-400) !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
+  }
+
+  .nav__tenant-select-wrapper {
+    position: relative !important;
+  }
+
+  .nav__tenant-select {
+    appearance: none !important;
+    width: 100% !important;
+    background-color: var(--theme-elevation-100) !important;
+    border: 1px solid var(--theme-elevation-200) !important;
+    color: var(--theme-text) !important;
+    padding: 0.625rem 2rem 0.625rem 0.75rem !important;
+    border-radius: 0.75rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    outline: none !important;
+
+    &:focus {
+      border-color: var(--theme-accent) !important;
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1) !important;
+    }
+  }
+
+  .nav__tenant-select-icon {
+    pointer-events: none !important;
+    position: absolute !important;
+    top: 50% !important;
+    right: 0.75rem !important;
+    transform: translateY(-50%) !important;
+    color: var(--theme-elevation-400) !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .nav__scroll {
+    flex: 1 !important;
+    width: 100% !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    width: 100%;
+    &::-webkit-scrollbar {
+      display: none !important;
+    }
+  }
+
+  .nav-group {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .nav-group__toggle {
+    margin-top: 0 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .nav-group__links {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+  }
+
+  .nav__footer {
+    border-top: 1px solid var(--theme-elevation-200) !important;
+    padding-top: 1rem !important;
+    margin-top: 1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav__user-email {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: var(--theme-elevation-500) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    padding: 0 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+  }
 }
