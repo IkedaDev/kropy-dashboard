@@ -80,7 +80,7 @@ export default function DashboardClient({
   }
 
   return (
-    <div className="bg-(--theme-elevation-0) py-8 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="py-8 px-4 sm:px-6 lg:px-8 font-sans">
       {/* Header Panel */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 mb-8 border-b border-(--theme-elevation-200) gap-4">
         <div>

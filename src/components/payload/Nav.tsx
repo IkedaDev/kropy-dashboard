@@ -246,7 +246,9 @@ export default function Nav() {
             })}
           </div>
 
-          {/* Sidebar Footer with user info & logout */}
+          
+        </div>
+        {/* Sidebar Footer with user info & logout */}
           {user && (
             <div className="nav__footer" style={{ borderTop: '1px solid var(--theme-elevation-200)', paddingTop: '1rem', marginTop: '1rem' }}>
               {/* <div className="nav__user-email" style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--theme-elevation-500)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', padding: '0 0.75rem', marginBottom: '0.5rem' }} title={user.email}>
@@ -270,7 +272,6 @@ export default function Nav() {
               </button>
             </div>
           )}
-        </div>
       </div>
     </aside>
   )
