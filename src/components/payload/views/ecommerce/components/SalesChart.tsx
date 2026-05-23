@@ -181,21 +181,32 @@ export default function SalesChart({ chartData, t }: SalesChartProps) {
             />
           )}
 
-          {/* Chart Circles (Nodes) */}
-          {points.map((p, i) => (
-            <circle
-              key={i}
-              cx={p.x}
-              cy={p.y}
-              r={hoveredIdx === i ? 6 : 4}
-              fill="var(--theme-elevation-100)"
-              stroke="var(--theme-accent)"
-              strokeWidth={hoveredIdx === i ? 3 : 2}
-              className="transition-all duration-150 cursor-pointer"
-              onMouseEnter={() => setHoveredIdx(i)}
-              onMouseLeave={() => setHoveredIdx(null)}
-            />
-          ))}
+          {/* Chart Circles (Nodes) represented as zero-length paths to prevent distortion */}
+          {points.map((p, i) => {
+            const isHovered = hoveredIdx === i
+            const outerSize = isHovered ? 12 : 8
+            const innerSize = isHovered ? 6 : 4
+            return (
+              <g key={i} className="transition-all duration-150">
+                {/* Outer circle (border) */}
+                <path
+                  d={`M ${p.x} ${p.y} L ${p.x + 0.0001} ${p.y}`}
+                  stroke="var(--theme-accent)"
+                  strokeWidth={outerSize}
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+                {/* Inner circle (fill) */}
+                <path
+                  d={`M ${p.x} ${p.y} L ${p.x + 0.0001} ${p.y}`}
+                  stroke="var(--theme-elevation-100)"
+                  strokeWidth={innerSize}
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </g>
+            )
+          })}
 
           {/* Invisible Columns for Hover Detection */}
           {points.map((p, i) => {
