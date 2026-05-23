@@ -4,8 +4,7 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
-import { es } from '@payloadcms/translations/languages/es'
-import { en } from '@payloadcms/translations/languages/en'
+
 
 
 import { Pages } from './collections/Pages'
@@ -48,7 +47,11 @@ export default buildConfig({
       Nav: '/components/payload/Nav',
       views: {
         dashboard: {
-          Component: '/components/payload/Dashboard',
+          Component: '/components/payload/views/Welcome',
+        },
+        ecommerceDashboard: {
+          Component: '/components/payload/views/ecommerce',
+          path: '/ecommerce-dashboard',
         },
       },
     }
@@ -112,7 +115,6 @@ export default buildConfig({
     fallback: true,      // Si no hay traducción en inglés, muestra el texto en español por defecto
   },
   i18n: {
-    supportedLanguages: { es, en },
     fallbackLanguage: 'es',
   },
 })

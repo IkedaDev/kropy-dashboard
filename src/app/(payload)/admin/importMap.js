@@ -30,7 +30,8 @@ import { default as default_c6fe5946efe4ec376b0411c30a8f0d79 } from '../../../co
 import { TenantSelector as TenantSelector_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
 import { default as default_92e1eafa989db84077a934028cae2971 } from '../../../app/components/ForceThemeProvider'
 import { TenantSelectionProvider as TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
-import { default as default_bfe3dda99be101306e18d134ca8bfe68 } from '../../../components/payload/Dashboard'
+import { default as default_997c041708ee4da372296b0de8677015 } from '../../../components/payload/views/Welcome'
+import { default as default_baa4b4048ea0246124fe8ce628cd786b } from '../../../components/payload/views/ecommerce'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -67,6 +68,7 @@ export const importMap = {
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelector": TenantSelector_d6d5f193a167989e2ee7d14202901e62,
   "/app/components/ForceThemeProvider#default": default_92e1eafa989db84077a934028cae2971,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelectionProvider": TenantSelectionProvider_d6d5f193a167989e2ee7d14202901e62,
-  "/components/payload/Dashboard#default": default_bfe3dda99be101306e18d134ca8bfe68,
+  "/components/payload/views/Welcome#default": default_997c041708ee4da372296b0de8677015,
+  "/components/payload/views/ecommerce#default": default_baa4b4048ea0246124fe8ce628cd786b,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

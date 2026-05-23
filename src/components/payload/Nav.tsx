@@ -79,7 +79,19 @@ export default function Nav() {
     return pathname.startsWith(href)
   }
 
-  const groups = [
+  interface NavLink {
+    label: { es: string; en: string }
+    href: string
+    icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+    superAdminOnly?: boolean
+  }
+
+  interface NavGroup {
+    label: { es: string; en: string }
+    links: NavLink[]
+  }
+
+  const groups: NavGroup[] = [
     {
       label: { es: 'Inicio', en: 'Home' },
       links: [
@@ -96,6 +108,7 @@ export default function Nav() {
     {
       label: { es: 'Comercio Electrónico', en: 'E-Commerce' },
       links: [
+        { label: { es: 'Dashboard', en: 'Dashboard' }, href: `${adminRoute}/ecommerce-dashboard`, icon: DashboardIcon },
         { label: { es: 'Órdenes', en: 'Orders' }, href: `${adminRoute}/collections/orders`, icon: OrdersIcon },
         { label: { es: 'Productos', en: 'Products' }, href: `${adminRoute}/collections/products`, icon: ProductsIcon },
         { label: { es: 'Categorías', en: 'Categories' }, href: `${adminRoute}/collections/categories`, icon: CategoriesIcon },

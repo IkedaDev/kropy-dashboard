@@ -20,7 +20,7 @@ export default async function Dashboard({ initPageResult }: AdminViewServerProps
   const user = initPageResult.req.user
   if (!user) {
     return (
-      <div className="p-8 text-center bg-[var(--theme-elevation-50)] rounded-2xl border border-[var(--theme-elevation-200)] m-6">
+      <div className="p-8 text-center bg-[var(--theme-elevation-50)] rounded-2xl border border-[var(--theme-elevation-200)] m-6 font-sans">
         <p className="text-red-500 font-bold text-lg">No estás autenticado.</p>
         <p className="text-sm text-[var(--theme-elevation-400)] mt-2">Inicia sesión para visualizar esta página.</p>
       </div>

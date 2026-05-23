@@ -1,0 +1,40 @@
+export const translations = {
+  es: {
+    title: 'Bienvenido a Kropy',
+    description: 'Selecciona una de las secciones de tu organización para comenzar a trabajar. Este panel centralizado te permite acceder a tus herramientas de e-commerce y contenidos.',
+    quickAccess: 'Accesos Rápidos',
+    ecommerceTitle: 'Comercio Electrónico',
+    ecommerceDesc: 'Ver estadísticas de ventas, procesar órdenes, gestionar catálogo de productos, inventario, categorías y clientes.',
+    contentTitle: 'Contenido y Páginas',
+    contentDesc: 'Editar y personalizar las páginas de aterrizaje de tus tiendas y administrar los archivos multimedia.',
+    settingsTitle: 'Ajustes de Tienda',
+    settingsDesc: 'Configurar costos de despacho, información de contacto, políticas de devolución y términos de servicio.',
+    tenantsTitle: 'Organizaciones',
+    tenantsDesc: 'Administración global de tenants, dominios, slugs y configuraciones del sistema (Solo Super-Admin).',
+    blogTitle: 'Blog (Próximamente)',
+    blogDesc: 'Publicar noticias, artículos de interés y novedades sobre tus marcas y productos.',
+    restaurantTitle: 'Cartas de Restaurant (Próximamente)',
+    restaurantDesc: 'Administrar platos, menús del día, alérgenos y precios para tu negocio gastronómico.',
+    documentation: 'Documentación del Panel',
+    documentationDesc: 'Aprende a usar todas las herramientas del CMS para potenciar tus ventas y SEO.'
+  },
+  en: {
+    title: 'Welcome to Kropy',
+    description: 'Select one of your organization\'s sections to start working. This centralized panel allows you to access your e-commerce tools and content.',
+    quickAccess: 'Quick Access',
+    ecommerceTitle: 'E-commerce',
+    ecommerceDesc: 'View sales stats, process orders, manage product catalog, inventory, categories, and customers.',
+    contentTitle: 'Content & Pages',
+    contentDesc: 'Edit and customize your stores\' landing pages and manage media files.',
+    settingsTitle: 'Store Settings',
+    settingsDesc: 'Configure shipping costs, contact info, return policies, and terms of service.',
+    tenantsTitle: 'Organizations',
+    tenantsDesc: 'Global administration of tenants, domains, slugs, and system configurations (Super-Admin only).',
+    blogTitle: 'Blog (Coming Soon)',
+    blogDesc: 'Publish news, articles of interest, and updates about your brands and products.',
+    restaurantTitle: 'Restaurant Menus (Coming Soon)',
+    restaurantDesc: 'Manage dishes, daily menus, allergens, and pricing for your food business.',
+    documentation: 'Panel Documentation',
+    documentationDesc: 'Learn how to use all the CMS tools to boost your sales and SEO.'
+  }
+}
