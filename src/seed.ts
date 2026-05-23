@@ -60,6 +60,9 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
 
   // Limpiar colecciones en orden para respetar dependencias
   const collectionsToClear = [
+    'posts',
+    'blog-categories',
+    'authors',
     'product-reviews',
     'orders',
     'discounts',
@@ -859,6 +862,149 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
       approved: true,
       tenant: tenant3.id,
     },
+  })
+
+  payload.logger.info('=== CREANDO AUTORES DE BLOG (AUTHORS) ===')
+
+  const authGold = await payload.create({
+    collection: 'authors',
+    data: {
+      name: 'Kropy Editor',
+      avatar: mediaGoldId,
+      bio: 'Editor oficial de Kropy Gold.',
+      tenant: tenant1.id,
+      socialLinks: [
+        { platform: 'instagram', url: 'https://instagram.com/kropy' }
+      ]
+    }
+  })
+
+  const authBronze = await payload.create({
+    collection: 'authors',
+    data: {
+      name: 'Sofía Valenzuela',
+      avatar: mediaBronzeId,
+      bio: 'Periodista y redactora especializada en literatura y desarrollo personal.',
+      tenant: tenant3.id,
+      socialLinks: [
+        { platform: 'linkedin', url: 'https://linkedin.com/in/sofia-valenzuela' }
+      ]
+    }
+  })
+
+  payload.logger.info('=== CREANDO CATEGORIAS DE BLOG (BLOG CATEGORIES) ===')
+
+  const blogCatGold = await payload.create({
+    collection: 'blog-categories',
+    data: {
+      name: 'Estilo de Vida',
+      slug: 'estilo-de-vida',
+      tenant: tenant1.id,
+    }
+  })
+
+  const blogCatResenas = await payload.create({
+    collection: 'blog-categories',
+    data: {
+      name: 'Reseñas de Libros',
+      slug: 'resenas-de-libros',
+      tenant: tenant3.id,
+    }
+  })
+
+  const blogCatCrecimiento = await payload.create({
+    collection: 'blog-categories',
+    data: {
+      name: 'Crecimiento Personal',
+      slug: 'crecimiento-personal',
+      tenant: tenant3.id,
+    }
+  })
+
+  payload.logger.info('=== CREANDO ARTICULOS DE BLOG (POSTS) ===')
+
+  // Post 1 (Tenant 3, Blog-only): Crecimiento Personal
+  await payload.create({
+    collection: 'posts',
+    data: {
+      title: 'Cómo crear hábitos productivos en 5 pasos',
+      slug: 'como-crear-habitos-productivos-en-5-pasos',
+      excerpt: 'Aprende las estrategias científicas más efectivas para establecer hábitos saludables que perduren en el tiempo.',
+      coverImage: mediaBronzeId,
+      author: authBronze.id,
+      categories: [blogCatCrecimiento.id],
+      publishedAt: new Date().toISOString(),
+      content: createLexicalRichText('En este artículo exploramos cómo los pequeños cambios diarios, guiados por el principio del interés compuesto conductual, pueden rediseñar tu rutina diaria y potenciar tu productividad al máximo.'),
+      tenant: tenant3.id,
+    }
+  })
+
+  // Post 2 (Tenant 3, Blog-only): Reseña Literaria
+  await payload.create({
+    collection: 'posts',
+    data: {
+      title: 'El impacto del realismo mágico en la literatura moderna',
+      slug: 'el-impacto-del-realismo-magico-en-la-literatura-moderna',
+      excerpt: 'Un recorrido por el legado de Gabriel García Márquez y cómo redefinió la narrativa fantástica en el siglo XX.',
+      coverImage: mediaBronzeId,
+      author: authBronze.id,
+      categories: [blogCatResenas.id],
+      publishedAt: new Date().toISOString(),
+      content: createLexicalRichText('El realismo mágico no es meramente fantasía; es la coexistencia natural de lo insólito en lo cotidiano. Desde Macondo hasta los autores actuales, analizamos este hito narrativo.'),
+      tenant: tenant3.id,
+    }
+  })
+
+  // Post 3 (Tenant 1, E-Commerce & Blog): Running con Showcase de Producto
+  await payload.create({
+    collection: 'posts',
+    data: {
+      title: 'Nuevas tendencias de running para el 2026',
+      slug: 'nuevas-tendencias-de-running-para-el-2026',
+      excerpt: 'Descubre los avances tecnológicos en calzado y cómo elegir las zapatillas idóneas para prevenir lesiones.',
+      coverImage: mediaGoldId,
+      author: authGold.id,
+      categories: [blogCatGold.id],
+      publishedAt: new Date().toISOString(),
+      content: {
+        root: {
+          type: 'root',
+          format: '',
+          indent: 0,
+          version: 1,
+          direction: null,
+          children: [
+            {
+              type: 'paragraph',
+              format: '',
+              indent: 0,
+              version: 1,
+              direction: null,
+              children: [
+                {
+                  detail: 0,
+                  format: 0,
+                  mode: 'normal',
+                  style: '',
+                  text: 'Las zapatillas con placas de fibra de carbono continúan dominando el mercado de atletismo. Aquí te recomendamos nuestro producto destacado de la temporada, disponible en nuestra tienda:',
+                  type: 'text',
+                  version: 1
+                }
+              ]
+            },
+            {
+              type: 'block',
+              version: 1,
+              fields: {
+                blockType: 'productShowcase',
+                product: prodRunning.id
+              }
+            }
+          ]
+        }
+      },
+      tenant: tenant1.id,
+    }
   })
 
   payload.logger.info('=== BASE DE DATOS SEMBRADA CON ÉXITO ===')
