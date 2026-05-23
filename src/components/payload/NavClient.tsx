@@ -27,9 +27,10 @@ interface NavClientProps {
   user: any
   initialSelectedTenant: string
   initialTenants: any[]
+  initialOpenGroups: Record<string, boolean>
 }
 
-export default function NavClient({ user, initialSelectedTenant, initialTenants }: NavClientProps) {
+export default function NavClient({ user, initialSelectedTenant, initialTenants, initialOpenGroups }: NavClientProps) {
   const pathname = usePathname()
   const { logOut } = useAuth()
   const { i18n } = useTranslation()
@@ -54,13 +55,7 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants 
   const [tenants] = useState<any[]>(initialTenants)
   const [selectedTenant] = useState(initialSelectedTenant)
 
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
-    home: true,
-    content: true,
-    ecommerce: true,
-    blog: true,
-    settings: true,
-  })
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(initialOpenGroups)
 
   const toggleGroup = (groupId: string) => {
     setOpenGroups((prev) => {
@@ -68,22 +63,10 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants 
         ...prev,
         [groupId]: !prev[groupId],
       }
-      localStorage.setItem('kropy-nav-open-groups', JSON.stringify(updated))
+      document.cookie = `kropy-nav-open-groups=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000`
       return updated
     })
   }
-
-  // Load from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('kropy-nav-open-groups')
-    if (saved) {
-      try {
-        setOpenGroups(JSON.parse(saved))
-      } catch (e) {
-        console.error('Error parsing saved nav groups:', e)
-      }
-    }
-  }, [])
 
   useEffect(() => {
     let changed = false
@@ -99,7 +82,7 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants 
 
     if (changed) {
       setOpenGroups(updated)
-      localStorage.setItem('kropy-nav-open-groups', JSON.stringify(updated))
+      document.cookie = `kropy-nav-open-groups=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000`
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])

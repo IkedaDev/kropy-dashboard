@@ -5,6 +5,23 @@ import NavClient from './NavClient'
 export default async function Nav() {
   const cookieStore = await cookies()
   const selectedTenant = cookieStore.get('payload-tenant')?.value || ''
+  
+  // Read persistent accordion open states from cookie
+  const openGroupsCookie = cookieStore.get('kropy-nav-open-groups')?.value
+  let initialOpenGroups = {
+    home: true,
+    content: true,
+    ecommerce: true,
+    blog: true,
+    settings: true,
+  }
+  if (openGroupsCookie) {
+    try {
+      initialOpenGroups = JSON.parse(decodeURIComponent(openGroupsCookie))
+    } catch (e) {
+      // ignore
+    }
+  }
 
   const reqHeaders = await headers()
   const cookieHeader = reqHeaders.get('cookie') || ''
@@ -51,6 +68,7 @@ export default async function Nav() {
       user={user}
       initialSelectedTenant={selectedTenant}
       initialTenants={tenants}
+      initialOpenGroups={initialOpenGroups}
     />
   )
 }
