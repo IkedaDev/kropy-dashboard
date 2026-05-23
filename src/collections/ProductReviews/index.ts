@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
+import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 
 export const ProductReviews: CollectionConfig = {
   slug: 'product-reviews',
@@ -35,8 +35,8 @@ export const ProductReviews: CollectionConfig = {
         },
       }
     },
-    update: superAdminOrTenantAdminAccess,
-    delete: superAdminOrTenantAdminAccess,
+    update: isSuperAdminAccess,
+    delete: isSuperAdminAccess,
   },
   fields: [
     {

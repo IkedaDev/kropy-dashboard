@@ -31,7 +31,20 @@ export default function Nav() {
 
   const adminRoute = '/admin'
   const isSuper = user?.roles?.includes('super-admin')
-  const handleLogout = logOut || (() => {})
+  const handleLogout = async () => {
+    try {
+      if (logOut) {
+        await logOut()
+      } else {
+        await fetch('/api/users/logout', { method: 'POST' })
+      }
+    } catch (err) {
+      console.error('Error during logout:', err)
+    } finally {
+      // Force a full window reload and redirect to the login page to ensure Next.js router cache is fully invalidated
+      window.location.href = `${adminRoute}/login`
+    }
+  }
 
   const [tenants, setTenants] = useState<any[]>([])
   const [selectedTenant, setSelectedTenant] = useState('')
