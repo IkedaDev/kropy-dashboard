@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { createAutoSlug } from '@/utilities/autoSlugGeneric'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
+import { preventDeleteIfOrdered } from './hooks/preventDeleteIfOrdered'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -31,6 +32,7 @@ export const Products: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [createAutoSlug('products', 'title')],
+    beforeDelete: [preventDeleteIfOrdered],
   },
   fields: [
     {

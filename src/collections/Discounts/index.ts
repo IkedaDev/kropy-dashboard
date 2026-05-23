@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 import { extractID } from '@/utilities/extractID'
 import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
+import { preventDeleteIfOrdered } from './hooks/preventDeleteIfOrdered'
 
 export const Discounts: CollectionConfig = {
   slug: 'discounts',
@@ -99,6 +100,7 @@ export const Discounts: CollectionConfig = {
         return data
       },
     ],
+    beforeDelete: [preventDeleteIfOrdered],
   },
   fields: [
     {
