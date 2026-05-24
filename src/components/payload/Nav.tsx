@@ -13,6 +13,8 @@ export default async function Nav() {
     content: true,
     ecommerce: true,
     blog: true,
+    restaurant: true,
+    gallery: true,
     settings: true,
   }
   if (openGroupsCookie) {

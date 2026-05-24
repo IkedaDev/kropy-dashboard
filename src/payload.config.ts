@@ -27,6 +27,13 @@ import { ProductReviews } from './collections/ProductReviews'
 import { Authors } from './collections/Authors'
 import { BlogCategories } from './collections/BlogCategories'
 import { Posts } from './collections/Posts'
+import { ModifierGroups } from './collections/ModifierGroups'
+import { MenuSections } from './collections/MenuSections'
+import { MenuItems } from './collections/MenuItems'
+import { Combos } from './collections/Combos'
+import { Menus } from './collections/Menus'
+import { Galleries } from './collections/Galleries'
+import { GalleryCategories } from './collections/GalleryCategories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -59,7 +66,30 @@ export default buildConfig({
       },
     }
   },
-  collections: [Pages, Users, Tenants, Products, Media, Orders, Categories, StoreSettings, Customers, Discounts, Brands, ProductReviews, Authors, BlogCategories, Posts],
+  collections: [
+    Pages,
+    Users,
+    Tenants,
+    Products,
+    Media,
+    Orders,
+    Categories,
+    StoreSettings,
+    Customers,
+    Discounts,
+    Brands,
+    ProductReviews,
+    Authors,
+    BlogCategories,
+    Posts,
+    ModifierGroups,
+    MenuSections,
+    MenuItems,
+    Combos,
+    Menus,
+    Galleries,
+    GalleryCategories
+  ],
   // db: mongooseAdapter({
   //   url: process.env.DATABASE_URL as string,
   // }),
@@ -97,6 +127,13 @@ export default buildConfig({
         authors: {},
         'blog-categories': {},
         posts: {},
+        'modifier-groups': {},
+        'menu-sections': {},
+        'menu-items': {},
+        combos: {},
+        menus: {},
+        galleries: {},
+        'gallery-categories': {},
       },
       tenantField: {
         access: {

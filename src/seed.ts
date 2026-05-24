@@ -60,6 +60,13 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
 
   // Limpiar colecciones en orden para respetar dependencias
   const collectionsToClear = [
+    'galleries',
+    'gallery-categories',
+    'menus',
+    'combos',
+    'menu-items',
+    'menu-sections',
+    'modifier-groups',
     'posts',
     'blog-categories',
     'authors',
@@ -101,7 +108,7 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
       name: 'Tenant 1',
       slug: 'gold',
       domain: 'gold.localhost',
-      enabledModules: ['ecommerce'],
+      enabledModules: ['ecommerce', 'restaurant', 'gallery'],
     },
   })
 
@@ -953,6 +960,340 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
       content: createLexicalRichText('El realismo mágico no es meramente fantasía; es la coexistencia natural de lo insólito en lo cotidiano. Desde Macondo hasta los autores actuales, analizamos este hito narrativo.'),
       tenant: tenant3.id,
     }
+  })
+
+  // ==========================================
+  // SEED DATA: DIGITAL RESTAURANT MENUS
+  // ==========================================
+  payload.logger.info('=== CREANDO TENANT DE RESTAURANTE (DON PEPPE) ===')
+
+  const tenant4 = await payload.create({
+    collection: 'tenants',
+    data: {
+      name: 'Don Peppe Pizzería',
+      slug: 'don-peppe',
+      domain: 'donpeppe.localhost',
+      enabledModules: ['restaurant'],
+    },
+  })
+
+  const mediaDonPeppe = await createDummyMedia(payload, 'placeholder-donpeppe.png', tenant4.id)
+  const mediaDonPeppeId = mediaDonPeppe ? mediaDonPeppe.id : undefined
+
+  payload.logger.info('=== CREANDO GRUPOS DE MODIFICADORES DE RESTAURANTE ===')
+
+  const modExtraPizza = await payload.create({
+    collection: 'modifier-groups',
+    data: {
+      name: 'Ingredientes Extra',
+      required: false,
+      minSelections: 0,
+      maxSelections: 3,
+      options: [
+        { name: 'Extra Queso Mozzarella', additionalPrice: 1200 },
+        { name: 'Jamón Ahumado', additionalPrice: 1000 },
+        { name: 'Champiñones Frescos', additionalPrice: 800 },
+        { name: 'Aceitunas Negras', additionalPrice: 500 },
+      ],
+      tenant: tenant4.id,
+    },
+  })
+
+  const modAcompanamiento = await payload.create({
+    collection: 'modifier-groups',
+    data: {
+      name: 'Elige tu Acompañamiento',
+      required: true,
+      minSelections: 1,
+      maxSelections: 1,
+      options: [
+        { name: 'Papas Rústicas', additionalPrice: 0 },
+        { name: 'Aros de Cebolla', additionalPrice: 800 },
+        { name: 'Ensalada de la Casa', additionalPrice: 500 },
+      ],
+      tenant: tenant4.id,
+    },
+  })
+
+  payload.logger.info('=== CREANDO SECCIONES DE MENÚ ===')
+
+  const secEntradas = await payload.create({
+    collection: 'menu-sections',
+    data: {
+      name: 'Entradas',
+      description: 'Perfectas para compartir antes del plato fuerte.',
+      order: 1,
+      tenant: tenant4.id,
+    },
+  })
+
+  const secPizzas = await payload.create({
+    collection: 'menu-sections',
+    data: {
+      name: 'Pizzas A la Piedra',
+      description: 'Pizzas artesanales con masa madre estirada a mano.',
+      order: 2,
+      tenant: tenant4.id,
+    },
+  })
+
+  const secBurgers = await payload.create({
+    collection: 'menu-sections',
+    data: {
+      name: 'Hamburguesas Premium',
+      description: '180g de carne de vacuno seleccionada en pan brioche.',
+      order: 3,
+      tenant: tenant4.id,
+    },
+  })
+
+  const secPostres = await payload.create({
+    collection: 'menu-sections',
+    data: {
+      name: 'Postres',
+      description: 'El toque dulce para terminar tu experiencia.',
+      order: 4,
+      tenant: tenant4.id,
+    },
+  })
+
+  const secBebidas = await payload.create({
+    collection: 'menu-sections',
+    data: {
+      name: 'Bebidas y Coctelería',
+      description: 'Refrescos, jugos naturales y tragos preparados.',
+      order: 5,
+      tenant: tenant4.id,
+    },
+  })
+
+  payload.logger.info('=== CREANDO ÍTEMS DE LA CARTA ===')
+
+  const itemBruschetta = await payload.create({
+    collection: 'menu-items',
+    data: {
+      name: 'Bruschettas de Pomodoro',
+      description: 'Pan de masa madre tostado al ajo con tomates frescos picados, albahaca y aceite de oliva.',
+      price: 4900,
+      image: mediaDonPeppeId,
+      section: secEntradas.id,
+      dietary: ['vegan', 'vegetarian'],
+      status: 'available',
+      tenant: tenant4.id,
+    },
+  })
+
+  const itemPapas = await payload.create({
+    collection: 'menu-items',
+    data: {
+      name: 'Papas Don Peppe',
+      description: 'Papas fritas rústicas con salsa cheddar, tocino crujiente y cebollín.',
+      price: 5900,
+      image: mediaDonPeppeId,
+      section: secEntradas.id,
+      allergens: ['lactose'],
+      status: 'available',
+      tenant: tenant4.id,
+    },
+  })
+
+  const itemPizzaMargherita = await payload.create({
+    collection: 'menu-items',
+    data: {
+      name: 'Pizza Margherita',
+      description: 'Salsa de tomates de la casa, queso mozzarella fresco, albahaca fresca y un toque de aceite de oliva extra virgen.',
+      price: 9990,
+      image: mediaDonPeppeId,
+      section: secPizzas.id,
+      modifiers: [modExtraPizza.id],
+      allergens: ['gluten', 'lactose'],
+      dietary: ['vegetarian'],
+      status: 'available',
+      tenant: tenant4.id,
+    },
+  })
+
+  const itemPizzaPepperoni = await payload.create({
+    collection: 'menu-items',
+    data: {
+      name: 'Pizza Pepperoni',
+      description: 'Salsa de tomates de la casa, abundante queso mozzarella y rodajas crujientes de pepperoni de la casa.',
+      price: 11990,
+      image: mediaDonPeppeId,
+      section: secPizzas.id,
+      modifiers: [modExtraPizza.id],
+      allergens: ['gluten', 'lactose'],
+      status: 'available',
+      tenant: tenant4.id,
+    },
+  })
+
+  const itemBurgerPeppe = await payload.create({
+    collection: 'menu-items',
+    data: {
+      name: 'Hamburguesa Don Peppe',
+      description: 'Hamburguesa de vacuno (180g) rellena de queso, lechuga, tomate, pepinillos y salsa de la casa. Servido con tu acompañamiento preferido.',
+      price: 8900,
+      image: mediaDonPeppeId,
+      section: secBurgers.id,
+      modifiers: [modAcompanamiento.id],
+      allergens: ['gluten', 'lactose'],
+      status: 'available',
+      tenant: tenant4.id,
+    },
+  })
+
+  const itemTiramisu = await payload.create({
+    collection: 'menu-items',
+    data: {
+      name: 'Tiramisú Casero',
+      description: 'Clásico postre italiano preparado con mascarpone, café espresso de grano y bizcochos remojados en licor.',
+      price: 4500,
+      image: mediaDonPeppeId,
+      section: secPostres.id,
+      allergens: ['lactose'],
+      dietary: ['vegetarian'],
+      status: 'available',
+      tenant: tenant4.id,
+    },
+  })
+
+  const itemJugo = await payload.create({
+    collection: 'menu-items',
+    data: {
+      name: 'Jugo Natural Grande',
+      description: 'Exprimido al instante. Sabores: frambuesa, frutilla, mango o piña.',
+      price: 2900,
+      image: mediaDonPeppeId,
+      section: secBebidas.id,
+      dietary: ['vegan', 'vegetarian'],
+      status: 'available',
+      tenant: tenant4.id,
+    },
+  })
+
+  payload.logger.info('=== CREANDO COMBOS ===')
+
+  const comboEjecutivo = await payload.create({
+    collection: 'combos',
+    data: {
+      name: 'Menú Ejecutivo Don Peppe',
+      description: 'La opción más completa para tu almuerzo. Incluye plato principal, acompañamiento o postre a elección.',
+      price: 12900,
+      image: mediaDonPeppeId,
+      steps: [
+        {
+          stepName: 'Paso 1: Tu Plato Principal',
+          isRequired: true,
+          choices: [itemPizzaMargherita.id, itemPizzaPepperoni.id, itemBurgerPeppe.id],
+        },
+        {
+          stepName: 'Paso 2: Tu Entrada o Postre',
+          isRequired: true,
+          choices: [itemBruschetta.id, itemPapas.id, itemTiramisu.id],
+        },
+      ],
+      status: 'available',
+      tenant: tenant4.id,
+    },
+  })
+
+  payload.logger.info('=== CREANDO MENÚ COMPLETO (CARTA PRINCIPAL) ===')
+
+  await payload.create({
+    collection: 'menus',
+    data: {
+      title: 'Carta Principal Don Peppe',
+      sections: [secEntradas.id, secPizzas.id, secBurgers.id, secPostres.id, secBebidas.id],
+      active: true,
+      tenant: tenant4.id,
+    },
+  })
+
+  // ==========================================
+  // SEED DATA: PHOTO GALLERIES
+  // ==========================================
+  payload.logger.info('=== CREANDO TENANT DE GALERIA (ESTUDIO CREATIVO) ===')
+
+  const tenant5 = await payload.create({
+    collection: 'tenants',
+    data: {
+      name: 'Estudio Creativo Fotografía',
+      slug: 'estudio-creativo',
+      domain: 'estudiocreativo.localhost',
+      enabledModules: ['gallery'],
+    },
+  })
+
+  const mediaGallery = await createDummyMedia(payload, 'placeholder-gallery.png', tenant5.id)
+  const mediaGalleryId = mediaGallery ? mediaGallery.id : undefined
+
+  payload.logger.info('=== CREANDO CATEGORIAS DE GALERIA ===')
+
+  const catWeddings = await payload.create({
+    collection: 'gallery-categories',
+    data: {
+      name: 'Matrimonios / Weddings',
+      tenant: tenant5.id,
+    },
+  })
+
+  const catPortraits = await payload.create({
+    collection: 'gallery-categories',
+    data: {
+      name: 'Retratos / Portraits',
+      tenant: tenant5.id,
+    },
+  })
+
+  payload.logger.info('=== CREANDO ALBUMES / GALERIAS ===')
+
+  await payload.create({
+    collection: 'galleries',
+    data: {
+      title: 'Portafolio de Bodas 2026',
+      description: 'Selección de los mejores momentos y ceremonias capturadas en el año.',
+      coverImage: mediaGalleryId,
+      layout: 'masonry',
+      active: true,
+      images: [
+        {
+          image: mediaGalleryId,
+          caption: 'Ceremonia frente al mar al atardecer',
+          category: catWeddings.id,
+        },
+        {
+          image: mediaGalleryId,
+          caption: 'El primer baile de los novios',
+          category: catWeddings.id,
+        },
+      ],
+      tenant: tenant5.id,
+    },
+  })
+
+  await payload.create({
+    collection: 'galleries',
+    data: {
+      title: 'Retratos de Estudio',
+      description: 'Fotografía de retrato profesional en blanco y negro y color.',
+      coverImage: mediaGalleryId,
+      layout: 'grid',
+      active: true,
+      images: [
+        {
+          image: mediaGalleryId,
+          caption: 'Retrato corporativo en luz natural',
+          category: catPortraits.id,
+        },
+        {
+          image: mediaGalleryId,
+          caption: 'Sesión artística en clave alta',
+          category: catPortraits.id,
+        },
+      ],
+      tenant: tenant5.id,
+    },
   })
 
   payload.logger.info('=== BASE DE DATOS SEMBRADA CON ÉXITO ===')

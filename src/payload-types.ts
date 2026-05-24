@@ -82,6 +82,13 @@ export interface Config {
     authors: Author;
     'blog-categories': BlogCategory;
     posts: Post;
+    'modifier-groups': ModifierGroup;
+    'menu-sections': MenuSection;
+    'menu-items': MenuItem;
+    combos: Combo;
+    menus: Menu;
+    galleries: Gallery;
+    'gallery-categories': GalleryCategory;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -104,6 +111,13 @@ export interface Config {
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
     'blog-categories': BlogCategoriesSelect<false> | BlogCategoriesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    'modifier-groups': ModifierGroupsSelect<false> | ModifierGroupsSelect<true>;
+    'menu-sections': MenuSectionsSelect<false> | MenuSectionsSelect<true>;
+    'menu-items': MenuItemsSelect<false> | MenuItemsSelect<true>;
+    combos: CombosSelect<false> | CombosSelect<true>;
+    menus: MenusSelect<false> | MenusSelect<true>;
+    galleries: GalleriesSelect<false> | GalleriesSelect<true>;
+    'gallery-categories': GalleryCategoriesSelect<false> | GalleryCategoriesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -590,6 +604,195 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "modifier-groups".
+ */
+export interface ModifierGroup {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  required?: boolean | null;
+  minSelections: number;
+  maxSelections: number;
+  options: {
+    name: string;
+    /**
+     * Extra cost in Chilean pesos added to the dish base price if selected. Set to 0 if free or no extra cost.
+     */
+    additionalPrice?: number | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-sections".
+ */
+export interface MenuSection {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  /**
+   * Short description of items in this section.
+   */
+  description?: string | null;
+  /**
+   * Defines the relative order in which this section will be displayed (from lowest to highest).
+   */
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-items".
+ */
+export interface MenuItem {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  /**
+   * Ingredients or description of the dish for customers.
+   */
+  description?: string | null;
+  /**
+   * Price in Chilean pesos.
+   */
+  price: number;
+  image?: (number | null) | Media;
+  section: number | MenuSection;
+  modifiers?: (number | ModifierGroup)[] | null;
+  /**
+   * Select present allergens to inform your customers.
+   */
+  allergens?: ('gluten' | 'lactose' | 'nuts' | 'seafood')[] | null;
+  dietary?: ('vegan' | 'vegetarian' | 'celiac')[] | null;
+  status: 'available' | 'out_of_stock' | 'draft';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "combos".
+ */
+export interface Combo {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  /**
+   * Describe what this closed combo includes.
+   */
+  description?: string | null;
+  /**
+   * Final price for the complete combo in Chilean pesos.
+   */
+  price: number;
+  image?: (number | null) | Media;
+  steps: {
+    stepName: string;
+    isRequired?: boolean | null;
+    /**
+     * Select which menu items can be chosen in this step.
+     */
+    choices: (number | MenuItem)[];
+    id?: string | null;
+  }[];
+  status: 'available' | 'out_of_stock' | 'draft';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menus".
+ */
+export interface Menu {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Automatically generated from the title. Used in the URL.
+   */
+  slug: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Select and order the sections that make up this digital menu.
+   */
+  sections: (number | MenuSection)[];
+  /**
+   * Defines if this menu is visible to the public.
+   */
+  active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleries".
+ */
+export interface Gallery {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  /**
+   * Automatically generated from the title.
+   */
+  slug: string;
+  /**
+   * Short introduction or description of this gallery.
+   */
+  description?: string | null;
+  /**
+   * Representative image of the gallery for listings.
+   */
+  coverImage: number | Media;
+  /**
+   * Display suggestion for Astro layout.
+   */
+  layout: 'grid' | 'masonry' | 'carousel' | 'slideshow';
+  images: {
+    image: number | Media;
+    caption?: string | null;
+    /**
+     * Allows filtering this image inside the album on the frontend.
+     */
+    category?: (number | null) | GalleryCategory;
+    id?: string | null;
+  }[];
+  active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-categories".
+ */
+export interface GalleryCategory {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  /**
+   * Automatically generated from the name.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -671,6 +874,34 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'modifier-groups';
+        value: number | ModifierGroup;
+      } | null)
+    | ({
+        relationTo: 'menu-sections';
+        value: number | MenuSection;
+      } | null)
+    | ({
+        relationTo: 'menu-items';
+        value: number | MenuItem;
+      } | null)
+    | ({
+        relationTo: 'combos';
+        value: number | Combo;
+      } | null)
+    | ({
+        relationTo: 'menus';
+        value: number | Menu;
+      } | null)
+    | ({
+        relationTo: 'galleries';
+        value: number | Gallery;
+      } | null)
+    | ({
+        relationTo: 'gallery-categories';
+        value: number | GalleryCategory;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1028,6 +1259,126 @@ export interface PostsSelect<T extends boolean = true> {
         metaDescription?: T;
         metaImage?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "modifier-groups_select".
+ */
+export interface ModifierGroupsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  required?: T;
+  minSelections?: T;
+  maxSelections?: T;
+  options?:
+    | T
+    | {
+        name?: T;
+        additionalPrice?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-sections_select".
+ */
+export interface MenuSectionsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  description?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-items_select".
+ */
+export interface MenuItemsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  description?: T;
+  price?: T;
+  image?: T;
+  section?: T;
+  modifiers?: T;
+  allergens?: T;
+  dietary?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "combos_select".
+ */
+export interface CombosSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  description?: T;
+  price?: T;
+  image?: T;
+  steps?:
+    | T
+    | {
+        stepName?: T;
+        isRequired?: T;
+        choices?: T;
+        id?: T;
+      };
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menus_select".
+ */
+export interface MenusSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  slug?: T;
+  description?: T;
+  sections?: T;
+  active?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "galleries_select".
+ */
+export interface GalleriesSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  slug?: T;
+  description?: T;
+  coverImage?: T;
+  layout?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        category?: T;
+        id?: T;
+      };
+  active?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-categories_select".
+ */
+export interface GalleryCategoriesSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }

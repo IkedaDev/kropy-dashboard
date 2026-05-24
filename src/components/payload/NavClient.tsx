@@ -171,6 +171,27 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants,
       ],
     },
     {
+      id: 'restaurant',
+      label: { es: 'Carta Digital', en: 'Digital Menu' },
+      module: 'restaurant',
+      links: [
+        { label: { es: 'Menús / Cartas', en: 'Menus' }, href: `${adminRoute}/collections/menus`, icon: PagesIcon },
+        { label: { es: 'Secciones', en: 'Sections' }, href: `${adminRoute}/collections/menu-sections`, icon: CategoriesIcon },
+        { label: { es: 'Platos e Ítems', en: 'Dishes & Items' }, href: `${adminRoute}/collections/menu-items`, icon: ProductsIcon },
+        { label: { es: 'Modificadores', en: 'Modifiers' }, href: `${adminRoute}/collections/modifier-groups`, icon: SettingsIcon },
+        { label: { es: 'Combos y Fórmulas', en: 'Combos & Formulas' }, href: `${adminRoute}/collections/combos`, icon: DiscountsIcon },
+      ],
+    },
+    {
+      id: 'gallery',
+      label: { es: 'Galerías', en: 'Galleries' },
+      module: 'gallery',
+      links: [
+        { label: { es: 'Álbumes / Galerías', en: 'Albums / Galleries' }, href: `${adminRoute}/collections/galleries`, icon: MediaIcon },
+        { label: { es: 'Categorías de Galería', en: 'Gallery Categories' }, href: `${adminRoute}/collections/gallery-categories`, icon: CategoriesIcon },
+      ],
+    },
+    {
       id: 'settings',
       label: { es: 'Configuración', en: 'Settings' },
       links: [
