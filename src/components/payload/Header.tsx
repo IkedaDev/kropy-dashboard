@@ -99,14 +99,14 @@ export default function Header() {
         </NavToggler>
 
         {/* Kropy Leaf Icon */}
-        <Link href="/admin" className="flex items-center hover:opacity-80 transition-opacity">
+        {/* <Link href="/admin" className="flex items-center hover:opacity-80 transition-opacity">
           <div className="w-8 h-8 flex items-center justify-center bg-emerald-500/10 rounded-xl">
             <Image src={iconAsset} alt="Kropy" className="w-5 h-5 object-contain" />
           </div>
-        </Link>
+        </Link> */}
 
         {/* Breadcrumbs / Step Nav */}
-        <nav className="flex items-center gap-2">
+        {/* <nav className="flex items-center gap-2">
           {stepNav && stepNav.length > 0 ? (
             stepNav.map((item, index) => {
               const label = getLocalizedLabel(item.label)
@@ -117,7 +117,7 @@ export default function Header() {
                   {item.url && !isLast ? (
                     <Link
                       href={item.url}
-                      className="text-xs font-semibold text-slate-500 dark:text-neutral-400 hover:text-emerald-500 transition-colors"
+                      className="text-xs font-semibold text-slate-500  dark:text-neutral-400 hover:text-emerald-500 transition-colors"
                     >
                       {label}
                     </Link>
@@ -137,7 +137,7 @@ export default function Header() {
               </span>
             </>
           )}
-        </nav>
+        </nav> */}
       </div>
 
       <div className="flex items-center gap-3">

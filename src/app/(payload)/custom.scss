@@ -383,8 +383,7 @@ textarea {
    ========================================== */
 
 .template-default__wrap {
-  padding-left: 1.5rem !important;
-  padding-right: 1.5rem !important;
+  padding: 7rem 1.5rem 0 1.5rem !important;
   max-height: 100vh;
   overflow-y: auto;
 }
@@ -770,10 +769,6 @@ textarea {
   }
 }
 
-/* Adjust top padding of the main container to match sticky header */
-.template-default__wrap {
-  padding-top: 4.5rem !important;
-}
 
 /* Nav toggler button styling matching Kropy style */
 .kropy-nav-toggler {
@@ -1057,4 +1052,8 @@ textarea {
       }
     }
   }
+}
+
+.payload__modal-container {
+  z-index: 2000 !important;
 }
