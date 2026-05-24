@@ -511,13 +511,16 @@ textarea {
   padding: 1.5rem 1.25rem !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
-  position: relative !important;
-  transition: width 0.3s ease, padding 0.3s ease !important;
+  transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease, border-right 0.3s ease !important;
 
   /* Sincronización del estado contraído / cerrado */
   &.nav--closed {
-    width: 78px !important;
-    padding: 1.5rem 0.5rem !important;
+    width: 0 !important;
+    padding: 0 !important;
+    border-right: none !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 
     .nav__logo {
       display: none !important;
@@ -731,7 +734,7 @@ textarea {
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.01), 0 4px 12px -5px rgba(0, 0, 0, 0.02) !important;
-  
+
   /* Mobile styling (default) */
   left: 0 !important;
   width: 100vw !important;
@@ -748,20 +751,21 @@ textarea {
     left: 280px !important;
     width: calc(100vw - 280px) !important;
 
-    /* Sibling selectors for closed sidebar state (78px) */
-    .aside-nav.nav--closed ~ & {
-      left: 78px !important;
-      width: calc(100vw - 78px) !important;
+    /* Sibling selectors for closed sidebar state (0px) */
+    .aside-nav.nav--closed~& {
+      left: 0 !important;
+      width: 100vw !important;
     }
-    .aside-nav.nav--closed ~ .template-default__wrap & {
-      left: 78px !important;
-      width: calc(100vw - 78px) !important;
+
+    .aside-nav.nav--closed~.template-default__wrap & {
+      left: 0 !important;
+      width: 100vw !important;
     }
 
     /* Modern :has selector backup */
     body:has(.aside-nav.nav--closed) & {
-      left: 78px !important;
-      width: calc(100vw - 78px) !important;
+      left: 0 !important;
+      width: 100vw !important;
     }
   }
 }
@@ -789,4 +793,8 @@ textarea {
     background-color: var(--theme-elevation-150) !important;
     color: var(--theme-accent) !important;
   }
+}
+
+.template-default__nav-toggler-wrapper {
+  display: none;
 }

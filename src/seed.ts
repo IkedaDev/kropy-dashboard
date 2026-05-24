@@ -1303,3 +1303,5 @@
 
 //   payload.logger.info('=== BASE DE DATOS SEMBRADA CON ÉXITO ===')
 // }
+
+export const seed = async (payload: any): Promise<void> => {}
