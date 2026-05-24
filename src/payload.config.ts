@@ -101,11 +101,11 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL,
     },
   }),
-  // onInit: async (args) => {
-  //   if (process.env.SEED_DB) {
-  //     await seed(args)
-  //   }
-  // },
+  onInit: async (args) => {
+    if (process.env.SEED_DB) {
+      await seed(args)
+    }
+  },
   editor: lexicalEditor({}),
   graphQL: {
     schemaOutputFile: path.resolve(dirname, 'generated-schema.graphql'),

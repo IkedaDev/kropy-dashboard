@@ -723,7 +723,7 @@ textarea {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  height: 4.5rem !important;
+  height: 5rem !important;
   /* 72px */
   padding: 0 1.5rem !important;
   position: fixed !important;
@@ -817,4 +817,244 @@ textarea {
 
 .template-default__nav-toggler-wrapper {
   display: none;
+}
+
+/* ==========================================
+   10. Kropy Custom Header Dropdowns & Buttons
+   ========================================== */
+
+/* Overrides for header controls to prevent inheriting Payload's global button styling */
+.kropy-header button,
+.kropy-header .kropy-nav-toggler,
+.kropy-header button.kropy-nav-toggler {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  // padding: 0 !important;
+  margin: 0 !important;
+  outline: none !important;
+  min-height: 0 !important;
+  // height: auto !important;
+  // width: auto !important;
+}
+
+/* Estilo del selector de idioma */
+.kropy-lang-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.375rem !important;
+  padding: 0.375rem 0.75rem !important;
+  border-radius: 0.75rem !important; // 12px
+  border: 1px solid var(--theme-elevation-200) !important;
+  background-color: var(--theme-elevation-50) !important;
+  color: var(--theme-elevation-600) !important;
+  font-size: 0.951rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+
+  html[data-theme='dark'] & {
+    border-color: var(--theme-elevation-200) !important;
+    background-color: var(--theme-elevation-100) !important;
+    color: var(--theme-elevation-700) !important;
+  }
+
+  &:hover {
+    background-color: var(--theme-elevation-150) !important;
+    border-color: var(--theme-elevation-300) !important;
+    color: var(--theme-accent) !important;
+  }
+}
+
+/* Estilo del avatar del usuario */
+.kropy-user-avatar-btn {
+  display: flex !important;
+  align-items: center !important;
+  padding: 2px !important;
+  border-radius: 0.75rem !important; // 12px
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    border-color: var(--theme-accent) !important;
+    background-color: var(--theme-elevation-50) !important;
+  }
+
+  html[data-theme='dark'] & {
+    &:hover {
+      background-color: var(--theme-elevation-100) !important;
+    }
+  }
+
+  .kropy-avatar-box {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 3rem !important; // 34px
+    height: 3rem !important; // 34px
+    border-radius: 1rem !important; // 10px inside
+    background-color: rgba(16, 185, 129, 0.1) !important; // Soft green
+    color: #10b981 !important; // Emerald Kropy
+    font-weight: 750 !important;
+    font-size: 1rem !important;
+    user-select: none !important;
+
+    html[data-theme='dark'] & {
+      background-color: rgba(16, 185, 129, 0.15) !important;
+      color: #34d399 !important;
+    }
+  }
+}
+
+/* Contenedor del Dropdown */
+.kropy-dropdown-menu {
+  position: absolute !important;
+  right: 0 !important;
+  margin-top: 0.5rem !important;
+  border-radius: 1rem !important; // 16px
+  border: 1px solid var(--theme-elevation-200) !important;
+  background-color: var(--theme-elevation-100) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 16px -8px rgba(0, 0, 0, 0.05) !important;
+  z-index: 999 !important;
+  overflow: hidden !important;
+
+  html[data-theme='dark'] & {
+    border-color: var(--theme-elevation-200) !important;
+    background-color: var(--theme-elevation-100) !important; // Navy #0d1527
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.25) !important;
+  }
+}
+
+/* Cabecera del perfil de usuario dentro del dropdown */
+.kropy-profile-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 1rem 1.25rem !important;
+  border-bottom: 1px solid var(--theme-elevation-200) !important;
+
+  .kropy-avatar-large {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 3rem !important;
+    height: 3rem !important;
+    border-radius: 0.91rem !important;
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: #10b981 !important;
+    font-weight: 750 !important;
+    font-size: 0.875rem !important;
+
+    html[data-theme='dark'] & {
+      background-color: rgba(16, 185, 129, 0.15) !important;
+      color: #34d399 !important;
+    }
+  }
+
+  .kropy-user-info {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+
+    .kropy-user-name {
+      font-size: 1rem !important;
+      font-weight: 700 !important;
+      color: var(--theme-elevation-900) !important;
+      line-height: 1.25 !important;
+    }
+
+    .kropy-user-email {
+      font-size: 0.91rem !important;
+      font-family: var(--font-mono) !important;
+      color: var(--theme-elevation-500) !important;
+      word-break: break-all !important;
+    }
+  }
+}
+
+/* Sección de Roles */
+.kropy-profile-roles {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.375rem !important;
+  padding: 0.75rem 1.25rem !important;
+  border-bottom: 1px solid var(--theme-elevation-200) !important;
+  background-color: var(--theme-elevation-50) !important;
+
+  html[data-theme='dark'] & {
+    background-color: rgba(255, 255, 255, 0.01) !important;
+  }
+
+  .kropy-role-badge {
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 0.375rem !important;
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    font-family: var(--font-mono) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    background-color: var(--theme-elevation-200) !important;
+    color: var(--theme-elevation-600) !important;
+
+    html[data-theme='dark'] & {
+      background-color: var(--theme-elevation-200) !important;
+      color: var(--theme-elevation-800) !important;
+    }
+  }
+}
+
+/* Enlaces del menú del selector */
+.kropy-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.625rem !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  height: 40px;
+  color: var(--theme-elevation-700) !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  min-height: 0 !important;
+  padding: 0 20px;
+
+  // box-shadow: none !important;
+  // margin: 0 20px !important;
+
+  svg {
+    color: var(--theme-elevation-400) !important;
+    transition: color 0.15s ease !important;
+  }
+
+  &:hover {
+    background-color: var(--theme-elevation-150) !important;
+    color: var(--theme-elevation-900) !important;
+
+    svg {
+      color: var(--theme-accent) !important;
+    }
+  }
+
+  &.kropy-logout-item {
+    color: #ef4444 !important;
+
+    svg {
+      color: #f87171 !important;
+    }
+
+    &:hover {
+      background-color: rgba(239, 68, 68, 0.08) !important;
+      color: #dc2626 !important;
+
+      svg {
+        color: #ef4444 !important;
+      }
+    }
+  }
 }
