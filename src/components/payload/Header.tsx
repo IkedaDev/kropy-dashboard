@@ -3,13 +3,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useStepNav, useTranslation, useAuth, NavToggler } from '@payloadcms/ui'
+import { useStepNav, useTranslation, useAuth, NavToggler, useNav } from '@payloadcms/ui'
 import iconAsset from '@/assets/icon.svg'
 
 export default function Header() {
   const { stepNav } = useStepNav()
   const { i18n } = useTranslation()
   const { user, logOut } = useAuth()
+  const { navOpen } = useNav()
   
   const [langOpen, setLangOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
@@ -67,7 +68,35 @@ export default function Header() {
     <header className="kropy-header">
       <div className="flex items-center gap-3">
         {/* Sidebar Toggle */}
-        <NavToggler className="kropy-nav-toggler" />
+        <NavToggler className="kropy-nav-toggler">
+          <span className="kropy-toggler-custom-icon">
+            {navOpen ? (
+              <svg
+                className="w-5.5 h-5.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <path d="M9 3v16" />
+                <path d="m16 15-3-3 3-3" />
+              </svg>
+            ) : (
+              <svg
+                className="w-5.5 h-5.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <path d="M9 3v16" />
+                <path d="m13 15 3-3-3-3" />
+              </svg>
+            )}
+          </span>
+        </NavToggler>
 
         {/* Kropy Leaf Icon */}
         <Link href="/admin" className="flex items-center hover:opacity-80 transition-opacity">
