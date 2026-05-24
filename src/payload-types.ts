@@ -126,10 +126,10 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('es' | 'en') | ('es' | 'en')[];
+  fallbackLocale: null;
   globals: {};
   globalsSelect: {};
-  locale: 'es' | 'en';
+  locale: null;
   widgets: {
     collections: CollectionsWidget;
   };

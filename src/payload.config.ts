@@ -42,15 +42,15 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: 'users',
-    
+
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    components:{
+    components: {
       providers: [
         '/app/components/ForceThemeProvider'
       ],
-      graphics:{
+      graphics: {
         Icon: '/components/payload/Icon',
         Logo: '/components/payload/Logo',
       },
@@ -98,11 +98,11 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL,
     },
   }),
-  onInit: async (args) => {
-    if (process.env.SEED_DB) {
-      await seed(args)
-    }
-  },
+  // onInit: async (args) => {
+  //   if (process.env.SEED_DB) {
+  //     await seed(args)
+  //   }
+  // },
   editor: lexicalEditor({}),
   graphQL: {
     schemaOutputFile: path.resolve(dirname, 'generated-schema.graphql'),

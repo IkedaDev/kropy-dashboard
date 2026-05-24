@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslation, useNav, NavToggler, useAuth } from '@payloadcms/ui'
 import Logo from './Logo'
-import Icon from './Icon'
 import {
   DashboardIcon,
   PagesIcon,
@@ -22,6 +21,7 @@ import {
   TenantsIcon,
   LogoutIcon,
 } from './Icons'
+import SignIcon from './SignIcon'
 
 interface NavClientProps {
   user: any
@@ -211,7 +211,7 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants,
           </Link>
           <div className="nav__icon" style={{ display: 'none' }}>
             <Link href={adminRoute}>
-              <Icon />
+              <SignIcon />
             </Link>
           </div>
           <NavToggler className="nav__header-toggle" />
@@ -275,10 +275,10 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants,
 
               return (
                 <div key={group.id} className="nav-group">
-                  <div 
+                  <div
                     onClick={() => toggleGroup(group.id)}
-                    className="nav-group__toggle" 
-                    style={{ 
+                    className="nav-group__toggle"
+                    style={{
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
@@ -294,8 +294,8 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants,
                     <span className="nav-group__label">
                       {isEn ? group.label.en : group.label.es}
                     </span>
-                    <span style={{ 
-                      transform: isOpen ? 'rotate(0deg)' : 'rotate(-90deg)', 
+                    <span style={{
+                      transform: isOpen ? 'rotate(0deg)' : 'rotate(-90deg)',
                       transition: 'transform 0.2s ease',
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -306,7 +306,7 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants,
                       </svg>
                     </span>
                   </div>
-                  <div 
+                  <div
                     className="nav-group__links"
                     style={{
                       maxHeight: isOpen ? '500px' : '0px',
