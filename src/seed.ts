@@ -1204,6 +1204,7 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     collection: 'menus',
     data: {
       title: 'Carta Principal Don Peppe',
+      slug: 'carta-principal-don-peppe',
       sections: [secEntradas.id, secPizzas.id, secBurgers.id, secPostres.id, secBebidas.id],
       active: true,
       tenant: tenant4.id,
@@ -1234,6 +1235,7 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     collection: 'gallery-categories',
     data: {
       name: 'Matrimonios / Weddings',
+      slug: 'matrimonios-weddings',
       tenant: tenant5.id,
     },
   })
@@ -1242,6 +1244,7 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     collection: 'gallery-categories',
     data: {
       name: 'Retratos / Portraits',
+      slug: 'retratos-portraits',
       tenant: tenant5.id,
     },
   })
@@ -1252,6 +1255,7 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     collection: 'galleries',
     data: {
       title: 'Portafolio de Bodas 2026',
+      slug: 'portafolio-de-bodas-2026',
       description: 'Selección de los mejores momentos y ceremonias capturadas en el año.',
       coverImage: mediaGalleryId,
       layout: 'masonry',
@@ -1276,6 +1280,7 @@ export const seed: NonNullable<Config['onInit']> = async (payload): Promise<void
     collection: 'galleries',
     data: {
       title: 'Retratos de Estudio',
+      slug: 'retratos-de-estudio',
       description: 'Fotografía de retrato profesional en blanco y negro y color.',
       coverImage: mediaGalleryId,
       layout: 'grid',
