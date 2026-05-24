@@ -54,6 +54,9 @@ export default buildConfig({
         Icon: '/components/payload/Icon',
         Logo: '/components/payload/Logo',
       },
+      header: [
+        '/components/payload/Header'
+      ],
       Nav: '/components/payload/Nav',
       views: {
         dashboard: {

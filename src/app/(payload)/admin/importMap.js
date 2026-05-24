@@ -26,6 +26,7 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { default as default_f5cf6e143e11f4370c1f56154677af26 } from '../../../components/payload/Nav'
+import { default as default_7cffeff27fb4357b201fc437d9970fab } from '../../../components/payload/Header'
 import { default as default_6f64da3861999de587a3ed586829047d } from '../../../components/payload/Icon'
 import { default as default_c6fe5946efe4ec376b0411c30a8f0d79 } from '../../../components/payload/Logo'
 import { TenantSelector as TenantSelector_d6d5f193a167989e2ee7d14202901e62 } from '@payloadcms/plugin-multi-tenant/rsc'
@@ -65,6 +66,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/components/payload/Nav#default": default_f5cf6e143e11f4370c1f56154677af26,
+  "/components/payload/Header#default": default_7cffeff27fb4357b201fc437d9970fab,
   "/components/payload/Icon#default": default_6f64da3861999de587a3ed586829047d,
   "/components/payload/Logo#default": default_c6fe5946efe4ec376b0411c30a8f0d79,
   "@payloadcms/plugin-multi-tenant/rsc#TenantSelector": TenantSelector_d6d5f193a167989e2ee7d14202901e62,

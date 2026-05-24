@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 import Image from 'next/image'
-import logo from '@/assets/logo.png'
+import logo from '@/assets/icon.svg'
 import './index.scss'
 
 type Props = {

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useTranslation, useNav, NavToggler, useAuth } from '@payloadcms/ui'
+import { useTranslation, useNav, useAuth } from '@payloadcms/ui'
 import Logo from './Logo'
 import {
   DashboardIcon,
@@ -214,7 +214,6 @@ export default function NavClient({ user, initialSelectedTenant, initialTenants,
               <SignIcon />
             </Link>
           </div>
-          <NavToggler className="nav__header-toggle" />
         </div>
 
         {/* Super-admin Tenant Selector */}
