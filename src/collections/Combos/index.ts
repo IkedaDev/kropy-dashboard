@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 import { validateCLPAmount } from '@/utilities/validateCLP'
 import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
+import { isSuperAdmin } from '@/access/isSuperAdmin'
 
 export const Combos: CollectionConfig = {
   slug: 'combos',
@@ -133,8 +134,9 @@ export const Combos: CollectionConfig = {
           hasMany: true,
           required: true,
           filterOptions: ({ req }) => {
-            if (req.user && !req.user.roles?.includes('super-admin')) {
-              const userTenants = getUserTenantIDs(req.user)
+            const user = req.user as any
+            if (user && !isSuperAdmin(user)) {
+              const userTenants = getUserTenantIDs(user)
               if (userTenants.length > 0) {
                 return {
                   tenant: { in: userTenants },

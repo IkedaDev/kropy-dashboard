@@ -22,7 +22,7 @@ export default async function WelcomeDashboard({ initPageResult }: AdminViewServ
   const payload = await getPayload({ config: configPromise })
   const cookieStore = await cookies()
   const isSuper = isSuperAdmin(user)
-  const tenantIds = getUserTenantIDs(user)
+  const tenantIds = getUserTenantIDs(user as any)
 
   // Resolve selected tenant
   let selectedTenantId = cookieStore.get('payload-tenant')?.value || ''
@@ -54,7 +54,7 @@ export default async function WelcomeDashboard({ initPageResult }: AdminViewServ
   return (
     <WelcomeClient
       userEmail={user.email}
-      userRoles={user.roles || []}
+      userRoles={(user as any).roles || []}
       enabledModules={enabledModules}
     />
   )

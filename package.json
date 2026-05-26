@@ -16,6 +16,7 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1053.0",
     "@payloadcms/db-mongodb": "latest",
     "@payloadcms/db-postgres": "^3.84.1",
     "@payloadcms/next": "latest",

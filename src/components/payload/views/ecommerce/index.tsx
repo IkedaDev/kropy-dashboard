@@ -44,7 +44,7 @@ export default async function Dashboard({ initPageResult, params, searchParams }
   const payload = await getPayload({ config: configPromise })
   const cookieStore = await cookies()
   const isSuper = isSuperAdmin(user)
-  const tenantIds = getUserTenantIDs(user)
+  const tenantIds = getUserTenantIDs(user as any)
 
   // Resolve selected tenant
   let selectedTenantId = cookieStore.get('payload-tenant')?.value || ''

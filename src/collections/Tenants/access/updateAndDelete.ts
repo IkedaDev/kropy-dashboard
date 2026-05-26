@@ -13,7 +13,7 @@ export const updateAndDeleteAccess: Access = ({ req }) => {
 
   return {
     id: {
-      in: getUserTenantIDs(req.user, 'tenant-admin'),
+      in: getUserTenantIDs(req.user as any, 'tenant-admin'),
     },
   }
 }

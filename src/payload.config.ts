@@ -145,7 +145,7 @@ export default buildConfig({
             if (isSuperAdmin(req.user)) {
               return true
             }
-            return getUserTenantIDs(req.user).length > 0
+            return getUserTenantIDs(req.user as any).length > 0
           },
         },
       },

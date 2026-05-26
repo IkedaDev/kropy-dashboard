@@ -31,7 +31,7 @@ export const validateUserDelete: CollectionBeforeDeleteHook = async ({ req, id }
     return
   }
 
-  const actorAdminTenants = getUserTenantIDs(actor, 'tenant-admin')
+  const actorAdminTenants = getUserTenantIDs(actor as any, 'tenant-admin')
 
   // 1. Evitar que un tenant-admin elimine a otro tenant-admin en tenants comunes
   const targetAdminTenants = (userToDelete.tenants || [])

@@ -18,7 +18,7 @@ export const createAccess: Access<User> = ({ req }) => {
     return false
   }
 
-  const adminTenantAccessIDs = getUserTenantIDs(req.user, 'tenant-admin')
+  const adminTenantAccessIDs = getUserTenantIDs(req.user as any, 'tenant-admin')
 
   const requestedTenants: Tenant['id'][] =
     req.data?.tenants?.map((t: { tenant: Tenant['id'] }) => t.tenant) ?? []

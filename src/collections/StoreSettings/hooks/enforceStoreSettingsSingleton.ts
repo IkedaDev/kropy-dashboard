@@ -14,7 +14,7 @@ export const enforceStoreSettingsSingleton: CollectionBeforeValidateHook = async
 
   // Si no viene en data, pero el usuario está autenticado, intentamos resolverlo desde su sesión
   if (!tenantID && req.user) {
-    const userTenants = getUserTenantIDs(req.user)
+    const userTenants = getUserTenantIDs(req.user as any)
     if (userTenants.length > 0) {
       tenantID = userTenants[0]
       data.tenant = tenantID

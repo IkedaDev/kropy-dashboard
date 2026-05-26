@@ -25,11 +25,12 @@ export const canMutateTenant: Access = ({ req }) => {
     return true
   }
 
+  const user = req.user as any
   return {
     id: {
       in:
-        req.user?.tenants
-          ?.map(({ roles, tenant }) =>
+        user?.tenants
+          ?.map(({ roles, tenant }: any) =>
             roles?.includes('tenant-admin') && tenant
               ? extractID(tenant)
               : null,

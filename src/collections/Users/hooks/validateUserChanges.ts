@@ -33,7 +33,7 @@ export const validateUserChanges: CollectionBeforeChangeHook = async ({
     })
   }
 
-  const actorAdminTenants = getUserTenantIDs(actor, 'tenant-admin')
+  const actorAdminTenants = getUserTenantIDs(actor as any, 'tenant-admin')
 
   if (operation === 'update' && originalDoc) {
     const isSelf = originalDoc.id === actor.id

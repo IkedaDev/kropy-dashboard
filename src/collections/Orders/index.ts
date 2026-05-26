@@ -1,3 +1,4 @@
+import { isSuperAdmin } from '@/access/isSuperAdmin'
 import type { CollectionConfig, FieldAccess } from 'payload'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 import { syncWebhook } from './endpoints/syncWebhook'
@@ -5,7 +6,7 @@ import { handleOrderStatusAndStock } from './hooks/handleOrderStatusAndStock'
 import { validateCLPAmount } from '@/utilities/validateCLP'
 
 const onlySuperAdminCanUpdate: FieldAccess = ({ req }) => {
-  if (req.user && req.user.roles?.includes('super-admin')) {
+  if (req.user && isSuperAdmin(req.user)) {
     return true
   }
   return false

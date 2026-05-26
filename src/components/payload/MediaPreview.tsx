@@ -1,28 +1,53 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useField } from '@payloadcms/ui'
+import { useAllFormFields } from '@payloadcms/ui'
 
 export default function MediaPreview() {
-  const { value } = useField<string>({ path: 'url' })
+  const [fields] = useAllFormFields()
+  const url = fields.url?.value as string
+  const externalUrl = fields.externalUrl?.value as string
+  const file = fields.file?.value as File | null
+
+  const [previewUrl, setPreviewUrl] = useState<string>('')
   const [isValidImage, setIsValidImage] = useState(false)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!value) {
+    let objectUrl = ''
+    if (externalUrl) {
+      setPreviewUrl(externalUrl)
+    } else if (file && file instanceof File) {
+      objectUrl = URL.createObjectURL(file)
+      setPreviewUrl(objectUrl)
+    } else if (url) {
+      setPreviewUrl(url)
+    } else {
+      setPreviewUrl('')
+    }
+
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl)
+      }
+    }
+  }, [url, externalUrl, file])
+
+  useEffect(() => {
+    if (!previewUrl) {
       setIsValidImage(false)
       return
     }
 
     // Verify it starts with a valid protocol
-    if (!value.startsWith('http://') && !value.startsWith('https://')) {
+    if (!previewUrl.startsWith('http://') && !previewUrl.startsWith('https://') && !previewUrl.startsWith('blob:')) {
       setIsValidImage(false)
       return
     }
 
     setLoading(true)
     const img = new Image()
-    img.src = value
+    img.src = previewUrl
     img.onload = () => {
       setIsValidImage(true)
       setLoading(false)
@@ -31,9 +56,9 @@ export default function MediaPreview() {
       setIsValidImage(false)
       setLoading(false)
     }
-  }, [value])
+  }, [previewUrl])
 
-  if (!value) {
+  if (!previewUrl) {
     return (
       <div className="media-preview-container empty" style={{
         marginTop: '1.5rem',
@@ -44,7 +69,7 @@ export default function MediaPreview() {
         color: 'var(--theme-elevation-500)',
         fontSize: '0.9rem'
       }}>
-        Introduce un enlace de imagen válido para ver la previsualización aquí.
+        Sube una imagen o ingresa un enlace para ver la previsualización aquí.
       </div>
     )
   }
@@ -127,7 +152,7 @@ export default function MediaPreview() {
         padding: '0.5rem'
       }}>
         <img 
-          src={value} 
+          src={previewUrl} 
           alt="Previsualización" 
           style={{ 
             maxWidth: '100%', 
@@ -151,7 +176,7 @@ export default function MediaPreview() {
           backgroundColor: '#10b981',
           display: 'inline-block'
         }}></span>
-        Imagen enlazada correctamente
+        Imagen cargada correctamente
       </div>
     </div>
   )

@@ -1,3 +1,4 @@
+import { isSuperAdmin } from '@/access/isSuperAdmin'
 import type { Block } from 'payload'
 import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 
@@ -30,8 +31,8 @@ export const ProductShowcase: Block = {
         },
       },
       filterOptions: ({ req }) => {
-        if (req.user && !req.user.roles?.includes('super-admin')) {
-          const userTenants = getUserTenantIDs(req.user)
+        if (req.user && !isSuperAdmin(req.user)) {
+          const userTenants = getUserTenantIDs(req.user as any)
           if (userTenants.length > 0) {
             return {
               tenant: { in: userTenants },

@@ -9,7 +9,7 @@ export const superAdminOrTenantAdminAccess: Access = ({ req }) => {
   // Si no eres super admin, simplemente devuelve un filtro
   // El plugin de multi-tenant se encargará de inyectar el tenant_id 
   // en la query basándose en el usuario logueado.
-  const adminTenantIDs = getUserTenantIDs(req.user, 'tenant-admin')
+  const adminTenantIDs = getUserTenantIDs(req.user as any, 'tenant-admin')
   
   return {
     tenant: {

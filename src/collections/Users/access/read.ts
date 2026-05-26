@@ -21,7 +21,7 @@ export const readAccess: Access<User> = ({ req, id }) => {
     req.headers,
     getCollectionIDType({ payload: req.payload, collectionSlug: 'tenants' }),
   )
-  const adminTenantAccessIDs = getUserTenantIDs(req.user, 'tenant-admin')
+  const adminTenantAccessIDs = getUserTenantIDs(req.user as any, 'tenant-admin')
 
   if (selectedTenant) {
     // If it's a super admin, or they have access to the tenant ID set in cookie

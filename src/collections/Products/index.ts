@@ -1,3 +1,4 @@
+import { isSuperAdmin } from '@/access/isSuperAdmin'
 import type { CollectionConfig } from 'payload'
 import { createAutoSlug } from '@/utilities/autoSlugGeneric'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
@@ -152,8 +153,8 @@ export const Products: CollectionConfig = {
         position: 'sidebar',
       },
       filterOptions: ({ req }) => {
-        if (req.user && !req.user.roles?.includes('super-admin')) {
-          const userTenants = getUserTenantIDs(req.user)
+        if (req.user && !isSuperAdmin(req.user)) {
+          const userTenants = getUserTenantIDs(req.user as any)
           if (userTenants.length > 0) {
             return {
               tenant: { in: userTenants },
@@ -175,8 +176,8 @@ export const Products: CollectionConfig = {
         position: 'sidebar',
       },
       filterOptions: ({ req }) => {
-        if (req.user && !req.user.roles?.includes('super-admin')) {
-          const userTenants = getUserTenantIDs(req.user)
+        if (req.user && !isSuperAdmin(req.user)) {
+          const userTenants = getUserTenantIDs(req.user as any)
           if (userTenants.length > 0) {
             return {
               tenant: { in: userTenants },
