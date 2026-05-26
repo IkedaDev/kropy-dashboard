@@ -224,6 +224,29 @@ export interface Tenant {
    * Select the business modules this organization has contracted access to.
    */
   enabledModules?: ('ecommerce' | 'blog' | 'restaurant' | 'gallery')[] | null;
+  buckets: {
+    provider: 'cloudflare_r2';
+    /**
+     * The exact name of the R2 bucket assigned to this tenant.
+     */
+    r2_bucket_name?: string | null;
+    /**
+     * The public access key generated specifically for this client's bucket.
+     */
+    r2_access_key_id?: string | null;
+    /**
+     * The secret access key for this client (stored encrypted).
+     */
+    r2_secret_access_key?: string | null;
+    /**
+     * The Cloudflare account ID.
+     */
+    r2_account_id?: string | null;
+    /**
+     * The custom domain or public URL from Cloudflare (e.g., https://media.client.com).
+     */
+    r2_public_url?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1036,6 +1059,16 @@ export interface TenantsSelect<T extends boolean = true> {
   slug?: T;
   allowPublicRead?: T;
   enabledModules?: T;
+  buckets?:
+    | T
+    | {
+        provider?: T;
+        r2_bucket_name?: T;
+        r2_access_key_id?: T;
+        r2_secret_access_key?: T;
+        r2_account_id?: T;
+        r2_public_url?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
