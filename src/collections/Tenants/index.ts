@@ -20,7 +20,7 @@ export const Tenants: CollectionConfig = {
     create: isSuperAdminAccess,
     delete: isSuperAdminAccess,
     update: isSuperAdminAccess,
-    read: filterByTenantRead,
+    read: () => true,
   },
   admin: {
     useAsTitle: 'name',

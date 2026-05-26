@@ -69,7 +69,7 @@ export const StoreSettings: CollectionConfig = {
           min: 0,
         },
         {
-          name: 'description',
+          name: 'shippingPolicies',
           label: {
             es: 'Políticas o Información de Despacho',
             en: 'Shipping Policies or Information',

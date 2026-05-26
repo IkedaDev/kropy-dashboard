@@ -5,6 +5,14 @@ import { preventDeleteIfOrdered } from './hooks/preventDeleteIfOrdered'
 
 export const Customers: CollectionConfig = {
   slug: 'customers',
+  auth: {
+    tokenExpiration: 7200, // 2 horas
+    verify: false, // Cambiar a true si quieres confirmar cuentas por correo
+    cookies: {
+      secure: true,
+      sameSite: 'Lax',
+    },
+  },
   labels: {
     singular: {
       es: 'Cliente',

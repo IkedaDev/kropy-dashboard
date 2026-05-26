@@ -46,15 +46,6 @@ export const Brands: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
     },
-    {
-      name: 'description',
-      label: {
-        es: 'Descripción de la Marca',
-        en: 'Brand Description',
-      },
-      type: 'richText',
-      localized: true,
-    },
   ],
 }
 
