@@ -257,10 +257,6 @@ export interface Tenant {
 export interface Media {
   id: number;
   tenant?: (number | null) | Tenant;
-  /**
-   * Use this field if you want to import an image via its web address instead of uploading a file.
-   */
-  externalUrl?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -461,6 +457,20 @@ export interface Customer {
   name: string;
   phone?: string | null;
   address?: string | null;
+  addresses?:
+    | {
+        label?: string | null;
+        street: string;
+        number: string;
+        apartmentOrOffice?: string | null;
+        city: string;
+        state: string;
+        postalCode?: string | null;
+        country?: string | null;
+        isDefault?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1124,7 +1134,6 @@ export interface ProductsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   tenant?: T;
-  externalUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1223,6 +1232,20 @@ export interface CustomersSelect<T extends boolean = true> {
   name?: T;
   phone?: T;
   address?: T;
+  addresses?:
+    | T
+    | {
+        label?: T;
+        street?: T;
+        number?: T;
+        apartmentOrOffice?: T;
+        city?: T;
+        state?: T;
+        postalCode?: T;
+        country?: T;
+        isDefault?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;

@@ -28,8 +28,6 @@ export const Media: CollectionConfig = {
       es: 'Comercio Electrónico',
       en: 'E-commerce',
     },
-    defaultColumns: ['preview', 'url'],
-    useAsTitle: 'url',
   },
   access: {
     create: superAdminOrTenantAdminAccess,
@@ -44,33 +42,6 @@ export const Media: CollectionConfig = {
     afterRead: [resolveMediaUrl],
   },
   fields: [
-    {
-      name: 'externalUrl',
-      label: {
-        es: 'O ingresa la URL de una imagen',
-        en: 'Or enter an image URL',
-      },
-      type: 'text',
-      admin: {
-        disableListColumn: true,
-        description: {
-          es: 'Utiliza este campo si deseas importar una imagen mediante su dirección web en lugar de subir un archivo.',
-          en: 'Use this field if you want to import an image via its web address instead of uploading a file.',
-        },
-      },
-      validate: (val: string | null | undefined) => {
-        if (!val) return true
-        try {
-          new URL(val)
-          if (!val.startsWith('http://') && !val.startsWith('https://')) {
-            return 'Debe comenzar con http:// o https://'
-          }
-          return true
-        } catch (_) {
-          return 'Debe ingresar una URL válida'
-        }
-      },
-    },
     {
       name: 'preview',
       type: 'ui',

@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { superAdminOrTenantAdminAccess } from '@/utilities/superAdminOrTenantAdmin'
 import { extractID } from '@/utilities/extractID'
 import { preventDeleteIfOrdered } from './hooks/preventDeleteIfOrdered'
+import { handleDefaultAddress } from './hooks/handleDefaultAddress'
 
 export const Customers: CollectionConfig = {
   slug: 'customers',
@@ -39,6 +40,7 @@ export const Customers: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [
+      handleDefaultAddress,
       async ({ data, req, operation, originalDoc }) => {
         if (!data) return data
 
@@ -142,6 +144,100 @@ export const Customers: CollectionConfig = {
         en: 'Default Shipping Address',
       },
       type: 'text',
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'addresses',
+      label: {
+        es: 'Direcciones de Despacho',
+        en: 'Shipping Addresses',
+      },
+      type: 'array',
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'label',
+          label: {
+            es: 'Etiqueta (ej: Casa, Oficina)',
+            en: 'Label (e.g. Home, Office)',
+          },
+          type: 'text',
+        },
+        {
+          name: 'street',
+          label: {
+            es: 'Calle',
+            en: 'Street',
+          },
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'number',
+          label: {
+            es: 'Número',
+            en: 'Number',
+          },
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'apartmentOrOffice',
+          label: {
+            es: 'Departamento / Oficina / Block (Opcional)',
+            en: 'Apartment / Office / Suite (Optional)',
+          },
+          type: 'text',
+        },
+        {
+          name: 'city',
+          label: {
+            es: 'Comuna / Ciudad',
+            en: 'Commune / City',
+          },
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'state',
+          label: {
+            es: 'Región / Estado',
+            en: 'Region / State',
+          },
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'postalCode',
+          label: {
+            es: 'Código Postal (Opcional)',
+            en: 'Postal Code (Optional)',
+          },
+          type: 'text',
+        },
+        {
+          name: 'country',
+          label: {
+            es: 'País (Opcional)',
+            en: 'Country (Optional)',
+          },
+          type: 'text',
+          defaultValue: 'Chile',
+        },
+        {
+          name: 'isDefault',
+          label: {
+            es: 'Dirección por Defecto',
+            en: 'Default Address',
+          },
+          type: 'checkbox',
+          defaultValue: false,
+        },
+      ],
     },
   ],
 }
