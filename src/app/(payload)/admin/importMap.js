@@ -25,7 +25,8 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
-import { default as default_bac4d65ceeab52b02c08008534d4b666 } from '../../../components/payload/MediaPreview'
+import { MediaPreviewField as MediaPreviewField_bac4d65ceeab52b02c08008534d4b666 } from '../../../components/payload/MediaPreview'
+import { MediaPreviewCell as MediaPreviewCell_bac4d65ceeab52b02c08008534d4b666 } from '../../../components/payload/MediaPreview'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { default as default_f5cf6e143e11f4370c1f56154677af26 } from '../../../components/payload/Nav'
 import { default as default_7cffeff27fb4357b201fc437d9970fab } from '../../../components/payload/Header'
@@ -67,7 +68,8 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
-  "/components/payload/MediaPreview#default": default_bac4d65ceeab52b02c08008534d4b666,
+  "/components/payload/MediaPreview#MediaPreviewField": MediaPreviewField_bac4d65ceeab52b02c08008534d4b666,
+  "/components/payload/MediaPreview#MediaPreviewCell": MediaPreviewCell_bac4d65ceeab52b02c08008534d4b666,
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/components/payload/Nav#default": default_f5cf6e143e11f4370c1f56154677af26,
   "/components/payload/Header#default": default_7cffeff27fb4357b201fc437d9970fab,

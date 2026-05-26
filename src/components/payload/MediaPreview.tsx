@@ -3,7 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import { useAllFormFields } from '@payloadcms/ui'
 
-export default function MediaPreview() {
+export function MediaPreviewCell(props: any) {
+  return <picture className='w-20 flex'>
+    <img src={props.rowData.url} />
+  </picture>
+}
+
+export function MediaPreviewField() {
   const [fields] = useAllFormFields()
   const url = fields.url?.value as string
   const externalUrl = fields.externalUrl?.value as string
@@ -12,7 +18,6 @@ export default function MediaPreview() {
   const [previewUrl, setPreviewUrl] = useState<string>('')
   const [isValidImage, setIsValidImage] = useState(false)
   const [loading, setLoading] = useState(false)
-
   useEffect(() => {
     let objectUrl = ''
     if (externalUrl) {
@@ -25,6 +30,7 @@ export default function MediaPreview() {
     } else {
       setPreviewUrl('')
     }
+
 
     return () => {
       if (objectUrl) {
@@ -151,15 +157,15 @@ export default function MediaPreview() {
         alignItems: 'center',
         padding: '0.5rem'
       }}>
-        <img 
-          src={previewUrl} 
-          alt="Previsualización" 
-          style={{ 
-            maxWidth: '100%', 
-            maxHeight: '330px', 
+        <img
+          src={previewUrl}
+          alt="Previsualización"
+          style={{
+            maxWidth: '100%',
+            maxHeight: '330px',
             objectFit: 'contain',
             borderRadius: '4px'
-          }} 
+          }}
         />
       </div>
       <div style={{

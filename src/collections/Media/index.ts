@@ -23,16 +23,17 @@ export const Media: CollectionConfig = {
     mimeTypes: ['image/*'],
     adminThumbnail: ({ doc }) => (typeof doc.url === 'string' ? doc.url : null),
   },
-  admin:{
+  admin: {
     group: {
       es: 'Comercio Electrónico',
       en: 'E-commerce',
     },
+    defaultColumns: ['preview', 'url'],
     useAsTitle: 'url',
   },
   access: {
     create: superAdminOrTenantAdminAccess,
-    read: () => true, 
+    read: () => true,
     update: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
   },
@@ -75,9 +76,10 @@ export const Media: CollectionConfig = {
       type: 'ui',
       admin: {
         components: {
-          Field: '/components/payload/MediaPreview',
+          Field: '/components/payload/MediaPreview#MediaPreviewField',
+          Cell: '/components/payload/MediaPreview#MediaPreviewCell',
         },
       },
     },
-  ], 
+  ],
 }
